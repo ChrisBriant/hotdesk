@@ -1,4 +1,4 @@
-export class Rect {
+export class Desk {
   // let ctx;
   // let x=0;
   // let y=0;

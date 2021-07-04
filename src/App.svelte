@@ -1,5 +1,5 @@
 <script>
-  import Plan from '../screens/Plan.svelte';
+  import Plan from './screens/Plan.svelte';
 	export let name;
 </script>
 

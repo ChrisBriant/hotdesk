@@ -1,7 +1,8 @@
 <script>
 	import { onMount } from 'svelte';
-	import { Rect } from '../geometry/Rect';
+	import { Desk } from '../classes/Desk';
   import DeskInput from '../dialogs/DeskInput.svelte';
+	import { deskStoreActions } from '../stores/deskstore';
 
   let ctx;
 
@@ -13,6 +14,7 @@
 	let canvas = null;
   let m = { x: 0, y: 0, pos:'' };
   let draw = false;
+	let drawing = false;
   let launchDeskDialog = false;
 
   let xPos = 0;
@@ -20,7 +22,9 @@
 
   //Saved rects
 	let currentRect = null;
-  let rects = [];
+  //let rects = [];
+
+	$:console.log('desk store', $deskStoreActions.desks)
 
   $:if(image){
     console.log('Here is your file', typeof image);
@@ -43,9 +47,9 @@
 
 	//Find the first rectangle mouse click is in
 	const insideRect = (x,y) => {
-		for(let i=0;i<rects.length;i++) {
-			if(rects[i].contains(x,y)) {
-				return rects[i];
+		for(let i=0;i<$deskStoreActions.desks.length;i++) {
+			if($deskStoreActions.desks[i].contains(x,y)) {
+				return $deskStoreActions.desks[i];
 			}
 		}
 		return null;
@@ -54,8 +58,8 @@
   const redraw = () => {
     ctx.fillRect(0, 0, width, height);
     //Draw the saved rects
-    for(let i=0;i<rects.length;i++) {
-			rects[i].draw();
+    for(let i=0;i<$deskStoreActions.desks.length;i++) {
+			$deskStoreActions.desks[i].draw();
       // ctx.beginPath();
       // ctx.rect(rects[i].x, rects[i].y,rects[i].rectWidth,rects[i].rectHeight);
       // ctx.stroke();
@@ -68,8 +72,9 @@
       let rectWidth =  (e.x - e.target.offsetLeft) -xPos;
       let rectHeight = (e.y - e.target.offsetTop) - yPos;
       redraw();
-			currentRect = new Rect(xPos,yPos,rectWidth,rectHeight,ctx);
+			currentRect = new Desk(xPos,yPos,rectWidth,rectHeight,ctx);
 			currentRect.draw();
+			drawing = true;
       // ctx.beginPath();
       // ctx.rect(xPos, yPos,rectWidth,rectHeight);
       // ctx.stroke();
@@ -96,7 +101,12 @@
     let rectHeight = (e.y - e.target.offsetTop) - yPos;
     draw = false;
     //Save the rect
-		rects.push(currentRect);
+		if(drawing) {
+			//Only save if the user has dragged
+			deskStoreActions.addDesk(currentRect);
+			drawing = false;
+		}
+		//rects.push(currentRect);
     // rects.push({
     //     x:xPos,
     //     y:yPos,
@@ -109,7 +119,7 @@
 
   const closeDialog = () => {
     launchDeskDialog = false;
-		console.log('Desks',rects);
+		console.log('Desks',$deskStoreActions.desks);
   }
 
 
