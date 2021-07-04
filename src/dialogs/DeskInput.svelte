@@ -1,5 +1,7 @@
 <script>
-  import { createEventDispatcher } from 'svelte';
+  import { createEventDispatcher, onMount } from 'svelte';
+  import { stringGen } from '../helpers/helpers';
+  import { deskStoreActions } from '../stores/deskstore';
   import Modal from '../components/Modal.svelte';
   import Button from '../components/Button.svelte';
   import TextArea from '../components/TextArea.svelte';
@@ -8,13 +10,27 @@
 
   export let desk;
   export let name = "";
+  let id;
 
+  onMount(() => {
+    id = stringGen(16);
+    desk.setId(id);
+    console.log('Random ID', stringGen(16));
+  });
 
   const saveDesk = () => {
     console.log('Desk is callled', name);
     desk.setName(name);
     dispatch('cancel');
   }
+
+  const deleteDesk = () => {
+    console.log('Deleting Desk', desk);
+    deskStoreActions.deleteDesk(desk);
+    dispatch('cancel');
+  }
+
+
 </script>
 
 
@@ -48,10 +64,22 @@
     <div slot="footer">
         <br/>
         <Button type="button"
-          id="continue"
+          id="delete"
+          on:click={deleteDesk}
+        >
+            delete
+        </Button>
+        <Button type="button"
+          id="save"
           on:click={saveDesk}
         >
             save
+        </Button>
+        <Button type="button"
+          id="cancel"
+          on:click={() => dispatch('cancel')}
+        >
+            cancel
         </Button>
     </div>
   </Modal>

@@ -20,6 +20,18 @@ const deskStoreActions = {
         console.log('New Desks',newDesks);
         return ds;
       });
+    },
+    deleteDesk: (desk) => {
+      deskStore.update(ds => {
+        let newDesks = [...ds.desks];
+        let deskId = desk.getId();
+        //console.log('New Desks',newDesks);
+        //let deskIdx = newDesks.findIndex(i => i.getId() === deskId);
+        newDesks = newDesks.filter(d => d.getId() !== deskId);
+        ds.desks = newDesks;
+        console.log('New Desks',newDesks);
+        return ds;
+      });
     }
 //     setRegistered: () => {
 //       uiStore.update(ui => {

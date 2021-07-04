@@ -16,6 +16,8 @@
   let draw = false;
 	let drawing = false;
   let launchDeskDialog = false;
+	let imgObj;
+	let imgLoaded = false;
 
   let xPos = 0;
   let yPos = 0;
@@ -27,15 +29,18 @@
 	$:console.log('desk store', $deskStoreActions.desks)
 
   $:if(image){
-    console.log('Here is your file', typeof image);
-    let img = new Image();
-    let reader = new FileReader();
-    reader.readAsDataURL(image);
-    reader.onload = e => {
-      img.src =  e.target.result;
-      console.log(typeof img);
-      ctx.drawImage(img, 0, 0, width,height);
-    };
+		if(!imgLoaded) {
+	    console.log('Here is your file', typeof image);
+	    imgObj = new Image();
+	    let reader = new FileReader();
+	    reader.readAsDataURL(image);
+	    reader.onload = e => {
+	      imgObj.src =  e.target.result;
+	      //console.log(typeof img);
+	      ctx.drawImage(imgObj, 0, 0, width,height);
+				imgLoaded = true;
+	    };
+		}
   };
 
 	onMount(() => {
@@ -57,6 +62,7 @@
 
   const redraw = () => {
     ctx.fillRect(0, 0, width, height);
+		ctx.drawImage(imgObj, 0, 0, width,height)
     //Draw the saved rects
     for(let i=0;i<$deskStoreActions.desks.length;i++) {
 			$deskStoreActions.desks[i].draw();
@@ -83,17 +89,19 @@
   }
 
   const handleClick = (e) => {
-    xPos = e.x - e.target.offsetLeft;
-    yPos = e.y - e.target.offsetTop;
-		let clickedRect = insideRect(xPos,yPos);
-		if(clickedRect) {
-      console.log('Inside a rect');
-			currentRect = clickedRect;
-      launchDeskDialog = true;
-      draw = false;
-    } else {
-      draw = true;
-    };
+		if(image) {
+	    xPos = e.x - e.target.offsetLeft;
+	    yPos = e.y - e.target.offsetTop;
+			let clickedRect = insideRect(xPos,yPos);
+			if(clickedRect) {
+	      console.log('Inside a rect');
+				currentRect = clickedRect;
+	      launchDeskDialog = true;
+	      draw = false;
+	    } else {
+	      draw = true;
+	    };
+		}
   }
 
   const handleUnClick = (e) => {
@@ -105,6 +113,7 @@
 			//Only save if the user has dragged
 			deskStoreActions.addDesk(currentRect);
 			drawing = false;
+			launchDeskDialog = true;
 		}
 		//rects.push(currentRect);
     // rects.push({
@@ -120,6 +129,7 @@
   const closeDialog = () => {
     launchDeskDialog = false;
 		console.log('Desks',$deskStoreActions.desks);
+		redraw();
   }
 
 

@@ -12,6 +12,7 @@ export class Desk {
     this.w=w;
     this.h=h;
     this.name="";
+    this.id="";
   }
 
   contains(x,y) {
@@ -31,8 +32,20 @@ export class Desk {
     return this.name;
   }
 
+  getId() {
+    return this.id;
+  }
+
+
+  //Setters
   setName(name) {
     this.name=name;
+  }
+
+  setId(id) {
+    if(this.id === "") {
+      this.id = id;
+    }
   }
 
 }
