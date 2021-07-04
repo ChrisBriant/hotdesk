@@ -11,3 +11,9 @@ export function stringGen(len) {
     text += charset.charAt(Math.floor(Math.random() * charset.length));
   return text;
 }
+
+
+export function getMousePos(e) {
+  let canvasDims = e.target.getBoundingClientRect();
+  return {x:e.x - canvasDims.left,y:e.y - canvasDims.top};
+}

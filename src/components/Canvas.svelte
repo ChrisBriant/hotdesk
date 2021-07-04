@@ -3,6 +3,7 @@
 	import { Desk } from '../classes/Desk';
   import DeskInput from '../dialogs/DeskInput.svelte';
 	import { deskStoreActions } from '../stores/deskstore';
+	import { getMousePos } from '../helpers/helpers';
 
   let ctx;
 
@@ -34,17 +35,27 @@
 	    imgObj = new Image();
 	    let reader = new FileReader();
 	    reader.readAsDataURL(image);
-	    reader.onload = e => {
+	    reader.onload = (e) => {
 	      imgObj.src =  e.target.result;
-	      //console.log(typeof img);
-	      ctx.drawImage(imgObj, 0, 0, width,height);
+	      console.log('I should draw the image',ctx,imgObj);
+				// ctx.fillRect(0, 0, width, height);
+				//ctx.drawImage(imgObj, 0, 0, width,height);
 				imgLoaded = true;
+				//For Firefox it has to be called below as well - don't know why
+				ctx.drawImage(imgObj, 0, 0, width,height);
 	    };
+		} else {
+			ctx.drawImage(imgObj, 0, 0, width,height);
 		}
   };
 
+	// $:if(imgLoaded) {
+	//
+	// }
+
 	onMount(() => {
 		ctx = canvas.getContext('2d');
+		ctx.imageSmoothingEnabled = true;
     ctx.fillStyle = '#edeae6';
     ctx.fillRect(0, 0, width, height);
     ctx.lineWidth = 4;
@@ -75,8 +86,11 @@
   const handleDrag = (e) => {
     if(draw) {
       //console.log('This is a drag!',xPos,yPos,e.x - e.target.offsetLeft,e.y  - e.target.offsetTop);
-      let rectWidth =  (e.x - e.target.offsetLeft) -xPos;
-      let rectHeight = (e.y - e.target.offsetTop) - yPos;
+      //let rectWidth =  (e.x - e.target.offsetLeft) -xPos;
+      //let rectHeight = (e.y - e.target.offsetTop) - yPos;
+			let mousePos = getMousePos(e);
+			let rectWidth =  mousePos.x - xPos;
+			let rectHeight = mousePos.y - yPos;
       redraw();
 			currentRect = new Desk(xPos,yPos,rectWidth,rectHeight,ctx);
 			currentRect.draw();
@@ -89,9 +103,15 @@
   }
 
   const handleClick = (e) => {
+		let canvasDims = e.target.getBoundingClientRect();
+		console.log('click',Math.floor(e.y - e.target.offsetTop), Math.floor(e.y - canvasDims.top));
 		if(image) {
-	    xPos = e.x - e.target.offsetLeft;
-	    yPos = e.y - e.target.offsetTop;
+			console.log('click',e.y - e.target.offsetTop);
+	    //xPos = e.x - e.target.offsetLeft;
+	    //yPos = e.y - e.target.offsetTop;
+			let mousePos = getMousePos(e);
+			xPos = mousePos.x;
+			yPos = mousePos.y;
 			let clickedRect = insideRect(xPos,yPos);
 			if(clickedRect) {
 	      console.log('Inside a rect');
@@ -105,8 +125,14 @@
   }
 
   const handleUnClick = (e) => {
-    let rectWidth =  (e.x - e.target.offsetLeft) -xPos;
-    let rectHeight = (e.y - e.target.offsetTop) - yPos;
+    //let rectWidth =  (e.x - e.target.offsetLeft) -xPos;
+    //let rectHeight = (e.y - e.target.offsetTop) - yPos;
+		let mousePos = getMousePos(e);
+		console.log('');
+		let rectWidth =  mousePos.x - xPos;
+		let rectHeight = mousePos.y - yPos;
+		//let rectWidth =  (e.x - e.offsetX) -xPos;
+		//let rectHeight = (e.y - e.offsetY) - yPos;
     draw = false;
     //Save the rect
 		if(drawing) {
