@@ -11,6 +11,7 @@ export class Rect {
     this.y=y;
     this.w=w;
     this.h=h;
+    this.name="";
   }
 
   contains(x,y) {
@@ -23,6 +24,15 @@ export class Rect {
     this.ctx.beginPath();
     this.ctx.rect(this.x, this.y,this.w,this.h);
     this.ctx.stroke();
+  }
+
+  //GETTERS
+  getName() {
+    return this.name;
+  }
+
+  setName(name) {
+    this.name=name;
   }
 
 }

@@ -1,6 +1,7 @@
 <script>
 	import { onMount } from 'svelte';
 	import { Rect } from '../geometry/Rect';
+  import DeskInput from '../dialogs/DeskInput.svelte';
 
   let ctx;
 
@@ -12,6 +13,7 @@
 	let canvas = null;
   let m = { x: 0, y: 0, pos:'' };
   let draw = false;
+  let launchDeskDialog = false;
 
   let xPos = 0;
   let yPos = 0;
@@ -31,7 +33,6 @@
       ctx.drawImage(img, 0, 0, width,height);
     };
   };
-
 
 	onMount(() => {
 		ctx = canvas.getContext('2d');
@@ -77,10 +78,17 @@
   }
 
   const handleClick = (e) => {
-    draw = true;
     xPos = e.x - e.target.offsetLeft;
     yPos = e.y - e.target.offsetTop;
-		console.log('Rect search', insideRect(xPos,yPos));
+		let clickedRect = insideRect(xPos,yPos);
+		if(clickedRect) {
+      console.log('Inside a rect');
+			currentRect = clickedRect;
+      launchDeskDialog = true;
+      draw = false;
+    } else {
+      draw = true;
+    };
   }
 
   const handleUnClick = (e) => {
@@ -99,6 +107,11 @@
     // );
   }
 
+  const closeDialog = () => {
+    launchDeskDialog = false;
+		console.log('Desks',rects);
+  }
+
 
 
 </script>
@@ -108,17 +121,16 @@
 		cursor:crosshair;
 	}
 
-	.canvas-nocursor {
+	/* .canvas-nocursor {
 		cursor:none;
-	}
+	} */
 
-	.tool-panel {
-		text-align: center;
-		margin:auto;
-	}
 </style>
 
 <div>
+  {#if launchDeskDialog}
+    <DeskInput on:cancel={closeDialog} desk={currentRect} name={currentRect.getName()} />
+  {/if}
 	<canvas
 		class="canvas-drawing"
 	  bind:this={canvas}
