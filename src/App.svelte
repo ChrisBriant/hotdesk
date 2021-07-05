@@ -1,6 +1,23 @@
 <script>
   import Plan from './screens/Plan.svelte';
-	export let name;
+  import Nav from './screens/Nav.svelte';
+  import Forgot from './screens/Forgot.svelte';
+  import Login from './screens/Login.svelte';
+  import Home from './screens/Home.svelte';
+  import Register from './screens/Register.svelte';
+  import authStoreActions from "./stores/authstore";
+
+
+  let loggedIn = authStoreActions.isAuthenticated();
+  let route = 'home';
+
+  $: console.log('Logged In',loggedIn);
+
+  function logout() {
+    console.log('logging out');
+    authStoreActions.logOut();
+    loggedIn = false;
+  }
 </script>
 
 <style>
@@ -27,5 +44,29 @@
 
 
 <main>
-	<Plan />
+  <header class="{ route === 'home' ? 'hero' : '' }">
+    <Nav
+      authenticated={loggedIn}
+      logout={logout}
+      active={route}
+      on:nav={(r) => { route = r.detail}}
+    />
+    {#if route == 'home'}
+      <p class="hero-text">Header Goes Here</p>
+    {/if}
+  </header>
+
+  {#if route === 'home'}
+    <Home />
+  {:else if route === 'login'}
+    <Login login={authStoreActions.login} on:loggedIn={() => {loggedIn = true; route = 'home'}} />
+  {:else if route === 'register'}
+    <Register
+      on:registered={() => {route = "login";}}
+      />
+  {:else if route === 'forgot'}
+    <Forgot
+      on:forgotten={() => {route = "login";}}
+      />
+  {/if}
 </main>

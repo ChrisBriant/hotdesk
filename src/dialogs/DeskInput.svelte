@@ -4,7 +4,7 @@
   import { deskStoreActions } from '../stores/deskstore';
   import Modal from '../components/Modal.svelte';
   import Button from '../components/Button.svelte';
-  import TextArea from '../components/TextArea.svelte';
+  import TextInput from '../components/TextInput.svelte';
 
   const dispatch = createEventDispatcher();
 
