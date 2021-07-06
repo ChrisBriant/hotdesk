@@ -5,6 +5,7 @@
   import Login from './screens/Login.svelte';
   import Home from './screens/Home.svelte';
   import Register from './screens/Register.svelte';
+  import RegisterOrg from './screens/RegisterOrg.svelte';
   import authStoreActions from "./stores/authstore";
 
 
@@ -12,6 +13,7 @@
   let route = 'home';
 
   $: console.log('Logged In',loggedIn);
+  $: console.log('ROUTE',route);
 
   function logout() {
     console.log('logging out');
@@ -57,7 +59,9 @@
   </header>
 
   {#if route === 'home'}
-    <Home />
+    <Home
+      on:nav={() => {route = 'regorg';}}
+    />
   {:else if route === 'login'}
     <Login login={authStoreActions.login} on:loggedIn={() => {loggedIn = true; route = 'home'}} />
   {:else if route === 'register'}
@@ -68,5 +72,8 @@
     <Forgot
       on:forgotten={() => {route = "login";}}
       />
+  {:else if route === 'regorg'}
+    <RegisterOrg
+    />
   {/if}
 </main>

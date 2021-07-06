@@ -6,7 +6,7 @@ import {conn, multipartConn} from '../helpers/connections.js';
 
 //Whenever this runs it will retrieve the token
 const authStore = writable({
-    token: localStorage.getItem("quiz_token")
+    token: localStorage.getItem("hotdesk_token")
 });
 
 function isTokenExpired(token) {
@@ -64,8 +64,8 @@ const authStoreActions = {
     },
     isAuthenticated: () => {
         let authenticated = false;
-
         const unsubscribe = authStore.subscribe(item => {
+            console.log('Here is the item', item);
             if (item) {
                 if(!isTokenExpired(item.token)) {
                     authenticated = true;
