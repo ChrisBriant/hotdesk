@@ -60,7 +60,7 @@
 
   {#if route === 'home'}
     <Home
-      on:nav={() => {route = 'regorg';}}
+      on:nav={(r) => {route = r.detail;}}
     />
   {:else if route === 'login'}
     <Login login={authStoreActions.login} on:loggedIn={() => {loggedIn = true; route = 'home'}} />
@@ -74,6 +74,13 @@
       />
   {:else if route === 'regorg'}
     <RegisterOrg
+      regType="registering"
+      on:nav={(r) => {route = r.detail;}}
+    />
+  {:else if route === 'joinorg'}
+    <RegisterOrg
+      regType="joining"
+      on:nav={(r) => {route = r.detail;}}
     />
   {/if}
 </main>

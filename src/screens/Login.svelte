@@ -3,6 +3,7 @@
     import TextInput from "../components/TextInput.svelte";
     import Button from "../components/Button.svelte";
     import authStoreActions from "../stores/authstore";
+    import orgStoreActions from "../stores/orgstore";
     import { isEmpty, isValidEmail } from "../helpers/validation.js";
     import { createEventDispatcher } from "svelte";
 
@@ -25,7 +26,8 @@
     const submitForm = async () => {
         promise  = await authStoreActions.login({email,password});
         console.log(promise);
-        if(promise) {
+        if(promise.success) {
+            orgStoreActions.addOrganisations(promise.org_data);
             dispatch('loggedIn');
         }  else {
              error = "Error logging in";

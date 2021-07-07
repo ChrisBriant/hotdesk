@@ -15,6 +15,7 @@ body {
 a {
 	color: rgb(0,100,200);
 	text-decoration: none;
+	cursor: pointer;
 }
 
 a:hover {
@@ -60,4 +61,10 @@ button:not(:disabled):active {
 
 button:focus {
 	border-color: #666;
+}
+
+
+/********************************My Stylyes********************/
+.left-align-txt {
+	text-align: left;
 }

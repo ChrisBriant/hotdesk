@@ -31,7 +31,7 @@ function getTokenExpiry() {
 const authStoreActions = {
     subscribe: authStore.subscribe,
     login: async (credentials) => {
-        let success = false;
+        let response = {success:false};
         console.log(credentials);
         await conn.post('/api/account/authenticate/',
             {
@@ -47,14 +47,15 @@ const authStoreActions = {
                 localStorage.setItem("hotdesk_token", res.data.access);
                 // conn.defaults.headers.common['Authorization'] = `Bearer ${res.data.access}`;
                 // multipartConn.defaults.headers.common['Authorization'] = `Bearer ${res.data.access}`;
-                success = true;
+                response = res.data;
+                response.success = true;
             }
         })
         .catch(err => {
             console.log('I am error',err);
-            success = false;
+            response = {success:false};
         });
-        return success;
+        return response;
     },
     logOut: () => {
         authStore.set({

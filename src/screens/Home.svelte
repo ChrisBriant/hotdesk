@@ -1,13 +1,16 @@
 <script>
   import authStoreActions from '../stores/authstore';
   import Button from '../components/Button.svelte';
-  import { createEventDispatcher } from 'svelte';
+  import { createEventDispatcher, onMount } from 'svelte';
+  import orgStoreActions from "../stores/orgstore";
 
   const dispatch = createEventDispatcher();
+  let href=null;
 
+  onMount(() => {
+    orgStoreActions.loadOrganisations();
+  });
 
-
-  $:console.log('Authenticated',authStoreActions.isAuthenticated());
 </script>
 
 <style>
@@ -31,7 +34,10 @@
         </Button>
       </div>
       <div class="col">
-        <Button>
+        <Button
+          id="joinorg-btn"
+          on:click={() => dispatch('nav','joinorg')}
+        >
           Join Organisation
         </Button>
       </div>
@@ -46,6 +52,25 @@
         allow you to make desk bookings.</p>
       </div>
     </div>
+    {#if $orgStoreActions.organisations.length > 0}
+      <h2>My Organisations</h2>
+      {#each $orgStoreActions.organisations as org,i (org.id)}
+        <div class="row">
+          <div class="col left-align-txt">
+            <a class="link" {href} on:click|preventDefault={(e) => console.log('nav',org.id)} >
+              {org.organisation.name}
+            </a>
+          </div>
+          <div class="col left-align-txt">{org.organisation.org_id}</div>
+          {#if org.is_owner}
+              <div class="col left-align-txt">Owner</div>
+          {:else}
+              <div class="col left-align-txt">Employee</div>
+          {/if}
+          <div class="col left-align-txt">{org.status}</div>
+        </div>
+      {/each}
+    {/if}
   {:else}
     <p>You are not logged on.</p>
   {/if}

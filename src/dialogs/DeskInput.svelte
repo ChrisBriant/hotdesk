@@ -51,7 +51,7 @@
     <div slot="content">
       <div class="row">
         <div class="col">
-          <TextArea
+          <TextInput
             id="deskName"
             label="Desk Name"
             value={name}
