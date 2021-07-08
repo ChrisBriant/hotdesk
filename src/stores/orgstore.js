@@ -88,6 +88,24 @@ const orgStoreActions = {
         console.log('I am error',err.response);
     });
     return response;
+  },
+  loadOrganisation: async (orgId) => {
+    let success = false;
+    await authConn.post('/api/desks/getorganisation/',{'orgId':orgId},getConfig())
+    .then(res => {
+        console.log(res);
+        console.log(res.data);
+        orgStore.update(st => {
+          st.currentOrg = res.data;
+          return st;
+        });
+        success = true;
+    })
+    .catch(err => {
+        console.log('I am error',err.response);
+        success = false;
+    });
+    return success;
   }
 };
 

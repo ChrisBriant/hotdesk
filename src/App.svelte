@@ -4,6 +4,7 @@
   import Forgot from './screens/Forgot.svelte';
   import Login from './screens/Login.svelte';
   import Home from './screens/Home.svelte';
+  import Organisation from './screens/Organisation.svelte';
   import Register from './screens/Register.svelte';
   import RegisterOrg from './screens/RegisterOrg.svelte';
   import authStoreActions from "./stores/authstore";
@@ -60,7 +61,7 @@
 
   {#if route === 'home'}
     <Home
-      on:nav={(r) => {route = r.detail;}}
+      on:nav={(r) => {console.log(r.detail);route = r.detail;}}
     />
   {:else if route === 'login'}
     <Login login={authStoreActions.login} on:loggedIn={() => {loggedIn = true; route = 'home'}} />
@@ -82,5 +83,7 @@
       regType="joining"
       on:nav={(r) => {route = r.detail;}}
     />
+  {:else if route === 'org'}
+    <Organisation/>
   {/if}
 </main>

@@ -5,11 +5,22 @@
   import orgStoreActions from "../stores/orgstore";
 
   const dispatch = createEventDispatcher();
+
   let href=null;
+  let promise;
 
   onMount(() => {
     orgStoreActions.loadOrganisations();
   });
+
+  const goToOrg = async (orgId) => {
+
+    promise = await orgStoreActions.loadOrganisation(orgId);
+    if(promise) {
+      console.log('Go to the org');
+      dispatch('nav','org');
+    }
+  }
 
 </script>
 
@@ -57,7 +68,7 @@
       {#each $orgStoreActions.organisations as org,i (org.id)}
         <div class="row">
           <div class="col left-align-txt">
-            <a class="link" {href} on:click|preventDefault={(e) => console.log('nav',org.id)} >
+            <a class="link" {href} on:click|preventDefault={(e) => goToOrg(org.id)} >
               {org.organisation.name}
             </a>
           </div>
