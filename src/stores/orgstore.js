@@ -6,7 +6,8 @@ import {authConn} from '../helpers/connections.js';
 
 //Whenever this runs it will retrieve the token
 const orgStore = writable({
-    organisations:[]
+    organisations:[],
+    currentOrg:{}
 });
 
 const getConfig = () => {
@@ -16,6 +17,7 @@ const getConfig = () => {
       'Authorization': `Bearer ${localStorage.getItem("hotdesk_token")}`
     }
   }
+  return config;
 }
 
 
@@ -91,10 +93,9 @@ const orgStoreActions = {
   },
   loadOrganisation: async (orgId) => {
     let success = false;
+    console.log('CONFIG',getConfig());
     await authConn.post('/api/desks/getorganisation/',{'orgId':orgId},getConfig())
     .then(res => {
-        console.log(res);
-        console.log(res.data);
         orgStore.update(st => {
           st.currentOrg = res.data;
           return st;
@@ -102,7 +103,40 @@ const orgStoreActions = {
         success = true;
     })
     .catch(err => {
-        console.log('I am error',err.response);
+        success = false;
+    });
+    return success;
+  },
+  acceptEmployee: async (data) => {
+    let success = false;
+    await authConn.post('/api/desks/accept/',
+                      data,
+                      getConfig())
+    .then(res => {
+        orgStore.update(st => {
+          st.currentOrg = res.data;
+          return st;
+        });
+        success = true;
+    })
+    .catch(err => {
+        success = false;
+    });
+    return success;
+  },
+  rejectEmployee: async (data) => {
+    let success = false;
+    await authConn.post('/api/desks/reject/',
+                      data,
+                      getConfig())
+    .then(res => {
+        orgStore.update(st => {
+          st.currentOrg = res.data;
+          return st;
+        });
+        success = true;
+    })
+    .catch(err => {
         success = false;
     });
     return success;
