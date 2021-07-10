@@ -3,6 +3,8 @@
   import { createEventDispatcher, onMount } from 'svelte';
   import orgStoreActions from "../stores/orgstore";
   import BinaryChoice from "../dialogs/BinaryChoice.svelte";
+  //Sub screens
+  import Buildings from './Buildings.svelte';
 
   //export let orgId;
 
@@ -156,8 +158,7 @@
         </div>
       {:else if openTab === 'man-buildings' }
         <div id="man-buildings" class="tabcontent">
-          <h3>Manage Buildings</h3>
-          <p>Paris is the capital of France.</p>
+          <Buildings />
         </div>
       {:else if openTab === 'make-booking' }
         <div id="make-booking" class="tabcontent">

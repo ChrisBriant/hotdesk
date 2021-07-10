@@ -140,6 +140,23 @@ const orgStoreActions = {
         success = false;
     });
     return success;
+  },
+  addBuilding: async (data) => {
+    let success = false;
+    await authConn.post('/api/desks/addbuilding/',
+                      data,
+                      getConfig())
+    .then(res => {
+        orgStore.update(st => {
+          st.currentOrg = res.data;
+          return st;
+        });
+        success = true;
+    })
+    .catch(err => {
+        success = false;
+    });
+    return success;
   }
 };
 
