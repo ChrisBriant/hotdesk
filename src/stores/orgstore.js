@@ -157,6 +157,23 @@ const orgStoreActions = {
         success = false;
     });
     return success;
+  },
+  addFloor: async (data) => {
+    let success = false;
+    await authConn.post('/api/desks/addfloor/',
+                      data,
+                      getConfig())
+    .then(res => {
+        orgStore.update(st => {
+          st.currentOrg = res.data;
+          return st;
+        });
+        success = true;
+    })
+    .catch(err => {
+        success = false;
+    });
+    return success;
   }
 };
 

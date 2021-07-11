@@ -68,7 +68,7 @@
       {#each $orgStoreActions.organisations as org,i (org.id)}
         <div class="row">
           <div class="col left-align-txt">
-            <a class="link" {href} on:click|preventDefault={(e) => goToOrg(org.id)} >
+            <a class="link" {href} on:click|preventDefault={(e) => goToOrg(org.organisation.id)} >
               {org.organisation.name}
             </a>
           </div>

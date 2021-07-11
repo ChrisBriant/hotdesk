@@ -66,6 +66,10 @@
       getPendingApproval();
     }
   }
+
+  const navAddFloorPlan = (detail) => {
+    //dispatch
+  }
 </script>
 
 
@@ -158,7 +162,9 @@
         </div>
       {:else if openTab === 'man-buildings' }
         <div id="man-buildings" class="tabcontent">
-          <Buildings />
+          <Buildings
+            on:nav
+          />
         </div>
       {:else if openTab === 'make-booking' }
         <div id="make-booking" class="tabcontent">

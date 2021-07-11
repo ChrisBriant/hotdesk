@@ -5,6 +5,8 @@
   import {isFileTypeValid} from '../validation/validation';
   import Canvas from '../components/Canvas.svelte';
 
+  export let floorId;
+
   let image = null;
 
   const uploadDrawing = async () => {

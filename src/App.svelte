@@ -12,6 +12,7 @@
 
   let loggedIn = authStoreActions.isAuthenticated();
   let route = 'home';
+  let floorId;
 
   $: console.log('Logged In',loggedIn);
   $: console.log('ROUTE',route);
@@ -84,6 +85,10 @@
       on:nav={(r) => {route = r.detail;}}
     />
   {:else if route === 'org'}
-    <Organisation/>
+    <Organisation
+      on:nav={(r)=> {route = r.detail.dest;floorId=r.detail.floorId;}}
+    />
+  {:else if route === 'addPlan'}
+    <Plan floorId />
   {/if}
 </main>

@@ -1,8 +1,12 @@
 <script>
+  import { createEventDispatcher } from 'svelte';
   import Button from '../components/Button.svelte';
   import TextInput from '../components/TextInput.svelte';
+  import SpinInput from '../components/SpinInput.svelte';
   import orgStoreActions from "../stores/orgstore";
+
   //import expand from '../assets/expand.svg';
+  const dispatch = createEventDispatcher();
 
   let promise;
   let displayAddBuilding=false;
@@ -10,6 +14,7 @@
   let buildings = $orgStoreActions.currentOrg.buildings;
   let displayAddFloor=false;
   let floorName = '';
+  let floorNumber = 1;
   let buildingId;
   let selectedBuildingId;
   let selectedFloorName= '';
@@ -51,8 +56,17 @@
     displayAddFloor=true;
   }
 
-  const submitFloor = (buildiingId) => {
-    console.log('submitting floor',buildingId,floorName);
+  const submitFloor = async (buildiingId) => {
+    console.log('submitting floor',buildingId,floorName, floorNumber);
+    promise = await orgStoreActions.addFloor({
+      buildingId,
+      name: floorName,
+      level: floorNumber
+    });
+    if(promise) {
+      setBuildings();
+      displayAddFloor=false;
+    }
   }
 
 </script>
@@ -115,6 +129,11 @@
                     value={floorName}
                     on:input={event => (floorName = event.target.value)}
                   />
+                  <SpinInput
+                    id="building-floor-number2"
+                    label="Enter floor number"
+                    on:change={(e) => {floorNumber = e.target.value} }
+                  />
               </form>
               <Button id="submit-floor-btn" type="button" on:click={() => {submitFloor(building.id)}} disabled={!floorFormIsValid}>Add</Button>
               <Button id="cancel-floor-btn" type="button" on:click={()=>{displayAddFloor=false}} >Cancel</Button>
@@ -135,6 +154,7 @@
       </div>
       <div class="col">
         <h3>{selectedFloorName}</h3>
+        <a href={null} class="link" on:click|preventDefault={(e) => dispatch('nav',{dest:'addPlan',floorId:selectedFloorId})}>Create Floor Plan</a>
       </div>
     </div>
   {/if}
