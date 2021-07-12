@@ -1,6 +1,6 @@
 <script>
   import { createEventDispatcher, onMount } from 'svelte';
-  import { stringGen } from '../helpers/helpers';
+  //import { stringGen } from '../helpers/helpers';
   import { deskStoreActions } from '../stores/deskstore';
   import Modal from '../components/Modal.svelte';
   import Button from '../components/Button.svelte';
@@ -13,14 +13,15 @@
   let id;
 
   onMount(() => {
-    id = stringGen(16);
-    desk.setId(id);
-    console.log('Random ID', stringGen(16));
+    //id = stringGen(16);
+    //desk.setId(id);
+    //console.log('Random ID', stringGen(16));
   });
 
   const saveDesk = () => {
     console.log('Desk is callled', name);
     desk.setName(name);
+    deskStoreActions.replaceDesk(desk);
     dispatch('cancel');
   }
 

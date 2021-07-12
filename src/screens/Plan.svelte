@@ -4,6 +4,7 @@
   import Button from '../components/Button.svelte';
   import {isFileTypeValid} from '../validation/validation';
   import Canvas from '../components/Canvas.svelte';
+  import FloorPanel from '../components/FloorPanel.svelte';
 
   export let floorId;
 
@@ -52,6 +53,7 @@
     on:click={uploadDrawing}
     disabled={uploadDisabled}
   >Upload</Button>
+  <FloorPanel />
   <Canvas
     {imageChanged}
     {floorId}

@@ -3,7 +3,7 @@
 	import { Desk } from '../classes/Desk';
   import DeskInput from '../dialogs/DeskInput.svelte';
 	import { deskStoreActions } from '../stores/deskstore';
-	import { getMousePos } from '../helpers/helpers';
+	import { getMousePos, stringGen } from '../helpers/helpers';
 
   let ctx;
 
@@ -31,7 +31,7 @@
   //Saved rects
 	let currentRect = null;
 
-	$:console.log('desk store', $deskStoreActions.desks)
+	//$:console.log('desk store', $deskStoreActions.desks)
 
 	$:console.log('image changed canvas', image);
 
@@ -161,6 +161,8 @@
     //Save the rect
 		if(drawing) {
 			//Only save if the user has dragged
+			const deskId = stringGen(16);
+			currentRect.setId(deskId);
 			deskStoreActions.addDesk(currentRect);
 			drawing = false;
 			launchDeskDialog = true;

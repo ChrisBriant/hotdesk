@@ -4,7 +4,8 @@ import { writable } from 'svelte/store';
 
 const defaultStore = {
   desks:[],
-  plan:{}
+  plan:{},
+  //deskChanged: false
 }
 
 const getConfigMulti = () => {
@@ -23,12 +24,18 @@ const deskStore = writable({
 
 const deskStoreActions = {
     subscribe: deskStore.subscribe,
+    // resetDeskChange: () => {
+    //   deskStore.update(ds => {
+    //     ds.deskChanged = false;
+    //     return ds;
+    //   });
+    // },
     addDesk: (desk) => {
       deskStore.update(ds => {
         let newDesks = [...ds.desks];
         newDesks.push(desk);
         ds.desks = newDesks;
-        console.log('New Desks',newDesks);
+        //ds.deskChanged = true;
         return ds;
       });
     },
@@ -41,6 +48,17 @@ const deskStoreActions = {
         newDesks = newDesks.filter(d => d.getId() !== deskId);
         ds.desks = newDesks;
         console.log('New Desks',newDesks);
+        return ds;
+      });
+    },
+    replaceDesk: (desk) => {
+      deskStore.update(ds => {
+        let newDesks = [...ds.desks];
+        const dIdx = newDesks.findIndex(d => d.id === desk.id);
+        console.log(dIdx);
+        newDesks[dIdx] = desk;
+        ds.desks = newDesks;
+        //ds.deskChanged = true;
         return ds;
       });
     },

@@ -27,3 +27,16 @@ export function isFileTypeValid(file) {
   }
 
 }
+
+export function validDesks(desks) {
+  let valid = desks.length > 0;
+  if(valid) {
+    for(let i=0;i<desks.length;i++) {
+      console.log('Is there a name',desks[i].name);
+      if(desks[i].name === '') {
+        valid = false;
+      }
+    }
+  }
+  return valid;
+}
