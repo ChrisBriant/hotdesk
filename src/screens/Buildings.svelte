@@ -25,6 +25,8 @@
   $: floorFormIsValid = floorName.length > 3;
   $: console.log('displayAddBuilding', displayAddBuilding);
 
+  $: console.log('Floor ID', selectedFloorId);
+
   const setBuildings = () => {
     buildings = $orgStoreActions.currentOrg.buildings;
   }

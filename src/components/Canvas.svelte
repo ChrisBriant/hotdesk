@@ -1,5 +1,5 @@
 <script>
-	import { onMount } from 'svelte';
+	import { onMount, createEventDispatcher } from 'svelte';
 	import { Desk } from '../classes/Desk';
   import DeskInput from '../dialogs/DeskInput.svelte';
 	import { deskStoreActions } from '../stores/deskstore';
@@ -7,10 +7,15 @@
 
   let ctx;
 
+	const dispatch = createEventDispatcher();
+
   export let width = 800;
   export let height = 600;
 	export let drawMode = false;
   export let image = null;
+	export let imageChanged = false;
+	export let floorId;
+	//export let setLoadedImage;
 
 	let canvas = null;
   let m = { x: 0, y: 0, pos:'' };
@@ -28,23 +33,70 @@
 
 	$:console.log('desk store', $deskStoreActions.desks)
 
-  $:if(image){
-		if(!imgLoaded) {
-	    imgObj = new Image();
-	    let reader = new FileReader();
-	    reader.readAsDataURL(image);
-	    reader.onload = (e) => {
-	      imgObj.src =  e.target.result;
-				imgLoaded = true;
-				//For Firefox it has to be called below as well - don't know why
-				ctx.drawImage(imgObj, 0, 0, width,height);
-	    };
-		} else {
+	$:console.log('image changed canvas', image);
+
+
+  // $:if(image){
+	// 	if(!imgLoaded) {
+	//     imgObj = new Image();
+	//     let reader = new FileReader();
+	//     reader.readAsDataURL(image);
+	//     reader.onload = (e) => {
+	//       imgObj.src =  e.target.result;
+	// 			imgLoaded = true;
+	// 			let canvasData = ctx.toDataURL("image/png");
+	// 			console.log('LOADED IMAGE', canvasData);
+	// 			//For Firefox it has to be called below as well - don't know why
+	// 			ctx.drawImage(imgObj, 0, 0, width,height);
+	//     };
+	// 	} else {
+	// 		ctx.drawImage(imgObj, 0, 0, width,height);
+	// 	}
+  // };
+
+	$: if(imageChanged) {
+		console.log("PLEASE RELOAD THE IMAGE");
+    imgObj = new Image();
+    let reader = new FileReader();
+    reader.readAsDataURL(image);
+    reader.onload = (e) => {
+      imgObj.src =  e.target.result;
+			//let canvasData = ctx.toDataURL("image/png");
+			//console.log('LOADED IMAGE', canvasData);
+			//For Firefox it has to be called below as well - don't know why
+			//ctx.drawImage(imgObj, 0, 0, width,height);
+    };
+		reader.onloadend = async (e) => {
 			ctx.drawImage(imgObj, 0, 0, width,height);
+			//Construct the file to send to backend
+			await fetch(canvas.toDataURL())
+				.then(res => res.blob())
+				.then(blob => {
+					const fd = new FormData();
+					console.log('Here is the blob', blob);
+					const ext = blob.type.split('/')[1];
+					const file = new File([blob], `filename.${ext}`);
+					fd.append('floorId',floorId);
+					fd.append('picture', file);
+					deskStoreActions.saveImage(fd);
+					console.log('Here is the form data', fd.values());
+					for (var value of fd.values()) {
+					   console.log('VAL',value);
+					}
+			});
+			// const fd = new FormData();
+			// const blob = canvas.toDataURL();
+			// console.log('Here is the blob', blob);
+			// const ext = blob.type.split('/')[1];
+			// const file = new File([blob], `filename.${ext}`);
+			// fd.append('picture', file);
+			// console.log('Here is the form data', fd);
 		}
-  };
+		dispatch('loaded');
+	}
 
 	onMount(() => {
+		console.log('MOUNTING');
 		ctx = canvas.getContext('2d');
 		ctx.imageSmoothingEnabled = true;
     ctx.fillStyle = '#edeae6';

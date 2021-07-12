@@ -16,6 +16,7 @@
 
   $: console.log('Logged In',loggedIn);
   $: console.log('ROUTE',route);
+  $: console.log('Floor ID App',floorId);
 
   function logout() {
     console.log('logging out');
@@ -89,6 +90,6 @@
       on:nav={(r)=> {route = r.detail.dest;floorId=r.detail.floorId;}}
     />
   {:else if route === 'addPlan'}
-    <Plan floorId />
+    <Plan {floorId} />
   {/if}
 </main>

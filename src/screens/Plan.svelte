@@ -8,6 +8,8 @@
   export let floorId;
 
   let image = null;
+  let imageChanged = false;
+  let uploadDisabled = false;
 
   const uploadDrawing = async () => {
     let fileUpload = document.getElementById('plan-upload');
@@ -19,7 +21,18 @@
 
   }
 
-  $:console.log('image changed', image);
+  //Callback function to reset load flag
+  const setLoadedImage = () => {
+    imageChanged = false;
+    uploadDisabled = true;
+  }
+
+  $:if(image) {
+    console.log('There is an image');
+    imageChanged = true;
+  };
+
+  $: console.log('Floor ID', floorId);
 </script>
 
 <style>
@@ -31,7 +44,18 @@
   <p>Upload a File</p>
   <input type="file"
        id="plan-upload" name="plan-upload"
-       accept="image/png, image/jpeg">
-  <Button id="upload-plan" on:click={uploadDrawing}>Upload</Button>
-  <Canvas bind:image/>
+       accept="image/png, image/jpeg"
+       disabled={uploadDisabled}
+  >
+  <Button
+    id="upload-plan"
+    on:click={uploadDrawing}
+    disabled={uploadDisabled}
+  >Upload</Button>
+  <Canvas
+    {imageChanged}
+    {floorId}
+    on:loaded={(e)=>{imageChanged=false;uploadDisabled = true;}}
+    bind:image
+  />
 </div>
