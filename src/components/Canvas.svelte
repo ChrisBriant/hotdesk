@@ -15,7 +15,8 @@
   export let image = null;
 	export let imageChanged = false;
 	export let floorId;
-	//export let setLoadedImage;
+	//For signaling a redraw
+	export let redrawCommand = false;
 
 	let canvas = null;
   let m = { x: 0, y: 0, pos:'' };
@@ -25,13 +26,21 @@
 	let imgObj;
 	let imgLoaded = false;
 
+
+
   let xPos = 0;
   let yPos = 0;
 
   //Saved rects
 	let currentRect = null;
 
+	$: if(redrawCommand) {
+		redraw();
+	}
+
+
 	//$:console.log('desk store', $deskStoreActions.desks)
+
 
 	$:console.log('image changed canvas', image);
 
@@ -97,7 +106,10 @@
 
 	onMount(() => {
 		console.log('MOUNTING');
+		//Get the context and store it
 		ctx = canvas.getContext('2d');
+		deskStoreActions.setContext(ctx);
+		//Initial setup
 		ctx.imageSmoothingEnabled = true;
     ctx.fillStyle = '#edeae6';
     ctx.fillRect(0, 0, width, height);
@@ -115,6 +127,7 @@
 	}
 
   const redraw = () => {
+		dispatch('resetRedraw');
     ctx.fillRect(0, 0, width, height);
 		ctx.drawImage(imgObj, 0, 0, width,height)
     //Draw the saved rects

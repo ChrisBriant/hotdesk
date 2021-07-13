@@ -1,10 +1,12 @@
 //Stores desk data components
 import {authConn,multipartConn} from '../helpers/connections.js';
 import { writable } from 'svelte/store';
+	import { Desk } from '../classes/Desk';
 
 const defaultStore = {
   desks:[],
   plan:{},
+  context: null
   //deskChanged: false
 }
 
@@ -12,6 +14,16 @@ const getConfigMulti = () => {
   let config = {
     headers: {
       'Content-Type': 'multipart/form-data',
+      'Authorization': `Bearer ${localStorage.getItem("hotdesk_token")}`
+    }
+  }
+  return config;
+}
+
+const getConfig = () => {
+  let config = {
+    headers: {
+      'Content-Type': 'application/json',
       'Authorization': `Bearer ${localStorage.getItem("hotdesk_token")}`
     }
   }
@@ -30,6 +42,12 @@ const deskStoreActions = {
     //     return ds;
     //   });
     // },
+    setContext: (ctx) => {
+      deskStore.update(ds => {
+        ds.context = ctx;
+        return ds;
+      });
+    },
     addDesk: (desk) => {
       deskStore.update(ds => {
         let newDesks = [...ds.desks];
@@ -74,6 +92,49 @@ const deskStoreActions = {
           });
           success = true
       });
+      return success;
+    },
+    saveDeskPlan: async () => {
+      //Prepare the data
+      let payload = {
+        desks:[]
+      };
+      const unsubscribe = deskStore.subscribe(st => {
+          payload.planId = st.plan.id;
+          for(let i=0;i<st.desks.length;i++) {
+            payload.desks.push(st.desks[i].toJson());
+          }
+      });
+      //console.log("PAYLOAD",JSON.stringify(payload));
+      unsubscribe();
+      //Send payload to backend
+      let success = false;
+      await authConn.post('/api/desks/adddeskplan/',payload,getConfig())
+      .then(res => {
+          deskStore.update(st => {
+            st.plan = res.data;
+            let newDesks = [];
+            //Construct new desk objects
+            let deskData = res.data.desks;
+            console.log('Desk Data', deskData);
+            for(let i=0;i < deskData.length;i++) {
+
+                let newDesk = new Desk(deskData[i].x,deskData[i].y,deskData[i].w,deskData[i].h,st.context);
+                newDesk.name = deskData[i].name;
+                newDesk.id= deskData[i].desk_id;
+                newDesk.saved=true;
+                console.log('I am a new desk', newDesk);
+                newDesks.push(newDesk);
+            }
+            st.desks = newDesks;
+            return st;
+          });
+          success = true;
+      })
+      .catch(err => {
+          success = false;
+      });
+      console.log('AM I SUCCESSFUL',success);
       return success;
     }
 };

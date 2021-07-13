@@ -1,12 +1,20 @@
 <script>
   import { onMount, createEventDispatcher } from 'svelte';
   import { deskStoreActions } from '../stores/deskstore';
-  import { validDesks } from '../helpers/validation';
+  import { validDesks, allSaved } from '../helpers/validation';
   import Button from '../components/Button.svelte';
   import DeskInput from '../dialogs/DeskInput.svelte';
+  import BinaryChoice from '../dialogs/BinaryChoice.svelte';
+  import GeneralMessage from '../dialogs/GeneralMessage.svelte';
+
+  const dispatch = createEventDispatcher();
 
   let selectedDesk = null;
   let launchDeskDialog = false;
+  let launchCreatedDialog = false;
+  let successMessage = '';
+  let success;
+  let showExitDialog = false;
 
   $:console.log('desk store', $deskStoreActions.desks);
   $:console.log('desks valid', validDesks($deskStoreActions.desks));
@@ -18,8 +26,30 @@
 
   $: desksAreValid = validDesks($deskStoreActions.desks);
 
-  const saveDesks = () => {
+  const saveDesks = async () => {
     console.log('save');
+
+    success = await deskStoreActions.saveDeskPlan();
+    if(success) {
+      launchCreatedDialog = true;
+      successMessage = 'Successfully added desks';
+    } else {
+      launchCreatedDialog = false;
+      successMessage = 'Something went wrong adding desks';
+    }
+  }
+
+  const performExit = () => {
+    console.log('EXITING');
+    dispatch('nav','org');
+  }
+
+  const exit = () => {
+    if(!allSaved($deskStoreActions.desks)) {
+      showExitDialog = true;
+    } else {
+      performExit();
+    }
   }
 </script>
 
@@ -27,8 +57,22 @@
 </style>
 
 <div>
+  {#if launchCreatedDialog}
+    <GeneralMessage
+        message={successMessage}
+        title =""
+        on:cancel={() => {launchCreatedDialog=false}}
+    />
+  {/if}
+  {#if showExitDialog}
+    <BinaryChoice
+      message="You have unsaved changes, do you still want to exit?"
+      on:no={() => {showExitDialog=false;}}
+      on:yes={() => {performExit()}}
+    />
+  {/if}
   {#if launchDeskDialog}
-    <DeskInput on:cancel={launchDeskDialog=false} desk={selectedDesk} name={selectedDesk.getName()} />
+    <DeskInput on:cancel={() => {launchDeskDialog=false;dispatch('redraw');}} desk={selectedDesk} name={selectedDesk.getName()} />
   {/if}
   <div class="row">
     <div class="col">
@@ -51,6 +95,11 @@
           on:click={() => saveDesks()}
           disabled={!desksAreValid}
         >Save Desks
+        </Button>
+        <Button
+          id="save-desks-btn"
+          on:click={() => exit()}
+        >Exit
         </Button>
     </div>
   </div>

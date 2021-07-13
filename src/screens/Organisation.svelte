@@ -21,9 +21,10 @@
   //let pendingMembers = [];
   //let promise;
 
-  $:console.log($orgStoreActions.currentOrg);
+  $:console.log('CURRENT ORG',$orgStoreActions.currentOrg);
 
   onMount( async () => {
+    console.log('MOUNTING ORGANISATION');
     //console.log('pending',getPendingApproval());
     //pendingMembers = getPendingApproval();
     //promise = orgStoreActions.loadOrganisation(orgId);

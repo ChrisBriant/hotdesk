@@ -13,6 +13,7 @@ export class Desk {
     this.h=h;
     this.name="";
     this.id="";
+    this.saved = false;
   }
 
   contains(x,y) {
@@ -46,6 +47,18 @@ export class Desk {
     if(this.id === "") {
       this.id = id;
     }
+  }
+
+  toJson() {
+    let obj = {
+      deskId: this.id,
+      name : this.name,
+      x: this.x,
+      y: this.y,
+      w: this.w,
+      h: this.h
+    }
+    return obj;
   }
 
 }

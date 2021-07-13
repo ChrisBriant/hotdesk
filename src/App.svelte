@@ -90,6 +90,9 @@
       on:nav={(r)=> {route = r.detail.dest;floorId=r.detail.floorId;}}
     />
   {:else if route === 'addPlan'}
-    <Plan {floorId} />
+    <Plan
+      {floorId}
+      on:nav={(r) => {route = r.detail;}}
+    />
   {/if}
 </main>

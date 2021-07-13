@@ -40,3 +40,12 @@ export function validDesks(desks) {
   }
   return valid;
 }
+
+
+export function allSaved(desks) {
+  let valid = true;
+  for(let i=0;i<desks.length;i++) {
+    valid = desks.saved;
+  }
+  return valid;
+}

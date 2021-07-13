@@ -12,6 +12,9 @@
   let imageChanged = false;
   let uploadDisabled = false;
 
+  //For redrawing the canvas
+  let redrawCommand = false;
+
   const uploadDrawing = async () => {
     let fileUpload = document.getElementById('plan-upload');
     console.log(fileUpload.files[0]);
@@ -53,11 +56,16 @@
     on:click={uploadDrawing}
     disabled={uploadDisabled}
   >Upload</Button>
-  <FloorPanel />
+  <FloorPanel
+    on:redraw={()=> {redrawCommand=true}}
+    on:nav
+  />
   <Canvas
     {imageChanged}
     {floorId}
+    {redrawCommand}
     on:loaded={(e)=>{imageChanged=false;uploadDisabled = true;}}
+    on:resetRedraw={()=> {redrawCommand=false}}
     bind:image
   />
 </div>
