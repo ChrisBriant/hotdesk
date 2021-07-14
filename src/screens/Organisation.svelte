@@ -5,6 +5,7 @@
   import BinaryChoice from "../dialogs/BinaryChoice.svelte";
   //Sub screens
   import Buildings from './Buildings.svelte';
+  import Booking from './Booking.svelte';
 
   //export let orgId;
 
@@ -170,8 +171,7 @@
         </div>
       {:else if openTab === 'make-booking' }
         <div id="make-booking" class="tabcontent">
-          <h3>Make Booking</h3>
-          <p>Tokyo is the capital of Japan.</p>
+          <Booking />
         </div>
       {:else}
         <div id="manage-bookings" class="tabcontent">

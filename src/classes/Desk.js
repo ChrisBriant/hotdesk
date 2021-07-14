@@ -5,8 +5,8 @@ export class Desk {
   // let w=0;
   // let h=0;
 
-  constructor(x,y,w,h,ctx) {
-    this.ctx = ctx;
+  constructor(x,y,w,h) {
+    //this.ctx = ctx;
     this.x=x;
     this.y=y;
     this.w=w;

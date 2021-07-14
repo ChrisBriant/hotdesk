@@ -158,7 +158,7 @@
 			let rectWidth =  mousePos.x - xPos;
 			let rectHeight = mousePos.y - yPos;
       redraw();
-			currentRect = new Desk(xPos,yPos,rectWidth,rectHeight,ctx);
+			currentRect = new Desk(xPos,yPos,rectWidth,rectHeight);
 			currentRect.draw(ctx);
 			drawing = true;
     }

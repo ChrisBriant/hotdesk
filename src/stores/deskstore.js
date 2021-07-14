@@ -39,7 +39,7 @@ const deskStore = writable({
 const generateDesks = (deskData,context) => {
   let newDesks = [];
   for(let i=0;i < deskData.length;i++) {
-      let newDesk = new Desk(deskData[i].x,deskData[i].y,deskData[i].w,deskData[i].h,context);
+      let newDesk = new Desk(deskData[i].x,deskData[i].y,deskData[i].w,deskData[i].h);
       newDesk.name = deskData[i].name;
       newDesk.id= deskData[i].desk_id;
       newDesk.saved=true;
@@ -134,7 +134,7 @@ const deskStoreActions = {
             console.log('Desk Data', deskData);
             for(let i=0;i < deskData.length;i++) {
 
-                let newDesk = new Desk(deskData[i].x,deskData[i].y,deskData[i].w,deskData[i].h,st.context);
+                let newDesk = new Desk(deskData[i].x,deskData[i].y,deskData[i].w,deskData[i].h);
                 newDesk.name = deskData[i].name;
                 newDesk.id= deskData[i].desk_id;
                 newDesk.saved=true;
