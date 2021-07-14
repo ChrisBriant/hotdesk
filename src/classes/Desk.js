@@ -28,6 +28,13 @@ export class Desk {
     ctx.stroke();
   }
 
+  //Draw to f - factor for scaling
+  drawScale(ctx,f) {
+    ctx.beginPath();
+    ctx.rect(this.x/f, this.y/f,this.w/f,this.h/f);
+    ctx.stroke();
+  }
+
   //GETTERS
   getName() {
     return this.name;

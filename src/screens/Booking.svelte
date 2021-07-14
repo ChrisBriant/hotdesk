@@ -35,6 +35,9 @@
 
   $: console.log('SELECTED FLOOR', selectedFloorPlan);
 
+  $: console.log('PLAN CHANGED', planChanged);
+
+
   // const goToFloor = () => {
   //   deskStoreActions.clearStore();
   //   if(selectedFloorPlan) {
@@ -70,6 +73,9 @@
     width: 200px;
     height: 150px;
   }
+
+  /* $: console.log('SELECTED FLOOR', selectedFloorPlan); */
+
 </style>
 
 <section>
@@ -126,7 +132,7 @@
           <BookingCanvas
             {planChanged}
             plan={selectedFloorPlan}
-            on:resetchange={() => {planChanged=false;}}
+            on:resetchange={() => {planChanged=false}}
           />
         {/if}
       </div>

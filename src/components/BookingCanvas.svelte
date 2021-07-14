@@ -25,13 +25,10 @@
 
 	$:if(planChanged) {
 		console.log('PLAN CHANGED');
-		dispatch('resetchange');
+		setupCanvas();
 	}
 
-	onMount( async () => {
-		console.log('MOUNTING');
-		//Get the context and store it
-		ctx = canvas.getContext('2d');
+	const setupCanvas = async () => {
 		deskStoreActions.clearStore();
 		deskStoreActions.setContext(ctx);
 		deskStoreActions.loadPlan(plan);
@@ -45,23 +42,29 @@
 				let reader = new FileReader();
 				reader.readAsDataURL(blob);
 				reader.onload = async (e) => {
-				  console.log('IMAGE LOADED', e);
-				  imgObj.src = e.target.result;
+					console.log('IMAGE LOADED', e);
+					imgObj.src = e.target.result;
 				}
 				reader.onloadend = async (e) => {
-				  ctx.imageSmoothingEnabled = true;
-				  ctx.fillStyle = '#edeae6';
-				  ctx.fillRect(0, 0, width, height);
-				  ctx.lineWidth = 4;
-				  ctx.drawImage(imgObj, 0, 0, width,height)
-				  for(let i=0;i<$deskStoreActions.desks.length;i++) {
-						$deskStoreActions.desks[i].draw(ctx);
-				  }
+					ctx.imageSmoothingEnabled = true;
+					ctx.fillStyle = '#edeae6';
+					ctx.fillRect(0, 0, width, height);
+					ctx.lineWidth = 4;
+					ctx.drawImage(imgObj, 0, 0, width,height)
+					for(let i=0;i<$deskStoreActions.desks.length;i++) {
+						$deskStoreActions.desks[i].drawScale(ctx,2);
+					}
 				}
 				//image = blob;
+				dispatch('resetchange');
 		});
+	}
 
-
+	onMount( async () => {
+		console.log('MOUNTING');
+		//Get the context and store it
+		ctx = canvas.getContext('2d');
+		setupCanvas();
 	});
 
 	//Find the first rectangle mouse click is in
