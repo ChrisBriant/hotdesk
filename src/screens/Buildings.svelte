@@ -1,9 +1,11 @@
 <script>
   import { createEventDispatcher } from 'svelte';
+  import {URLROOT} from '../helpers/settings';
   import Button from '../components/Button.svelte';
   import TextInput from '../components/TextInput.svelte';
   import SpinInput from '../components/SpinInput.svelte';
   import orgStoreActions from "../stores/orgstore";
+  import {deskStoreActions} from "../stores/deskstore";
 
   //import expand from '../assets/expand.svg';
   const dispatch = createEventDispatcher();
@@ -19,6 +21,7 @@
   let selectedBuildingId;
   let selectedFloorName= '';
   let selectedFloorId;
+  let selectedFloorPlan=null;
 
 
   $: buildFormIsValid = buildingName.length > 3;
@@ -71,6 +74,15 @@
     }
   }
 
+  const goToFloor = () => {
+    deskStoreActions.clearStore();
+    if(selectedFloorPlan) {
+      deskStoreActions.loadPlan(selectedFloorPlan);
+      deskStoreActions.setFloorPreLoaded(true);
+    }
+    dispatch('nav',{dest:'addPlan',floorId:selectedFloorId});
+  }
+
 </script>
 
 <style>
@@ -89,6 +101,13 @@
 
   .sm-link {
     font-size: 80%;
+  }
+
+  .floor-plan-img {
+    display:block;
+    margin:auto;
+    width: 200px;
+    height: 150px;
   }
 </style>
 
@@ -115,7 +134,9 @@
                             class="building indent"
                             on:click={()=> {selectedFloorId=floor.id;
                                             selectedBuildingId=building.id;
-                                            selectedFloorName=floor.name;}}
+                                            selectedFloorName=floor.name;
+                                            selectedFloorPlan=floor.plan;
+                                            }}
                     >
                       {floor.name}
                     </span>
@@ -156,7 +177,16 @@
       </div>
       <div class="col">
         <h3>{selectedFloorName}</h3>
-        <a href={null} class="link" on:click|preventDefault={(e) => dispatch('nav',{dest:'addPlan',floorId:selectedFloorId})}>Create Floor Plan</a>
+        {#if !selectedFloorPlan}
+          <a href={null} class="link" on:click|preventDefault={(e) => goToFloor()}>Create Floor Plan</a>
+        {:else}
+          <img
+            class="floor-plan-img"
+            alt={selectedFloorName}
+            src={`${URLROOT}${selectedFloorPlan.picture}`}
+          />
+          <a href={null} class="link" on:click|preventDefault={(e) => goToFloor()}>Edit Floor Plan</a>
+        {/if}
       </div>
     </div>
   {/if}

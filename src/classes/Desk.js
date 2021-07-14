@@ -22,10 +22,10 @@ export class Desk {
        this.y <= y && y <= this.y + this.h;
   }
 
-  draw() {
-    this.ctx.beginPath();
-    this.ctx.rect(this.x, this.y,this.w,this.h);
-    this.ctx.stroke();
+  draw(ctx) {
+    ctx.beginPath();
+    ctx.rect(this.x, this.y,this.w,this.h);
+    ctx.stroke();
   }
 
   //GETTERS

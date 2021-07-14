@@ -17,3 +17,14 @@ export function getMousePos(e) {
   let canvasDims = e.target.getBoundingClientRect();
   return {x:e.x - canvasDims.left,y:e.y - canvasDims.top};
 }
+
+
+export function isEmpty(obj) {
+  for(var prop in obj) {
+    if(obj.hasOwnProperty(prop)) {
+      return false;
+    }
+  }
+
+  return JSON.stringify(obj) === JSON.stringify({});
+}

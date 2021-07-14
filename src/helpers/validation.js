@@ -45,7 +45,7 @@ export function validDesks(desks) {
 export function allSaved(desks) {
   let valid = true;
   for(let i=0;i<desks.length;i++) {
-    valid = desks.saved;
+    valid = desks[i].saved;
   }
   return valid;
 }

@@ -25,6 +25,7 @@
 
   onMount( async () => {
     console.log('MOUNTING ORGANISATION');
+    orgStoreActions.loadOrganisation($orgStoreActions.currentOrg.id);
     //console.log('pending',getPendingApproval());
     //pendingMembers = getPendingApproval();
     //promise = orgStoreActions.loadOrganisation(orgId);
