@@ -24,7 +24,6 @@
   let yPos = 0;
 
 	$:if(planChanged) {
-		console.log('PLAN CHANGED');
 		setupCanvas();
 	}
 
@@ -32,17 +31,14 @@
 		deskStoreActions.clearStore();
 		deskStoreActions.setContext(ctx);
 		deskStoreActions.loadPlan(plan);
-		console.log('LOADED PLAN',plan)
 		//Initial setup
 		await fetch(URLROOT+plan.picture)
 			.then(res => res.blob())
 			.then(blob => {
-				console.log('this is the image',blob);
 				imgObj = new Image();
 				let reader = new FileReader();
 				reader.readAsDataURL(blob);
 				reader.onload = async (e) => {
-					console.log('IMAGE LOADED', e);
 					imgObj.src = e.target.result;
 				}
 				reader.onloadend = async (e) => {
@@ -61,7 +57,6 @@
 	}
 
 	onMount( async () => {
-		console.log('MOUNTING');
 		//Get the context and store it
 		ctx = canvas.getContext('2d');
 		setupCanvas();
