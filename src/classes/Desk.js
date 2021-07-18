@@ -29,8 +29,10 @@ export class Desk {
   }
 
   //Draw to f - factor for scaling
-  drawScale(ctx,f) {
+  drawScale(ctx,f,drawCol) {
     ctx.beginPath();
+    console.log('This is the color it will be', drawCol);
+    ctx.strokeStyle = drawCol;
     ctx.rect(this.x/f, this.y/f,this.w/f,this.h/f);
     ctx.stroke();
   }

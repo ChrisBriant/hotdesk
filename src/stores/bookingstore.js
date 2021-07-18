@@ -3,10 +3,17 @@ import {authConn} from '../helpers/connections.js';
 import { transformMonthData } from '../helpers/helpers';
 import { writable } from 'svelte/store';
 
+const date = new Date();
+const month = date.getMonth() + 1;
+const day = date.getDate();
+const year = date.getFullYear();
 
 const defaultStore = {
   bookings:{},
-  calendar:[]
+  calendar:[],
+  selectedDay : {
+    'date': new Date(year,month-1,day)
+  }
 }
 
 
@@ -42,6 +49,12 @@ const bookingStoreActions = {
       });
       return success;
     },
+    setDay: async (day) => {
+      bookingStore.update(st => {
+        st.selectedDay = day;
+        return st;
+      });
+    }
 };
 
 

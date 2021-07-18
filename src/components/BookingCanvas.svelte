@@ -14,6 +14,7 @@
   export let height = 300;
   export let plan = null;
 	export let planChanged = false;
+	export let redraw;
 
 	let canvas = null;
   let m = { x: 0, y: 0, pos:'' };
@@ -25,6 +26,26 @@
 
 	$:if(planChanged) {
 		setupCanvas();
+	}
+
+	$:if(redraw) {
+		draw();
+		dispatch('reDrawn');
+	}
+
+	const draw = () => {
+		ctx.imageSmoothingEnabled = true;
+		ctx.fillStyle = '#edeae6';
+		ctx.fillRect(0, 0, width, height);
+		ctx.lineWidth = 4;
+		ctx.drawImage(imgObj, 0, 0, width,height)
+		for(let i=0;i<$deskStoreActions.desks.length;i++) {
+			let drawColor = '#000000'
+			if($deskStoreActions.selectedDesk.id===$deskStoreActions.desks[i].id) {
+					drawColor = '#ab751f'
+			}
+			$deskStoreActions.desks[i].drawScale(ctx,2,drawColor);
+		}
 	}
 
 	const setupCanvas = async () => {
@@ -42,14 +63,7 @@
 					imgObj.src = e.target.result;
 				}
 				reader.onloadend = async (e) => {
-					ctx.imageSmoothingEnabled = true;
-					ctx.fillStyle = '#edeae6';
-					ctx.fillRect(0, 0, width, height);
-					ctx.lineWidth = 4;
-					ctx.drawImage(imgObj, 0, 0, width,height)
-					for(let i=0;i<$deskStoreActions.desks.length;i++) {
-						$deskStoreActions.desks[i].drawScale(ctx,2);
-					}
+					draw();
 				}
 				//image = blob;
 				dispatch('resetchange');

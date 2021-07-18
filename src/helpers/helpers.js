@@ -131,3 +131,29 @@ export const transformMonthData = (year,month,slots) => {
   //Return month data partitioned into weeks
   return(splitArray(monthData,7));
 }
+
+
+const monthNames = {
+  1: 'January',
+  2: 'February',
+  3: 'March',
+  4: 'April',
+  5: 'May',
+  6: 'June',
+  7: 'July',
+  8: 'August',
+  9: 'September',
+  10: 'October',
+  11: 'November',
+  12: 'December'
+}
+
+export function getMonthName(monthNo) {
+  return monthNames[monthNo];
+}
+
+export function simpleDateCompare(date1,date2) {
+  return date1.getMonth() === date2.getMonth()
+      && date1.getDate() === date2.getDate()
+      && date1.getYear() === date2.getYear();
+}

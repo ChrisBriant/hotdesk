@@ -7,7 +7,8 @@ const defaultStore = {
   desks:[],
   plan:{},
   context: null,
-  floorPreLoaded: false
+  floorPreLoaded: false,
+	selectedDesk: {}
   //deskChanged: false
 }
 
@@ -43,7 +44,6 @@ const generateDesks = (deskData,context) => {
       newDesk.name = deskData[i].name;
       newDesk.id= deskData[i].desk_id;
       newDesk.saved=true;
-      console.log('I am a new desk', newDesk);
       newDesks.push(newDesk);
   }
   return newDesks;
@@ -178,7 +178,13 @@ const deskStoreActions = {
         st.floorPreLoaded=status;
         return st;
       });
-    }
+    },
+		setDesk: (desk) => {
+			deskStore.update(st => {
+				st.selectedDesk=desk;
+				return st;
+			});
+		}
 };
 
 

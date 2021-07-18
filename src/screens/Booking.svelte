@@ -5,6 +5,7 @@
   import TextInput from '../components/TextInput.svelte';
   import SpinInput from '../components/SpinInput.svelte';
   import Calendar from '../components/Calendar.svelte';
+  import DeskSelect from '../components/DeskSelect.svelte';
   import BookingCanvas from '../components/BookingCanvas.svelte';
   import orgStoreActions from "../stores/orgstore";
   import {deskStoreActions} from "../stores/deskstore";
@@ -25,6 +26,7 @@
   let selectedFloorId;
   let selectedFloorPlan=null;
   let planChanged = false;
+  let redraw = false;
 
   const setExpanded = (i) => {
     buildings[i].expanded=true;
@@ -133,6 +135,10 @@
       </div>
       <div class="col-8">
         <h3>{selectedFloorName}</h3>
+        <DeskSelect
+          on:deskChanged={() => {redraw = true}}
+          {planChanged}
+        />
         {#if !selectedFloorPlan}
           <p>This floor does not have a plan added.</p>
         {:else}
@@ -140,6 +146,8 @@
             {planChanged}
             plan={selectedFloorPlan}
             on:resetchange={() => {planChanged=false}}
+            {redraw}
+            on:reDrawn={() => {redraw = false}}
           />
         {/if}
       </div>
