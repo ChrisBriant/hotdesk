@@ -54,6 +54,13 @@ const bookingStoreActions = {
         st.selectedDay = day;
         return st;
       });
+    },
+    bookDesk: async (data) => {
+      bookingStore.update(st => {
+        let bookingDay = st.bookings.out_slots[data.date];
+        console.log('HERE IS THE STORE',st.bookings.out_slots,bookingDay,data.date);
+        return st;
+      });
     }
 };
 

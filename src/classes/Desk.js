@@ -14,12 +14,23 @@ export class Desk {
     this.name="";
     this.id="";
     this.saved = false;
+    this.apiId = null;
   }
 
   contains(x,y) {
     //console.log('Contains',x,y,this.width,this.height,this.x,this.y);
     return this.x <= x && x <= this.x + this.w &&
        this.y <= y && y <= this.y + this.h;
+  }
+
+  containsScale(x,y,scale) {
+    let x1 = this.x/scale
+    let y1 = this.y/scale
+    let w1 = this.w/scale
+    let h1 = this.h/scale
+    console.log('Contains',scale,x,y,w1,h1,x1,y1);
+    return x1 <= x && x <= x1 + w1 &&
+       y1 <= y && y <= y1 + h1;
   }
 
   draw(ctx) {

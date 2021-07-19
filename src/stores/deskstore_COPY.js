@@ -41,9 +41,9 @@ const generateDesks = (deskData,context) => {
   let newDesks = [];
   for(let i=0;i < deskData.length;i++) {
       let newDesk = new Desk(deskData[i].x,deskData[i].y,deskData[i].w,deskData[i].h);
+			console.log('DESK DATA i',deskData[i]);
       newDesk.name = deskData[i].name;
       newDesk.id= deskData[i].desk_id;
-			newDesk.apiId = deskData[i].id;
       newDesk.saved=true;
       newDesks.push(newDesk);
   }
@@ -131,18 +131,18 @@ const deskStoreActions = {
             st.plan = res.data;
             let newDesks = [];
             //Construct new desk objects
-            // let deskData = res.data.desks;
-            // console.log('Desk Data', deskData);
-            // for(let i=0;i < deskData.length;i++) {
-						//
-            //     let newDesk = new Desk(deskData[i].x,deskData[i].y,deskData[i].w,deskData[i].h);
-            //     newDesk.name = deskData[i].name;
-            //     newDesk.id= deskData[i].desk_id;
-            //     newDesk.saved=true;
-            //     console.log('I am a new desk', newDesk);
-            //     newDesks.push(newDesk);
-            // }
-            st.desks = generateDesks(res.data.desks,st.context);
+            let deskData = res.data.desks;
+            console.log('Desk Data', deskData);
+            for(let i=0;i < deskData.length;i++) {
+
+                let newDesk = new Desk(deskData[i].x,deskData[i].y,deskData[i].w,deskData[i].h);
+                newDesk.name = deskData[i].name;
+                newDesk.id= deskData[i].desk_id;
+                newDesk.saved=true;
+                console.log('I am a new desk', newDesk);
+                newDesks.push(newDesk);
+            }
+            st.desks = newDesks;
             return st;
           });
           success = true;

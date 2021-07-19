@@ -24,6 +24,8 @@
   let xPos = 0;
   let yPos = 0;
 
+	const SCALE = 2;
+
 	$:if(planChanged) {
 		setupCanvas();
 	}
@@ -44,7 +46,7 @@
 			if($deskStoreActions.selectedDesk.id===$deskStoreActions.desks[i].id) {
 					drawColor = '#ab751f'
 			}
-			$deskStoreActions.desks[i].drawScale(ctx,2,drawColor);
+			$deskStoreActions.desks[i].drawScale(ctx,SCALE,drawColor);
 		}
 	}
 
@@ -79,35 +81,28 @@
 	//Find the first rectangle mouse click is in
 	const insideRect = (x,y) => {
 		for(let i=0;i<$deskStoreActions.desks.length;i++) {
-			if($deskStoreActions.desks[i].contains(x,y)) {
+			console.log('DESK', $deskStoreActions.desks[i]);
+			if($deskStoreActions.desks[i].containsScale(x,y,SCALE)) {
 				return $deskStoreActions.desks[i];
 			}
 		}
 		return null;
 	}
 
-  // const redraw = () => {
-	// 	dispatch('resetRedraw');
-  //   ctx.fillRect(0, 0, width, height);
-	// 	ctx.drawImage(imgObj, 0, 0, width,height)
-  //   //Draw the saved rects
-  //   for(let i=0;i<$deskStoreActions.desks.length;i++) {
-	// 		$deskStoreActions.desks[i].draw(ctx);
-  //   }
-  // }
 
   const handleClick = (e) => {
 		let canvasDims = e.target.getBoundingClientRect();
 
-		if(image) {
-			let mousePos = getMousePos(e);
-			xPos = mousePos.x;
-			yPos = mousePos.y;
-			let clickedRect = insideRect(xPos,yPos);
-			if(clickedRect) {
-        console.log('CLICK INSIDE RECT');
-	    }
-		}
+		let mousePos = getMousePos(e);
+		xPos = mousePos.x;
+		yPos = mousePos.y;
+		let clickedRect = insideRect(xPos,yPos);
+		if(clickedRect) {
+      console.log('CLICK INSIDE RECT');
+			deskStoreActions.setDesk(clickedRect);
+			draw();
+    }
+
   }
 
   const handleUnClick = (e) => {

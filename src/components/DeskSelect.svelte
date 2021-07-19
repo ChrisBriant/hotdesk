@@ -2,9 +2,14 @@
   import { createEventDispatcher,onMount } from 'svelte';
   import { bookingStoreActions } from '../stores/bookingstore';
   import {deskStoreActions} from "../stores/deskstore";
+  import Button from '../components/Button.svelte';
   import moment from 'moment';
+  import BinaryChoice from "../dialogs/BinaryChoice.svelte";
 
   export let planChanged = false;
+
+  let showDialog = false;
+  let diagMessage = '';
 
   const dispatch = createEventDispatcher();
 
@@ -21,6 +26,24 @@
     dispatch('deskChanged');
   }
 
+  const makeBooking = () => {
+    let dateStr = moment($bookingStoreActions.selectedDay.date).format('LL');
+    let deskNm = $deskStoreActions.selectedDesk.name;
+    diagMessage = `Book desk ${deskNm} on ${dateStr}?`;
+    showDialog = true;
+  }
+
+  const sendBooking = () => {
+    console.log($deskStoreActions.selectedDesk);
+    //let dateStr = `${$bookingStoreActions.selectedDay.date.getDate()}/${$bookingStoreActions.selectedDay.date.getMonth()+1}/${$bookingStoreActions.selectedDay.date.getFullYear()}`;
+    let dateStr = moment($bookingStoreActions.selectedDay.date).format('DD/MM/YYYY');
+    let payload = {
+      deskId: $deskStoreActions.selectedDesk.apiId,
+      date: dateStr
+    }
+    bookingStoreActions.bookDesk(payload);
+    showDialog = false;
+  }
 
 
 </script>
@@ -30,7 +53,14 @@
 
 
 <div>
-  <p>{moment($bookingStoreActions.selectedDate).format('LL')}</p>
+  {#if showDialog}
+    <BinaryChoice
+      message={diagMessage}
+      on:no={() => {showDialog=false}}
+      on:yes={() => {sendBooking()}}
+    />
+  {/if}
+  <p>{moment($bookingStoreActions.selectedDay.date).format('LL')}</p>
   {#if $deskStoreActions.desks.length > 0}
     <select
       name="desks"
@@ -45,5 +75,12 @@
           >{desk.name}</option>
         {/each}
     </select>
+    <Button
+      id="book-btn"
+      type="button"
+      on:click={makeBooking}
+    >
+      Book
+    </Button>
   {/if}
 </div>
