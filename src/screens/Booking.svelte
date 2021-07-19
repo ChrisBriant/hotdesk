@@ -27,6 +27,7 @@
   let selectedFloorPlan=null;
   let planChanged = false;
   let redraw = false;
+  let loadFloor = false;
 
   const setExpanded = (i) => {
     buildings[i].expanded=true;
@@ -129,26 +130,30 @@
             <Calendar
               orgId={$orgStoreActions.currentOrg.id}
               floorId={selectedFloorId}
+              on:dayChanged={() => {redraw = true}}
+              on:loadFloorPlan={() => {loadFloor = true}}
             />
           </div>
         </div>
       </div>
       <div class="col-8">
-        <h3>{selectedFloorName}</h3>
-        <DeskSelect
-          on:deskChanged={() => {redraw = true}}
-          {planChanged}
-        />
-        {#if !selectedFloorPlan}
-          <p>This floor does not have a plan added.</p>
-        {:else}
-          <BookingCanvas
+        {#if loadFloor}
+          <h3>{selectedFloorName}</h3>
+          <DeskSelect
+            on:deskChanged={() => {redraw = true}}
             {planChanged}
-            plan={selectedFloorPlan}
-            on:resetchange={() => {planChanged=false}}
-            {redraw}
-            on:reDrawn={() => {redraw = false}}
           />
+          {#if !selectedFloorPlan}
+            <p>This floor does not have a plan added.</p>
+          {:else}
+            <BookingCanvas
+              {planChanged}
+              plan={selectedFloorPlan}
+              on:resetchange={() => {planChanged=false}}
+              {redraw}
+              on:reDrawn={() => {redraw = false}}
+            />
+          {/if}
         {/if}
       </div>
     </div>

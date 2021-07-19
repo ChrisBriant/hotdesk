@@ -186,9 +186,13 @@ const deskStoreActions = {
 				return st;
 			});
 		},
-		bookDesk: (data) => {
-			console.log('sending', data);
-		}
+		// setBooked: (id) => {
+		// 	deskStore.update(st => {
+		// 		const idx = st.desks.findIndex(d => d.id === id);
+		// 		console.log('DESK AT', st.desks[idx]);
+		// 		return st;
+		// 	});
+		// }
 };
 
 

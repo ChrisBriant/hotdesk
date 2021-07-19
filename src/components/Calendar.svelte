@@ -23,17 +23,28 @@
   onMount( () => {
     //Initialize the selected date
     //selectedDate.date = date;
+    // bookingStoreActions.setDay({
+    //   date
+    // });
   });
 
   $:console.log('MONTH DATA', orgId,floorId,month,day,$bookingStoreActions.selectedDay);
 
-  $:if(floorId) {
-    promise = bookingStoreActions.getBookings({
+  const getBookings = async () => {
+    promise = await bookingStoreActions.getBookings({
       orgId,
       floorId,
       month,
       year
     });
+    if(promise) {
+      console.log('BOOKINGS GOT');
+      dispatch('loadFloorPlan');
+    }
+  }
+
+  $:if(floorId) {
+    getBookings();
   }
 
   $:if(selectedDate < Date.now()) {
@@ -59,6 +70,9 @@
       month,
       year
     });
+    if(promise) {
+      dispatch('dayChanged');
+    }
   }
 
   const selectDay = (day) => {
@@ -167,7 +181,7 @@
           {:else}
             <div
               class={`day ${day.className}`}
-              on:click={() => {bookingStoreActions.setDay(day)}}
+              on:click={() => {bookingStoreActions.setDay(day); dispatch('dayChanged');}}
 
             >
               <span>{day.day}</span>

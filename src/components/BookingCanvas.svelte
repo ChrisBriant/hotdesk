@@ -4,6 +4,7 @@
 	//import { Desk } from '../classes/Desk';
   //import DeskInput from '../dialogs/DeskInput.svelte';
 	import { deskStoreActions } from '../stores/deskstore';
+	import { bookingStoreActions } from '../stores/bookingstore';
 	import { getMousePos, stringGen } from '../helpers/helpers';
 
   let ctx;
@@ -35,16 +36,21 @@
 		dispatch('reDrawn');
 	}
 
+
 	const draw = () => {
+		console.log('BOOKINGS STATE',$bookingStoreActions.bookings);
 		ctx.imageSmoothingEnabled = true;
 		ctx.fillStyle = '#edeae6';
 		ctx.fillRect(0, 0, width, height);
 		ctx.lineWidth = 4;
 		ctx.drawImage(imgObj, 0, 0, width,height)
 		for(let i=0;i<$deskStoreActions.desks.length;i++) {
-			let drawColor = '#000000'
+			let drawColor = '#000000';
 			if($deskStoreActions.selectedDesk.id===$deskStoreActions.desks[i].id) {
-					drawColor = '#ab751f'
+				drawColor = '#ab751f';
+			}
+			if(bookingStoreActions.isBooked($deskStoreActions.desks[i])) {
+				drawColor = '#f55742';
 			}
 			$deskStoreActions.desks[i].drawScale(ctx,SCALE,drawColor);
 		}
@@ -81,7 +87,6 @@
 	//Find the first rectangle mouse click is in
 	const insideRect = (x,y) => {
 		for(let i=0;i<$deskStoreActions.desks.length;i++) {
-			console.log('DESK', $deskStoreActions.desks[i]);
 			if($deskStoreActions.desks[i].containsScale(x,y,SCALE)) {
 				return $deskStoreActions.desks[i];
 			}
@@ -98,7 +103,6 @@
 		yPos = mousePos.y;
 		let clickedRect = insideRect(xPos,yPos);
 		if(clickedRect) {
-      console.log('CLICK INSIDE RECT');
 			deskStoreActions.setDesk(clickedRect);
 			draw();
     }

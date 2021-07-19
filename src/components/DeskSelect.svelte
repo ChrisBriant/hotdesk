@@ -10,6 +10,7 @@
 
   let showDialog = false;
   let diagMessage = '';
+  let promise;
 
   const dispatch = createEventDispatcher();
 
@@ -33,7 +34,8 @@
     showDialog = true;
   }
 
-  const sendBooking = () => {
+  const sendBooking = async () => {
+    showDialog = false;
     console.log($deskStoreActions.selectedDesk);
     //let dateStr = `${$bookingStoreActions.selectedDay.date.getDate()}/${$bookingStoreActions.selectedDay.date.getMonth()+1}/${$bookingStoreActions.selectedDay.date.getFullYear()}`;
     let dateStr = moment($bookingStoreActions.selectedDay.date).format('DD/MM/YYYY');
@@ -41,8 +43,12 @@
       deskId: $deskStoreActions.selectedDesk.apiId,
       date: dateStr
     }
-    bookingStoreActions.bookDesk(payload);
-    showDialog = false;
+    promise = await bookingStoreActions.bookDesk(payload,$deskStoreActions.selectedDesk.name);
+    if(promise) {
+      dispatch('deskChanged');
+      //deskStoreActions.setBooked($deskStoreActions.selectedDesk.id);
+    }
+
   }
 
 
