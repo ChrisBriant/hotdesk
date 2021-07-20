@@ -3,6 +3,7 @@
   import { bookingStoreActions } from '../stores/bookingstore';
   import { getMonthName,simpleDateCompare } from '../helpers/helpers';
   import CalendarButton from '../components/CalendarButton.svelte';
+  import Spacer from './Spacer.svelte';
 
   const dispatch = createEventDispatcher();
 
@@ -18,6 +19,7 @@
   // };
   let disabled = false;
   let promise;
+  let allowLoad = false;
 
 
   onMount( () => {
@@ -38,13 +40,15 @@
       year
     });
     if(promise) {
-      console.log('BOOKINGS GOT');
       dispatch('loadFloorPlan');
     }
   }
 
   $:if(floorId) {
     getBookings();
+    allowLoad = true;
+  } else {
+    allowLoad = false;
   }
 
   $:if(selectedDate < Date.now()) {
@@ -142,54 +146,56 @@
 </style>
 
 <div>
-  <div class="row">
-    <div class="col">
-      <CalendarButton
-        id="back"
-        direction="back"
-        on:click={() => changeMonth('bk')}
-        {disabled}
-      >
-        back
-      </CalendarButton>
-    </div>
-    <div class="col">
-      <p>{getMonthName(month)} {year}</p>
-    </div>
+  {#if allowLoad}
+    <div class="row">
       <div class="col">
         <CalendarButton
-          id="forward"
-          direction="forward"
-          on:click={() => changeMonth('fwd')}
+          id="back"
+          direction="back"
+          on:click={() => changeMonth('bk')}
+          {disabled}
         >
-          forward
+          back
         </CalendarButton>
       </div>
-  </div>
-  {#await promise}
-    <p>Loading...</p>
-  {:then}
-    {#each $bookingStoreActions.calendar as week,i }
-      <div class="week">
-        {#each week as day,j }
-          {#if simpleDateCompare($bookingStoreActions.selectedDay.date,day.date)}
-            <div
-              class="day selected-day"
-            >
-              <span>{day.day}</span>
-            </div>
-          {:else}
-            <div
-              class={`day ${day.className}`}
-              on:click={() => {bookingStoreActions.setDay(day); dispatch('dayChanged');}}
-
-            >
-              <span>{day.day}</span>
-            </div>
-          {/if}
-        {/each}
+      <div class="col">
+        <p>{getMonthName(month)} {year}</p>
       </div>
-    {/each}
-  {/await}
+        <div class="col">
+          <CalendarButton
+            id="forward"
+            direction="forward"
+            on:click={() => changeMonth('fwd')}
+          >
+            forward
+          </CalendarButton>
+        </div>
+    </div>
+    {#await promise}
+      <p>Loading...</p>
+    {:then}
+      {#each $bookingStoreActions.calendar as week,i }
+        <div class="week">
+          {#each week as day,j }
+            {#if simpleDateCompare($bookingStoreActions.selectedDay.date,day.date)}
+              <div
+                class="day selected-day"
+              >
+                <span>{day.day}</span>
+              </div>
+            {:else}
+              <div
+                class={`day ${day.className}`}
+                on:click={() => {bookingStoreActions.setDay(day); dispatch('dayChanged');}}
 
+              >
+                <span>{day.day}</span>
+              </div>
+            {/if}
+          {/each}
+        </div>
+      {/each}
+    {/await}
+    <Spacer />
+  {/if}
 </div>

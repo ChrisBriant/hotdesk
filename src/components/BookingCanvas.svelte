@@ -73,7 +73,6 @@
 				reader.onloadend = async (e) => {
 					draw();
 				}
-				//image = blob;
 				dispatch('resetchange');
 		});
 	}
@@ -88,7 +87,11 @@
 	const insideRect = (x,y) => {
 		for(let i=0;i<$deskStoreActions.desks.length;i++) {
 			if($deskStoreActions.desks[i].containsScale(x,y,SCALE)) {
-				return $deskStoreActions.desks[i];
+				if(!bookingStoreActions.isBooked($deskStoreActions.desks[i])) {
+					return $deskStoreActions.desks[i];
+				} else {
+					return null;
+				}
 			}
 		}
 		return null;

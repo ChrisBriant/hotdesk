@@ -37,15 +37,6 @@
     buildings[i].expanded=false;
   }
 
-  // const goToFloor = () => {
-  //   deskStoreActions.clearStore();
-  //   if(selectedFloorPlan) {
-  //     deskStoreActions.loadPlan(selectedFloorPlan);
-  //     deskStoreActions.setFloorPreLoaded(true);
-  //   }
-  //   dispatch('nav',{dest:'addPlan',floorId:selectedFloorId});
-  // }
-
 </script>
 
 <style>
@@ -83,6 +74,17 @@
       <div class="col-4">
         <div class="row">
           <div class="col">
+            <Calendar
+              orgId={$orgStoreActions.currentOrg.id}
+              floorId={selectedFloorId}
+              on:dayChanged={() => {redraw = true;planChanged=true;}}
+              on:loadFloorPlan={() => {loadFloor = true}}
+            />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <h3>Select a Building</h3>
             {#each buildings as building,i}
               {#if building.expanded}
                 <div class="row">
@@ -103,6 +105,7 @@
                                                 selectedBuildingId=building.id;
                                                 selectedFloorName=floor.name;
                                                 planChanged=true;
+                                                loadFloor=false;
                                                 selectedFloorPlan=floor.plan;
                                                 }}
                         >
@@ -123,16 +126,6 @@
                 </div>
               {/if}
             {/each}
-          </div>
-        </div>
-        <div class="row">
-          <div class="col">
-            <Calendar
-              orgId={$orgStoreActions.currentOrg.id}
-              floorId={selectedFloorId}
-              on:dayChanged={() => {redraw = true}}
-              on:loadFloorPlan={() => {loadFloor = true}}
-            />
           </div>
         </div>
       </div>

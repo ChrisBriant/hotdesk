@@ -47,8 +47,6 @@ const bookingStoreActions = {
             success = true
             return st;
           });
-          console.log('UPDATED BOOKINGS',success);
-
       });
       return success;
     },
@@ -59,16 +57,22 @@ const bookingStoreActions = {
       });
     },
     bookDesk: async (data,name) => {
-      bookingStore.update(st => {
-        let bookingDay = [...st.bookings.out_slots[data.date],{
-          name:name,
-          id: data.deskId
-        }];
-        st.bookings.out_slots[data.date] = bookingDay;
-        console.log('HERE IS THE STORE',st.bookings.out_slots,bookingDay,data.date);
-        return st;
+      let success = false;
+      await authConn.post('/api/booking/makebooking/',data,getConfig())
+      .then(res => {
+        bookingStore.update(st => {
+          let bookingDay = [...st.bookings.out_slots[data.date],{
+            name:res.data.desk.name,
+            id: res.data.desk.id
+          }];
+          st.bookings.out_slots[data.date] = bookingDay;
+          console.log('HERE IS THE STORE',st.bookings.out_slots,bookingDay,data.date);
+          success = true;
+          return st;
+        });
       });
-      return true;
+
+      return success;
     },
     isBooked: (desk) => {
       let found = false;

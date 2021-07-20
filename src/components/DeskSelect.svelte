@@ -11,10 +11,12 @@
   let showDialog = false;
   let diagMessage = '';
   let promise;
+  //let deskList = [];
 
   const dispatch = createEventDispatcher();
 
   $:if(planChanged) {
+      console.log('Changed');
 		  deskStoreActions.setDesk($deskStoreActions.desks[0]);
 	}
 
@@ -74,11 +76,13 @@
       on:change={(e) => {changeDesk(e)}}
 
     >
-        {#each $deskStoreActions.desks as desk, i }
-          <option
-            value="{desk.id}"
-            selected={$deskStoreActions.selectedDesk.id === desk.id}
-          >{desk.name}</option>
+        {#each $deskStoreActions.desks as desk, i (i)}
+          {#if !bookingStoreActions.isBooked(desk)}
+            <option
+              value="{desk.id}"
+              selected={$deskStoreActions.selectedDesk.id === desk.id}
+            >{desk.name}</option>
+          {/if}
         {/each}
     </select>
     <Button
