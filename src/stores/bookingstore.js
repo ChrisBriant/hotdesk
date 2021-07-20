@@ -14,7 +14,8 @@ const defaultStore = {
   calendar:[],
   selectedDay : {
     'date': new Date(year,month-1,day)
-  }
+  },
+  myBookings:[]
 }
 
 
@@ -71,28 +72,35 @@ const bookingStoreActions = {
           return st;
         });
       });
-
       return success;
     },
     isBooked: (desk) => {
       let found = false;
       const unsubscribe = bookingStore.subscribe(st => {
         if(st.bookings) {
-          console.log('STATE OF THE STORE', st);
           const dateIdx = moment(st.selectedDay.date).format('DD/MM/YYYY');
           const bookings = st.bookings.out_slots[dateIdx];
-          console.log('CHINX',bookings)
           for(let i=0;i<bookings.length;i++) {
             if(bookings[i].id===desk.apiId) {
               found = true;
             }
           }
-        } else {
-          console.log('WHERE ARE THE BOOKINGS');
         }
       });
       unsubscribe();
       return found;
+    },
+    getMyBookings: async () => {
+      let success = false;
+      await authConn.post('/api/booking/mybookings/',getConfig())
+      .then(res => {
+        console.log(res.data);
+        bookingStore.update(st => {
+          st.myBookings = res.data;
+          return st;
+        });
+      });
+      return success;
     }
 };
 

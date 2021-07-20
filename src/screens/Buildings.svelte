@@ -127,7 +127,7 @@
               </div>
             </div>
             {#if building.floor.length > 0}
-              {#each building.floor as floor,i}
+              {#each building.floor as floor,i (i)}
                 <div class="row">
                   <div class="col left-align-txt">
                     <span

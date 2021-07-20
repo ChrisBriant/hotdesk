@@ -6,6 +6,7 @@
   //Sub screens
   import Buildings from './Buildings.svelte';
   import Booking from './Booking.svelte';
+  import MyBookings from './MyBookings.svelte';
 
   //export let orgId;
 
@@ -155,6 +156,7 @@
         <button class="tablinks" on:click={() => {openTab='man-staff'}}>Manage Employees</button>
         <button class="tablinks" on:click={() => {openTab='man-buildings'}}>Manage Buildings</button>
         <button class="tablinks" on:click={() => {openTab='make-booking'}}>Make Booking</button>
+        <button class="tablinks" on:click={() => {openTab='my-bookings'}}>My Bookings</button>
         <button class="tablinks" on:click={() => {openTab='man-bookings'}}>Manage Bookings</button>
       </div>
 
@@ -172,6 +174,10 @@
       {:else if openTab === 'make-booking' }
         <div id="make-booking" class="tabcontent">
           <Booking />
+        </div>
+      {:else if openTab === 'my-bookings' }
+        <div id="my-bookings" class="tabcontent">
+          <MyBookings />
         </div>
       {:else}
         <div id="manage-bookings" class="tabcontent">
