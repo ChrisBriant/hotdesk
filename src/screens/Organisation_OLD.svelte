@@ -20,7 +20,7 @@
   let selectedEmployee = {};
   let promise;
   let pendingApprovals = $orgStoreActions.currentOrg.memberships.filter(itm => (!itm.approved));
-  let openTab = 'make-booking';
+  let openTab = 'man-staff';
   //let pendingMembers = [];
   //let promise;
 
@@ -151,40 +151,43 @@
         </div>
       </div>
     {/each}
+    {#if $orgStoreActions.currentOrg.is_admin }
     <!-- ADMIN MENU -->
-    <div class="tab">
-      {#if $orgStoreActions.currentOrg.is_admin }
+      <div class="tab">
         <button class="tablinks" on:click={() => {openTab='man-staff'}}>Manage Employees</button>
         <button class="tablinks" on:click={() => {openTab='man-buildings'}}>Manage Buildings</button>
+        <button class="tablinks" on:click={() => {openTab='make-booking'}}>Make Booking</button>
+        <button class="tablinks" on:click={() => {openTab='my-bookings'}}>My Bookings</button>
         <button class="tablinks" on:click={() => {openTab='man-bookings'}}>Manage Bookings</button>
+      </div>
+
+      {#if openTab === 'man-staff'}
+        <div id="man-staff" class="tabcontent">
+          <ManageStaff
+            on:approve={(r)=>{approve(r.detail)}}
+            on:reject={(r)=>{reject(r.detail)}}
+          />
+        </div>
+      {:else if openTab === 'man-buildings' }
+        <div id="man-buildings" class="tabcontent">
+          <Buildings
+            on:nav
+          />
+        </div>
+      {:else if openTab === 'make-booking' }
+        <div id="make-booking" class="tabcontent">
+          <Booking />
+        </div>
+      {:else if openTab === 'my-bookings' }
+        <div id="my-bookings" class="tabcontent">
+          <MyBookings />
+        </div>
+      {:else}
+        <div id="manage-bookings" class="tabcontent">
+          <ManageBookings />
+        </div>
       {/if}
-      <button class="tablinks" on:click={() => {openTab='make-booking'}}>Make Booking</button>
-      <button class="tablinks" on:click={() => {openTab='my-bookings'}}>My Bookings</button>
-    </div>
-    {#if openTab === 'man-staff' && $orgStoreActions.currentOrg.is_admin}
-      <div id="man-staff" class="tabcontent">
-        <ManageStaff
-          on:approve={(r)=>{approve(r.detail)}}
-          on:reject={(r)=>{reject(r.detail)}}
-        />
-      </div>
-    {:else if openTab === 'man-buildings' && $orgStoreActions.currentOrg.is_admin}
-      <div id="man-buildings" class="tabcontent">
-        <Buildings
-          on:nav
-        />
-      </div>
-    {:else if openTab === 'make-booking' }
-      <div id="make-booking" class="tabcontent">
-        <Booking />
-      </div>
-    {:else if openTab === 'my-bookings' }
-      <div id="my-bookings" class="tabcontent">
-        <MyBookings />
-      </div>
-    {:else if openTab === 'man-bookings' && $orgStoreActions.currentOrg.is_admin}
-      <div id="manage-bookings" class="tabcontent">
-        <ManageBookings />
-      </div>
     {/if}
+
+
 </section>

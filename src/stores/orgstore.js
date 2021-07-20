@@ -174,6 +174,9 @@ const orgStoreActions = {
         success = false;
     });
     return success;
+  },
+  getStaff: async (data) => {
+    console.log('GET THE STAFF');
   }
 };
 

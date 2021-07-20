@@ -116,10 +116,6 @@ const bookingStoreActions = {
     },
     cancelBooking: async (data) => {
       let success = false;
-      // await authConn.delete('/api/booking/cancelbooking/',{
-      //     headers: getConfig(),
-      //     data
-      //   })
       await authConn.delete('/api/booking/cancelbooking/',{data})
       .then(res => {
         console.log(res.data);

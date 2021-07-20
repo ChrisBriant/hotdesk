@@ -14,7 +14,7 @@
     let payload = {
       orgId: $orgStoreActions.currentOrg.id
     }
-    console.log("Payload IS", payload);
+    console.log("Payload IS",  $orgStoreActions.currentOrg);
     promise = await bookingStoreActions.getMyBookings(payload);
 
   });

@@ -41,12 +41,11 @@ const authStoreActions = {
             console.log(res);
             console.log(res.data);
             if(res.data.access) {
+                const decoded = decode(res.data.access);
                 authStore.set({
                     token : res.data.access
                 });
                 localStorage.setItem("hotdesk_token", res.data.access);
-                // conn.defaults.headers.common['Authorization'] = `Bearer ${res.data.access}`;
-                // multipartConn.defaults.headers.common['Authorization'] = `Bearer ${res.data.access}`;
                 response = res.data;
                 response.success = true;
             }
@@ -70,8 +69,6 @@ const authStoreActions = {
             if (item) {
                 if(!isTokenExpired(item.token)) {
                     authenticated = true;
-                    //conn.defaults.headers.common['Authorization'] = `Bearer ${item.token}`;
-                    //multipartConn.defaults.headers.common['Authorization'] = `Bearer ${item.token}`;
                 } else {
                     authenticated = false;
                 }
@@ -111,6 +108,14 @@ const authStoreActions = {
             responseObj.message = err.response.data.message
         });
         return responseObj;
+    },
+    getTokenDecoded: () => {
+      let tokenData = null;
+      const unsubscribe = authStore.subscribe(st => {
+        tokenData = decode(st.token);
+      });
+      unsubscribe();
+      return tokenData
     }
   };
 
