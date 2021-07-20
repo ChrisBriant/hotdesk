@@ -6,6 +6,7 @@
   const dispatch = createEventDispatcher();
 
   export let message = '';
+  export let title = '';
 
 </script>
 
@@ -17,6 +18,13 @@
 <div>
   <Modal on:cancel="{() => dispatch('cancel')}"
     on:close="{() => dispatch('cancel')}">
+    <div slot="header" class="modal-title">
+      {#if title !== ''}
+        <h3>{title}</h3>
+      {:else}
+        <h3>Please Confirm</h3>
+      {/if}
+    </div>
     <div slot="content">
       <div class="row">
         <div class="col">

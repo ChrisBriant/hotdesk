@@ -66,5 +66,7 @@ button:focus {
 
 /********************************My Stylyes********************/
 .left-align-txt {
+	overflow: auto;
 	text-align: left;
+	overflow-wrap: break-word;
 }

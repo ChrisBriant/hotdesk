@@ -7,6 +7,7 @@
   import Buildings from './Buildings.svelte';
   import Booking from './Booking.svelte';
   import MyBookings from './MyBookings.svelte';
+  import ManageBookings from './ManageBookings.svelte';
 
   //export let orgId;
 
@@ -181,8 +182,7 @@
         </div>
       {:else}
         <div id="manage-bookings" class="tabcontent">
-          <h3>Manage Bookings</h3>
-          <p>Tokyo is the capital of Japan.</p>
+          <ManageBookings />
         </div>
       {/if}
     {/if}

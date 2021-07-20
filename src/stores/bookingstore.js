@@ -102,6 +102,18 @@ const bookingStoreActions = {
       });
       return success;
     },
+    getBookingsForOrg: async (data) => {
+      let success = false;
+      await authConn.post('/api/booking/bookingsfororg/',data,getConfig())
+      .then(res => {
+        console.log(res.data);
+        bookingStore.update(st => {
+          st.myBookings = res.data;
+          return st;
+        });
+      });
+      return success;
+    },
     cancelBooking: async (data) => {
       let success = false;
       // await authConn.delete('/api/booking/cancelbooking/',{
