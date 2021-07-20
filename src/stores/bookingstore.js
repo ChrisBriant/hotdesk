@@ -90,9 +90,25 @@ const bookingStoreActions = {
       unsubscribe();
       return found;
     },
-    getMyBookings: async () => {
+    getMyBookings: async (data) => {
       let success = false;
-      await authConn.post('/api/booking/mybookings/',getConfig())
+      await authConn.post('/api/booking/mybookings/',data,getConfig())
+      .then(res => {
+        console.log(res.data);
+        bookingStore.update(st => {
+          st.myBookings = res.data;
+          return st;
+        });
+      });
+      return success;
+    },
+    cancelBooking: async (data) => {
+      let success = false;
+      // await authConn.delete('/api/booking/cancelbooking/',{
+      //     headers: getConfig(),
+      //     data
+      //   })
+      await authConn.delete('/api/booking/cancelbooking/',{data})
       .then(res => {
         console.log(res.data);
         bookingStore.update(st => {
