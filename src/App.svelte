@@ -45,6 +45,26 @@
 			max-width: none;
 		}
 	}
+
+  header {
+      background-image: url(/assets/hero.png);
+      /* background-image: linear-gradient(rgba(0, 0, 0, 0.7),rgba(0, 0, 0, 0.7)),url(/assets/hero.png);*/
+      height:100vh;
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+  }
+
+  .hero-text {
+    color:#fff;
+    font-family: 'Encode Sans SC', sans-serif;
+    size: 250%;
+    /* font-family: 'Fuggles', cursive; */
+  }
+
+  .space {
+    height: 30vh;
+  }
 </style>
 
 
@@ -57,7 +77,10 @@
       on:nav={(r) => { route = r.detail}}
     />
     {#if route == 'home'}
-      <p class="hero-text">Header Goes Here</p>
+      <div class="hero">
+        <div class='space'></div>
+        <h1 class="hero-text">Hotdesk Booking System</h1>
+      </div>
     {/if}
   </header>
 
