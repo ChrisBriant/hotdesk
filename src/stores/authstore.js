@@ -116,7 +116,13 @@ const authStoreActions = {
       });
       unsubscribe();
       return tokenData
-    }
+    },
+    setCookiesAccepted: () => {
+      localStorage.setItem('hotdesk_accepted_cookies','accepted')
+    },
+    getCookiesAccepted: () => {
+      return localStorage.getItem('hotdesk_accepted_cookies');
+    },
   };
 
 

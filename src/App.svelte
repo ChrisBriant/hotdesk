@@ -1,4 +1,5 @@
 <script>
+  import CookiesDialog from './dialogs/CookiesDialog.svelte';
   import Plan from './screens/Plan.svelte';
   import Nav from './screens/Nav.svelte';
   import Forgot from './screens/Forgot.svelte';
@@ -13,10 +14,16 @@
   let loggedIn = authStoreActions.isAuthenticated();
   let route = 'home';
   let floorId;
+  let cookiesAccepted = false;
 
   $: console.log('Logged In',loggedIn);
   $: console.log('ROUTE',route);
   $: console.log('Floor ID App',floorId);
+  $: console.log('COOKIES', authStoreActions.getCookiesAccepted());
+  $: if(authStoreActions.getCookiesAccepted()) {
+      cookiesAccepted = true;
+      console.log('Cookes');
+  }
 
   function logout() {
     console.log('logging out');
@@ -46,7 +53,7 @@
 		}
 	}
 
-  header {
+  header.hero {
       background-image: url(/assets/hero.png);
       /* background-image: linear-gradient(rgba(0, 0, 0, 0.7),rgba(0, 0, 0, 0.7)),url(/assets/hero.png);*/
       height:100vh;
@@ -54,6 +61,11 @@
       background-position: center;
       background-attachment: fixed;
   }
+
+  header.non-hero {
+      height:10vh;
+  }
+
 
   .hero-text {
     color:#fff;
@@ -63,32 +75,50 @@
   }
 
   .space {
-    height: 30vh;
+    height: 10vh;
   }
 </style>
 
 
 <main>
-  <header class="{ route === 'home' ? 'hero' : '' }">
+  {#if !cookiesAccepted}
+    <CookiesDialog
+      title = "Cookies"
+      on:cancel = { () => { cookiesAccepted= true; }}
+    />
+  {/if}
+  <header class="{ route === 'home' ? 'hero' : 'non-hero' }">
     <Nav
       authenticated={loggedIn}
       logout={logout}
       active={route}
       on:nav={(r) => { route = r.detail}}
     />
-    {#if route == 'home'}
+    {#if route === 'home'}
       <div class="hero">
         <div class='space'></div>
         <h1 class="hero-text">Hotdesk Booking System</h1>
+        <div class='space'></div>
+
+        {#if loggedIn }
+          <div class="panel">
+            <Home
+              on:nav={(r) => {console.log(r.detail);route = r.detail;}}
+            />
+          </div>
+        {/if}
+
       </div>
     {/if}
   </header>
 
-  {#if route === 'home'}
+  <div class="space"></div>
+
+  <!-- {#if route === 'home'}
     <Home
       on:nav={(r) => {console.log(r.detail);route = r.detail;}}
-    />
-  {:else if route === 'login'}
+    /> -->
+  {#if route === 'login'}
     <Login login={authStoreActions.login} on:loggedIn={() => {loggedIn = true; route = 'home'}} />
   {:else if route === 'register'}
     <Register

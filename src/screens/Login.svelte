@@ -45,6 +45,7 @@
       {#await promise}
           <p>Logging in...</p>
       {:then}
+        <div class="panel">
           <h1>Login</h1>
           <form on:submit|preventDefault={submitForm}>
               <TextInput
@@ -69,6 +70,7 @@
           </form>
           <Button id="login-btn" type="button" on:click={submitForm} disabled={!formIsValid}>Login</Button>
           <p class="message">{error}</p>
+        </div>
       {/await}
   </div>
 </section>

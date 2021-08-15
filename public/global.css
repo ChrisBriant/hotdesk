@@ -65,6 +65,17 @@ button:focus {
 }
 
 
+.panel {
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+	border-radius: 5px;
+	background: white;
+	padding: 2%;
+	width: 90%;
+	margin: auto;
+}
+
+
+
 /********************************My Stylyes********************/
 .left-align-txt {
 	overflow: auto;

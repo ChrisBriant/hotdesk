@@ -1,6 +1,7 @@
 <script>
   import authStoreActions from '../stores/authstore';
   import Button from '../components/Button.svelte';
+  import Spacer from '../components/Spacer.svelte';
   import { createEventDispatcher, onMount } from 'svelte';
   import orgStoreActions from "../stores/orgstore";
 
@@ -32,9 +33,10 @@
   {#if authStoreActions.isAuthenticated()}
     <div class="row">
       <div class="col">
-        <h2>Welcome to the hotdesk booking system. What would you like to do? </h2>
+        <h2>What would you like to do? </h2>
       </div>
     </div>
+    <Spacer />
     <div class="row">
       <div class="col">
         <Button
