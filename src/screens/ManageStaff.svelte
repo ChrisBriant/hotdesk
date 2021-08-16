@@ -30,30 +30,32 @@
     />
   {/if}
   <h3>Manage Staff</h3>
+  <p>This is where you can manage your staff members who have access to your organisations. Here you can approve join requests,
+   send invites and remove staff from the organisation.</p>
   {#if $orgStoreActions.currentOrg.memberships.length > 0}
     <div class="row">
-      <div class="col left-align-txt">
+      <div class="col-md-3 left-align-txt">
         Name
       </div>
-      <div class="col left-align-txt">
+      <div class="col-md-3 left-align-txt">
         Email
       </div>
-      <div class="col left-align-txt">
+      <div class="col-md-3 left-align-txt">
         Status
       </div>
-      <div class="col left-align-txt">
+      <div class="col-md-3 left-align-txt">
         Remove
       </div>
     </div>
     {#each $orgStoreActions.currentOrg.memberships as member,i (i)}
       <div class="row">
-        <div class="col left-align-txt">
+        <div class="col-md-3 left-align-txt">
           {member.employee_data.name}
         </div>
-        <div class="col left-align-txt">
+        <div class="col-md-3 left-align-txt">
           {member.employee_data.email}
         </div>
-        <div class="col left-align-txt">
+        <div class="col-md-3 left-align-txt">
           {#if userId === member.id}
             Org Admin
           {:else}
@@ -74,8 +76,8 @@
             {/if}
           {/if}
         </div>
-        <div class="col left-align-txt">
-          {#if userId !== member.id}
+        <div class="col-md-3 left-align-txt">
+          {#if userId !== member.employee_data.id }
              <a href={null}
                 class="link"
                 on:click={() => {dispatch('reject',member.employee_data)}}

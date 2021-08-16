@@ -95,28 +95,32 @@
       />
     {/if}
     {#if regType === 'registering'}
-      <h1>Register Organisation</h1>
-      <form on:submit|preventDefault={submitForm}>
-          <TextInput
-            id="org-name"
-            label="Enter the name of your organisation below to get started."
-            value={orgName}
-            on:input={event => (orgName = event.target.value)}
-          />
-      </form>
-      <Button id="regorg-btn" type="button" on:click={submitForm} disabled={!formIsValid}>Register</Button>
-      <p class="message">{error}</p>
+      <div class= "panel">
+        <h1>Register Organisation</h1>
+        <form on:submit|preventDefault={submitForm}>
+            <TextInput
+              id="org-name"
+              label="Enter the name of your organisation below to get started."
+              value={orgName}
+              on:input={event => (orgName = event.target.value)}
+            />
+        </form>
+        <Button id="regorg-btn" type="button" on:click={submitForm} disabled={!formIsValid}>Register</Button>
+        <p class="message">{error}</p>
+      </div>
     {:else}
-      <h1>Join Organisation</h1>
-      <form on:submit|preventDefault={submitJoinForm}>
-          <TextInput
-            id="org-name"
-            label="Enter the organisation ID to send a join request."
-            value={orgId}
-            on:input={event => (orgId = event.target.value)}
-          />
-      </form>
-      <Button id="regorg-btn" type="button" on:click={submitJoinForm} disabled={!joinFormIsValid}>Join</Button>
-      <p class="message">{error}</p>
+      <div class="panel">
+        <h1>Join Organisation</h1>
+        <form on:submit|preventDefault={submitJoinForm}>
+            <TextInput
+              id="org-name"
+              label="Enter the organisation ID to send a join request."
+              value={orgId}
+              on:input={event => (orgId = event.target.value)}
+            />
+        </form>
+        <Button id="regorg-btn" type="button" on:click={submitJoinForm} disabled={!joinFormIsValid}>Join</Button>
+        <p class="message">{error}</p>
+      </div>
     {/if}
 </section>

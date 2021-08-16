@@ -69,6 +69,7 @@
 
 <section>
   <h3>Make a Booking</h3>
+  <p>This is where you can book a desk by selecting the building and chosing and available desk.</p>
   {#if buildings.length > 0}
     <div class="row">
       <div class="col-4">
@@ -151,7 +152,11 @@
       </div>
     </div>
 
+  {:else}
+    <p>Buildings have not yet been added to this organisation, please contact
+     <a href={null} class="link">org admin</a> for help with this.</p>
   {/if}
+
 </section>
 
 

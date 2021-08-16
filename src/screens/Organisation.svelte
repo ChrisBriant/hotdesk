@@ -20,7 +20,13 @@
   let selectedEmployee = {};
   let promise;
   let pendingApprovals = $orgStoreActions.currentOrg.memberships.filter(itm => (!itm.approved));
-  let openTab = 'make-booking';
+  let openTab;
+
+  if($orgStoreActions.currentOrg.is_admin) {
+    openTab = "man-staff"
+  } else {
+    openTab = "make-booking"
+  }
   //let pendingMembers = [];
   //let promise;
 
@@ -126,6 +132,15 @@
       />
     {/if}
     <h2>{$orgStoreActions.currentOrg.name}</h2>
+    {#if !$orgStoreActions.currentOrg.is_admin}
+      <p>Organisation admin: {$orgStoreActions.currentOrg.owner.name} </p>
+      <Button
+        id="approve-btn"
+        on:click={() => console.log('contact')}
+      >
+        Contact
+      </Button>
+    {/if}
     {#if pendingApprovals.length > 0 }
       <h3>You have the following staff awaiting approval</h3>
     {/if}

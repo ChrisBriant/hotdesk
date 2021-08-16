@@ -18,9 +18,10 @@
   let floorName = '';
   let floorNumber = 1;
   let buildingId;
+  let selectedBuildingName = '';
   let selectedBuildingId;
   let selectedFloorName= '';
-  let selectedFloorId;
+  let selectedFloorId=null;
   let selectedFloorPlan=null;
 
 
@@ -109,10 +110,16 @@
     width: 200px;
     height: 150px;
   }
+
+  .space {
+    height: 1rem;
+  }
 </style>
 
 <section>
   <h3>Manage Buildings</h3>
+  <p>Here you can add new buildings to the organisation and manage them by uploading
+  floor plans.</p>
   {#if buildings.length > 0}
     <div class="row">
       <div class="col">
@@ -134,6 +141,7 @@
                             class="building indent"
                             on:click={()=> {selectedFloorId=floor.id;
                                             selectedBuildingId=building.id;
+                                            selectedBuildingName=building.name;
                                             selectedFloorName=floor.name;
                                             selectedFloorPlan=floor.plan;
                                             }}
@@ -145,21 +153,25 @@
               {/each}
             {/if}
             {#if displayAddFloor && buildingId === building.id}
-              <form on:submit|preventDefault={submitFloor}>
-                  <TextInput
-                    id="build-name-txt"
-                    label="Enter Floor Name"
-                    value={floorName}
-                    on:input={event => (floorName = event.target.value)}
-                  />
-                  <SpinInput
-                    id="building-floor-number2"
-                    label="Enter floor number"
-                    on:change={(e) => {floorNumber = e.target.value} }
-                  />
-              </form>
-              <Button id="submit-floor-btn" type="button" on:click={() => {submitFloor(building.id)}} disabled={!floorFormIsValid}>Add</Button>
-              <Button id="cancel-floor-btn" type="button" on:click={()=>{displayAddFloor=false}} >Cancel</Button>
+              <div class="space"></div>
+              <div class="panel">
+                <form on:submit|preventDefault={submitFloor}>
+                    <TextInput
+                      id="build-name-txt"
+                      label="Enter Floor Name"
+                      value={floorName}
+                      on:input={event => (floorName = event.target.value)}
+                    />
+                    <SpinInput
+                      id="building-floor-number2"
+                      label="Enter floor number"
+                      on:change={(e) => {floorNumber = e.target.value} }
+                    />
+                </form>
+                <Button id="submit-floor-btn" type="button" on:click={() => {submitFloor(building.id)}} disabled={!floorFormIsValid}>Add</Button>
+                <Button id="cancel-floor-btn" type="button" on:click={()=>{displayAddFloor=false}} >Cancel</Button>
+              </div>
+              <div class="space"></div>
             {:else}
               <a href={null} class="link sm-link" on:click={() => {addFloor(building.id)}}>Add Floor</a>
             {/if}
@@ -176,9 +188,14 @@
         {/each}
       </div>
       <div class="col">
-        <h3>{selectedFloorName}</h3>
+        {#if selectedBuildingName !== "" && selectedFloorName !== ""}
+          <h3>{selectedBuildingName}: {selectedFloorName}</h3>
+        {/if}
         {#if !selectedFloorPlan}
-          <a href={null} class="link" on:click|preventDefault={(e) => goToFloor()}>Create Floor Plan</a>
+          <!-- A building and floor has been selected -->
+          {#if selectedFloorId}
+            <a href={null} class="link" on:click|preventDefault={(e) => goToFloor()}>Create Floor Plan</a>
+          {/if}
         {:else}
           <img
             class="floor-plan-img"
@@ -189,22 +206,35 @@
         {/if}
       </div>
     </div>
+  {:else}
+    <p>Click &quot;add building&quot; below to get started!</p>
   {/if}
   {#if displayAddBuilding}
-    <form on:submit|preventDefault={submitBuilding}>
-        <TextInput
-          id="build-name-txt"
-          label="Enter Building Name"
-          value={buildingName}
-          on:input={event => (buildingName = event.target.value)}
-        />
-    </form>
-    <Button id="submit-building-btn" type="button" on:click={submitBuilding} disabled={!buildFormIsValid}>Create</Button>
+    <div class="space"></div>
+    <div class="panel">
+      <form on:submit|preventDefault={submitBuilding}>
+          <TextInput
+            id="build-name-txt"
+            label="Enter Building Name"
+            value={buildingName}
+            on:input={event => (buildingName = event.target.value)}
+          />
+      </form>
+      <Button id="submit-building-btn" type="button" on:click={submitBuilding} disabled={!buildFormIsValid}>Create</Button>
+      <Button
+        id="add-building"
+        on:click={() => {displayAddBuilding=!displayAddBuilding}}
+      >
+        { displayAddBuilding ? 'Cancel' : 'Add New' }
+      </Button>
+    </div>
+    <div class="space"></div>
+  {:else}
+    <Button
+      id="add-building"
+      on:click={() => {displayAddBuilding=!displayAddBuilding}}
+    >
+      { displayAddBuilding ? 'Cancel' : 'Add New' }
+    </Button>
   {/if}
-  <Button
-    id="add-building"
-    on:click={() => {displayAddBuilding=!displayAddBuilding}}
-  >
-    { displayAddBuilding ? 'Cancel' : 'Add New' }
-  </Button>
 </section>

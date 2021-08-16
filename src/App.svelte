@@ -1,5 +1,6 @@
 <script>
   import CookiesDialog from './dialogs/CookiesDialog.svelte';
+  import OrganisationOptions from './components/OrganisationOptions.svelte';
   import Plan from './screens/Plan.svelte';
   import Nav from './screens/Nav.svelte';
   import Forgot from './screens/Forgot.svelte';
@@ -101,11 +102,12 @@
         <div class='space'></div>
 
         {#if loggedIn }
-          <div class="panel">
-            <Home
+            <!-- <Home
               on:nav={(r) => {console.log(r.detail);route = r.detail;}}
+            /> -->
+            <OrganisationOptions
+              on:nav={(r) => { route = r.detail}}
             />
-          </div>
         {/if}
 
       </div>
@@ -114,11 +116,11 @@
 
   <div class="space"></div>
 
-  <!-- {#if route === 'home'}
+  {#if route === 'home'}
     <Home
       on:nav={(r) => {console.log(r.detail);route = r.detail;}}
-    /> -->
-  {#if route === 'login'}
+    />
+  {:else if route === 'login'}
     <Login login={authStoreActions.login} on:loggedIn={() => {loggedIn = true; route = 'home'}} />
   {:else if route === 'register'}
     <Register
