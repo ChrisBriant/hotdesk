@@ -5,15 +5,14 @@
   export let mode = null;
   export let color = null;
   export let disabled = false;
+  export let size = 'btn-std';
 </script>
 
 <style>
   button,
   a {
-    font: inherit;
     border: 1px solid #4E9852;
     background: #3FA644;
-    padding: 0.5rem 1rem;
     color: white;
     border-radius: 5px;
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.26);
@@ -42,6 +41,18 @@
     color: #959595;
     box-shadow: none;
     cursor: not-allowed;
+  }
+
+  .btn-std {
+    font: inherit;
+    padding: 0.5rem 1rem;
+  }
+
+  /* small button */
+  button.btn-sm,
+  a.btn-sm {
+    font-size: 70%;
+    padding: 0.25rem 0.5rem;
   }
 
   .success {
@@ -90,11 +101,11 @@
 </style>
 
 {#if href}
-  <a {id} {href}>
+  <a class="{size}" {id} {href}>
     <slot />
   </a>
 {:else}
-  <button {id} class="{mode} {color}" {type} on:click {disabled}>
+  <button {id} class="{size} {mode} {color}" {type} on:click {disabled}>
     <slot />
   </button>
 {/if}

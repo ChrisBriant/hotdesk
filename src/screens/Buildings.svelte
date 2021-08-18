@@ -4,10 +4,10 @@
   import Button from '../components/Button.svelte';
   import TextInput from '../components/TextInput.svelte';
   import SpinInput from '../components/SpinInput.svelte';
+  import Spacer from '../components/Spacer.svelte';
   import orgStoreActions from "../stores/orgstore";
   import {deskStoreActions} from "../stores/deskstore";
 
-  //import expand from '../assets/expand.svg';
   const dispatch = createEventDispatcher();
 
   let promise;
@@ -123,6 +123,7 @@
   {#if buildings.length > 0}
     <div class="row">
       <div class="col">
+        <div class="panel">
         {#each buildings as building,i}
           {#if building.expanded}
             <div class="row">
@@ -173,7 +174,12 @@
               </div>
               <div class="space"></div>
             {:else}
-              <a href={null} class="link sm-link" on:click={() => {addFloor(building.id)}}>Add Floor</a>
+              <Button
+                id="add-floor-btn"
+                type="button"
+                on:click={() => {addFloor(building.id)}}
+                size="small"
+              >Add Floor</Button>
             {/if}
           {:else}
             <div class="row">
@@ -186,29 +192,47 @@
             </div>
           {/if}
         {/each}
+        </div>
       </div>
       <div class="col">
         {#if selectedBuildingName !== "" && selectedFloorName !== ""}
-          <h3>{selectedBuildingName}: {selectedFloorName}</h3>
-        {/if}
-        {#if !selectedFloorPlan}
-          <!-- A building and floor has been selected -->
-          {#if selectedFloorId}
-            <a href={null} class="link" on:click|preventDefault={(e) => goToFloor()}>Create Floor Plan</a>
-          {/if}
-        {:else}
-          <img
-            class="floor-plan-img"
-            alt={selectedFloorName}
-            src={`${URLROOT}${selectedFloorPlan.picture}`}
-          />
-          <a href={null} class="link" on:click|preventDefault={(e) => goToFloor()}>Edit Floor Plan</a>
+          <div class="panel">
+            <h3>{selectedBuildingName}: {selectedFloorName}</h3>
+            {#if !selectedFloorPlan}
+              <!-- A building and floor has been selected -->
+              {#if selectedFloorId}
+                <a href={null} class="link" on:click|preventDefault={(e) => goToFloor()}>Create Floor Plan</a>
+              {/if}
+            {:else}
+              <img
+                class="floor-plan-img"
+                alt={selectedFloorName}
+                src={`${URLROOT}${selectedFloorPlan.picture}`}
+              />
+              <Spacer />
+              <Button
+                id="edt-floor-plan-btn"
+                type="button"
+                on:click={(e) => goToFloor()}
+                size="small"
+              >
+              Edit Floor Plan</Button>
+              <Button
+                id="del-floor-btn"
+                type="button"
+                on:click={(e) => console.log("delete floor")}
+                size="small"
+              >
+              Delete Floor</Button>
+            {/if}
+          </div>
         {/if}
       </div>
     </div>
   {:else}
     <p>Click &quot;add building&quot; below to get started!</p>
   {/if}
+  <Spacer />
   {#if displayAddBuilding}
     <div class="space"></div>
     <div class="panel">
