@@ -7,6 +7,7 @@
   import Spacer from '../components/Spacer.svelte';
   import orgStoreActions from "../stores/orgstore";
   import {deskStoreActions} from "../stores/deskstore";
+  import BinaryChoice from '../dialogs/BinaryChoice.svelte';
 
   const dispatch = createEventDispatcher();
 
@@ -23,10 +24,14 @@
   let selectedFloorName= '';
   let selectedFloorId=null;
   let selectedFloorPlan=null;
+  let showDialog = false;
+  let dialogMessage="Are you sure you want to delete this floor?";
 
 
   $: buildFormIsValid = buildingName.length > 3;
   $: floorFormIsValid = floorName.length > 3;
+
+
   $: console.log('displayAddBuilding', displayAddBuilding);
 
   $: console.log('Floor ID', selectedFloorId);
@@ -117,6 +122,14 @@
 </style>
 
 <section>
+  {#if showDialog}
+    <BinaryChoice
+      message={dialogMessage}
+      on:cancel={() => {showDialog = false}}
+      on:no={() => {showDialog = false}}
+      on:yes={() => {console.log('Delete')}}
+    />
+  {/if}
   <h3>Manage Buildings</h3>
   <p>Here you can add new buildings to the organisation and manage them by uploading
   floor plans.</p>
@@ -197,7 +210,7 @@
       <div class="col">
         {#if selectedBuildingName !== "" && selectedFloorName !== ""}
           <div class="panel">
-            <h3>{selectedBuildingName}: {selectedFloorName}</h3>
+            <h3>{selectedBuildingName}: {selectedFloorName}:{selectedFloorId}</h3>
             {#if !selectedFloorPlan}
               <!-- A building and floor has been selected -->
               {#if selectedFloorId}
@@ -220,7 +233,7 @@
               <Button
                 id="del-floor-btn"
                 type="button"
-                on:click={(e) => console.log("delete floor")}
+                on:click={(e) => {showDialog=true}}
                 size="small"
               >
               Delete Floor</Button>

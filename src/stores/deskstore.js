@@ -186,6 +186,8 @@ const deskStoreActions = {
 				return st;
 			});
 		},
+		//// TODO: Add endpoint to delete floor
+
 		// setBooked: (id) => {
 		// 	deskStore.update(st => {
 		// 		const idx = st.desks.findIndex(d => d.id === id);

@@ -178,6 +178,9 @@ const orgStoreActions = {
   getStaff: async (data) => {
     console.log('GET THE STAFF');
   }
+  //// TODO: Add API CALL to delete floor api endpoint needs to return the organisation
+  
+
 };
 
 
