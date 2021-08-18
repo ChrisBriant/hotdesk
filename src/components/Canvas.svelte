@@ -73,28 +73,32 @@
 	    reader.onload = (e) => {
 	      imgObj.src =  e.target.result;
 				//let canvasData = ctx.toDataURL("image/png");
-				//console.log('LOADED IMAGE', canvasData);
+				console.log('LOADED IMAGE');
 				//For Firefox it has to be called below as well - don't know why
 				//ctx.drawImage(imgObj, 0, 0, width,height);
 	    };
 			reader.onloadend = async (e) => {
-				ctx.drawImage(imgObj, 0, 0, width,height);
-				//Construct the file to send to backend
-				await fetch(canvas.toDataURL())
-					.then(res => res.blob())
-					.then(blob => {
-						const fd = new FormData();
-						console.log('Here is the blob', blob);
-						const ext = blob.type.split('/')[1];
-						const file = new File([blob], `filename.${ext}`);
-						fd.append('floorId',floorId);
-						fd.append('picture', file);
-						deskStoreActions.saveImage(fd);
-						console.log('Here is the form data', fd.values());
-						for (var value of fd.values()) {
-						   console.log('VAL',value);
-						}
-				});
+				console.log('IMG OBJ', imgObj);
+				imgObj.onload = async () => {
+					ctx.drawImage(imgObj, 0, 0, width,height);
+					//Construct the file to send to backend
+					await fetch(canvas.toDataURL())
+						.then(res => res.blob())
+						.then(blob => {
+							const fd = new FormData();
+							console.log('Here is the blob', blob);
+							const ext = blob.type.split('/')[1];
+							const file = new File([blob], `filename.${ext}`);
+							fd.append('floorId',floorId);
+							fd.append('picture', file);
+							deskStoreActions.saveImage(fd);
+							console.log('Here is the form data', fd.values());
+							for (var value of fd.values()) {
+								 console.log('VAL',value);
+							}
+					});
+				}
+
 				// const fd = new FormData();
 				// const blob = canvas.toDataURL();
 				// console.log('Here is the blob', blob);
@@ -110,11 +114,15 @@
 			reader.onload = async (e) => {
 				console.log('IMAGE LOADED', e);
 				imgObj.src = e.target.result;
+				ctx.drawImage(imgObj, 0, 0, width,height);
 			}
 			reader.onloadend = async (e) => {
-				//ctx.drawImage(imgObj, 0, 0, width,height);
-				//Loads image and the rectangles
-				redraw();
+				console.log('IMG OBJ', imgObj);
+				//console.log(reader.result);
+				imgObj.onload = () => {
+					//Loads image and the rectangles
+					redraw();
+				}
 			}
 		}
 		dispatch('loaded');

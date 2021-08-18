@@ -74,18 +74,26 @@
 </style>
 
 
-<div>
-  <p>Upload a File</p>
-  <input type="file"
-       id="plan-upload" name="plan-upload"
-       accept="image/png, image/jpeg"
-       disabled={uploadDisabled}
-  >
-  <Button
-    id="upload-plan"
-    on:click={uploadDrawing}
-    disabled={uploadDisabled}
-  >Upload</Button>
+<div class="panel">
+  {#if !uploadDisabled}
+    <p>Upload a File</p>
+    <input type="file"
+         id="plan-upload" name="plan-upload"
+         accept="image/png, image/jpeg"
+         disabled={uploadDisabled}
+    >
+    <Button
+      id="upload-plan"
+      on:click={uploadDrawing}
+      disabled={uploadDisabled}
+    >Upload</Button>
+  {:else}
+    <Button
+      id="upload-plan"
+      on:click={() => {uploadDisabled = false}}
+      disabled={false}
+    >Change Plan</Button>
+  {/if}
   <FloorPanel
     on:redraw={()=> {redrawCommand=true}}
     on:nav
