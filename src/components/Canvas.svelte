@@ -80,6 +80,7 @@
 			reader.onloadend = async (e) => {
 				console.log('IMG OBJ', imgObj);
 				imgObj.onload = async () => {
+					ctx.fillRect(0, 0, width, height);
 					ctx.drawImage(imgObj, 0, 0, width,height);
 					//Construct the file to send to backend
 					await fetch(canvas.toDataURL())
@@ -96,8 +97,10 @@
 							for (var value of fd.values()) {
 								 console.log('VAL',value);
 							}
+							redraw();
 					});
 				}
+
 
 				// const fd = new FormData();
 				// const blob = canvas.toDataURL();

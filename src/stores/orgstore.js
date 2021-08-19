@@ -3,7 +3,6 @@ import { writable } from 'svelte/store';
 import decode from 'jwt-decode';
 import {authConn} from '../helpers/connections.js';
 
-
 //Whenever this runs it will retrieve the token
 const orgStore = writable({
     organisations:[],
@@ -177,9 +176,23 @@ const orgStoreActions = {
   },
   getStaff: async (data) => {
     console.log('GET THE STAFF');
+  },
+  deleteFloor: async (data) => {
+    let success = false;
+    await authConn.delete('/api/desks/deletefloor/',{data:data})
+    .then(res => {
+        console.log(res.data);
+        orgStore.update(st => {
+          st.currentOrg = res.data;
+          return st;
+        });
+    })
+    .catch(err => {
+        console.log('I am error',err);
+        success = false;
+    });
+    return success;
   }
-  //// TODO: Add API CALL to delete floor api endpoint needs to return the organisation
-  
 
 };
 

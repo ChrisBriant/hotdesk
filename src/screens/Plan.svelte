@@ -29,6 +29,7 @@
     if(isFileTypeValid(image)) {
      console.log('File is valid');
     }
+    editMode = false;
 
   }
 

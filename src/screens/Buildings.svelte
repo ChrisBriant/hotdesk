@@ -24,6 +24,7 @@
   let selectedFloorName= '';
   let selectedFloorId=null;
   let selectedFloorPlan=null;
+  let floorPromise = true;
   let showDialog = false;
   let dialogMessage="Are you sure you want to delete this floor?";
 
@@ -35,6 +36,7 @@
   $: console.log('displayAddBuilding', displayAddBuilding);
 
   $: console.log('Floor ID', selectedFloorId);
+  $: console.log('Buildings', $orgStoreActions.currentOrg.buildings);
 
   const setBuildings = () => {
     buildings = $orgStoreActions.currentOrg.buildings;
@@ -89,6 +91,19 @@
     dispatch('nav',{dest:'addPlan',floorId:selectedFloorId});
   }
 
+  const deleteFloor = async () => {
+    floorPromise = await orgStoreActions.deleteFloor({
+      floorId: selectedFloorId
+    });
+    showDialog=false;
+    setBuildings();
+    selectedBuildingName = '';
+    selectedBuildingId;
+    selectedFloorName= '';
+    selectedFloorId=null;
+    selectedFloorPlan=null;
+  }
+
 </script>
 
 <style>
@@ -127,7 +142,7 @@
       message={dialogMessage}
       on:cancel={() => {showDialog = false}}
       on:no={() => {showDialog = false}}
-      on:yes={() => {console.log('Delete')}}
+      on:yes={deleteFloor}
     />
   {/if}
   <h3>Manage Buildings</h3>
@@ -217,26 +232,30 @@
                 <a href={null} class="link" on:click|preventDefault={(e) => goToFloor()}>Create Floor Plan</a>
               {/if}
             {:else}
-              <img
-                class="floor-plan-img"
-                alt={selectedFloorName}
-                src={`${URLROOT}${selectedFloorPlan.picture}`}
-              />
-              <Spacer />
-              <Button
-                id="edt-floor-plan-btn"
-                type="button"
-                on:click={(e) => goToFloor()}
-                size="small"
-              >
-              Edit Floor Plan</Button>
-              <Button
-                id="del-floor-btn"
-                type="button"
-                on:click={(e) => {showDialog=true}}
-                size="small"
-              >
-              Delete Floor</Button>
+              {#await floorPromise}
+                <p>Deleting...</p>
+              {:then}
+                <img
+                  class="floor-plan-img"
+                  alt={selectedFloorName}
+                  src={`${URLROOT}${selectedFloorPlan.picture}`}
+                />
+                <Spacer />
+                <Button
+                  id="edt-floor-plan-btn"
+                  type="button"
+                  on:click={(e) => goToFloor()}
+                  size="small"
+                >
+                Edit Floor Plan</Button>
+                <Button
+                  id="del-floor-btn"
+                  type="button"
+                  on:click={(e) => {showDialog=true}}
+                  size="small"
+                >
+                Delete Floor</Button>
+              {/await}
             {/if}
           </div>
         {/if}
