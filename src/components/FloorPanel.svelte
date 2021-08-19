@@ -93,12 +93,14 @@
         <Button
           id="save-desks-btn"
           on:click={() => saveDesks()}
-          disabled={!desksAreValid}
+          disabled={allSaved($deskStoreActions.desks)}
+          size="small"
         >Save Desks
         </Button>
         <Button
           id="save-desks-btn"
           on:click={() => exit()}
+          size="small"
         >Exit
         </Button>
     </div>
