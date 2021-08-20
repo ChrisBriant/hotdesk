@@ -110,7 +110,7 @@
 
   /* Style the tab content */
   .tabcontent {
-    padding: 6px 12px;
+    /* padding: 6px 12px; */
     border: 1px solid #ccc;
     border-top: none;
   }

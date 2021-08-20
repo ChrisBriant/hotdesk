@@ -72,22 +72,37 @@
 
 <style>
 
+  .upload-box {
+      display:block;
+      padding: 1rem;
+      position: fixed;
+      top: 5vh;
+      left: 20%;
+      width: 60%;
+      background: white;
+      z-index: 50;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+      overflow: hidden;
+  }
+
 </style>
 
 
 <div class="panel">
   {#if !uploadDisabled}
-    <p>Upload a File</p>
-    <input type="file"
-         id="plan-upload" name="plan-upload"
-         accept="image/png, image/jpeg"
-         disabled={uploadDisabled}
-    >
-    <Button
-      id="upload-plan"
-      on:click={uploadDrawing}
-      disabled={uploadDisabled}
-    >Upload</Button>
+    <div class="upload-box">
+      <p>Upload a File</p>
+      <input type="file"
+           id="plan-upload" name="plan-upload"
+           accept="image/png, image/jpeg"
+           disabled={uploadDisabled}
+      >
+      <Button
+        id="upload-plan"
+        on:click={uploadDrawing}
+        disabled={uploadDisabled}
+      >Upload</Button>
+    </div>
   {:else}
     <Button
       id="upload-plan"

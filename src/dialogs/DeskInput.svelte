@@ -74,7 +74,7 @@
           id="save"
           on:click={saveDesk}
         >
-            save
+            done
         </Button>
         <Button type="button"
           id="cancel"

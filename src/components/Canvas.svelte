@@ -35,12 +35,12 @@
   //Saved rects
 	let currentRect = null;
 
+	const DEFAULTSTROKESTYLE = '#000000';
+	const SELECTEDSTROKECOLOR = '#fc5e03';
+
 	$: if(redrawCommand) {
 		redraw();
 	}
-
-
-	//$:console.log('desk store', $deskStoreActions.desks)
 
 
 	$:console.log('image changed canvas', image,editMode);
@@ -66,19 +66,16 @@
 
 	$: if(imageChanged) {
 		if(!editMode) {
-			console.log("PLEASE RELOAD THE IMAGE");
 	    imgObj = new Image();
 	    let reader = new FileReader();
 	    reader.readAsDataURL(image);
 	    reader.onload = (e) => {
 	      imgObj.src =  e.target.result;
 				//let canvasData = ctx.toDataURL("image/png");
-				console.log('LOADED IMAGE');
 				//For Firefox it has to be called below as well - don't know why
 				//ctx.drawImage(imgObj, 0, 0, width,height);
 	    };
 			reader.onloadend = async (e) => {
-				console.log('IMG OBJ', imgObj);
 				imgObj.onload = async () => {
 					ctx.fillRect(0, 0, width, height);
 					ctx.drawImage(imgObj, 0, 0, width,height);
@@ -87,15 +84,12 @@
 						.then(res => res.blob())
 						.then(blob => {
 							const fd = new FormData();
-							console.log('Here is the blob', blob);
 							const ext = blob.type.split('/')[1];
 							const file = new File([blob], `filename.${ext}`);
 							fd.append('floorId',floorId);
 							fd.append('picture', file);
 							deskStoreActions.saveImage(fd);
-							console.log('Here is the form data', fd.values());
 							for (var value of fd.values()) {
-								 console.log('VAL',value);
 							}
 							redraw();
 					});
@@ -115,12 +109,10 @@
 			let reader = new FileReader();
 	    reader.readAsDataURL(image);
 			reader.onload = async (e) => {
-				console.log('IMAGE LOADED', e);
 				imgObj.src = e.target.result;
 				ctx.drawImage(imgObj, 0, 0, width,height);
 			}
 			reader.onloadend = async (e) => {
-				console.log('IMG OBJ', imgObj);
 				//console.log(reader.result);
 				imgObj.onload = () => {
 					//Loads image and the rectangles
@@ -132,7 +124,6 @@
 	}
 
 	onMount(() => {
-		console.log('MOUNTING');
 		//Get the context and store it
 		ctx = canvas.getContext('2d');
 		deskStoreActions.setContext(ctx);
@@ -159,6 +150,14 @@
 		ctx.drawImage(imgObj, 0, 0, width,height)
     //Draw the saved rects
     for(let i=0;i<$deskStoreActions.desks.length;i++) {
+			console.log("DRAWING", currentRect,$deskStoreActions.desks[i]);
+			if(currentRect) {
+				if(currentRect.id === $deskStoreActions.desks[i].id) {
+					ctx.strokeStyle = SELECTEDSTROKECOLOR;
+				} else {
+					ctx.strokeStyle = DEFAULTSTROKESTYLE;
+				}
+			}
 			$deskStoreActions.desks[i].draw(ctx);
     }
   }
@@ -170,7 +169,9 @@
 			let rectHeight = mousePos.y - yPos;
       redraw();
 			currentRect = new Desk(xPos,yPos,rectWidth,rectHeight);
+			ctx.strokeStyle = SELECTEDSTROKECOLOR;
 			currentRect.draw(ctx);
+			ctx.strokeStyle = DEFAULTSTROKESTYLE;
 			drawing = true;
     }
   }
@@ -191,6 +192,7 @@
 	      draw = true;
 	    };
 		}
+		redraw();
   }
 
   const handleUnClick = (e) => {
@@ -221,6 +223,12 @@
 <style>
 	.canvas-drawing {
 		cursor:crosshair;
+	}
+
+	canvas {
+		border-bottom: 1px solid #000;
+		border-left: 1px solid #000;
+		border-right: 1px solid #000;
 	}
 
 	/* .canvas-nocursor {

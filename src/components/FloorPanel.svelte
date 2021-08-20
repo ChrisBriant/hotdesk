@@ -54,9 +54,44 @@
 </script>
 
 <style>
+  li {
+    list-style-type: none;
+  }
+
+  .pill-container {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      padding: 5px;
+  }
+
+  .pill {
+  	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+  	border-radius: 15px;
+  	background: white;
+  	padding: 8px;
+  	margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 8px;
+  }
+
+  .pill:hover {
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.26);
+    background-color: #fbffb0;
+  }
+
+  .flat-panel {
+    margin: auto;
+    border-top: 1px solid #000;
+    border-left: 1px solid #000;
+    border-right: 1px solid #000;
+    background-color: #ccc981;
+    width: 802px;
+  }
+
 </style>
 
-<div>
+<div class="flat-panel">
   {#if launchCreatedDialog}
     <GeneralMessage
         message={successMessage}
@@ -77,18 +112,20 @@
   <div class="row">
     <div class="col">
       <h4>Desks</h4>
-      <ul>
+      <div class="pill-container">
         {#each $deskStoreActions.desks as desk,i (desk.id) }
-          <li>
+          <div class="pill">
             {#if desk.name !== ''}
               <a class="link" href={null} on:click={() => {selectedDesk=desk;launchDeskDialog=true;}}>{desk.name}</a>
             {:else}
               <a class="link" href={null} on:click={() => {selectedDesk=desk;launchDeskDialog=true;}}>{desk.id}</a>
             {/if}
-          </li>
+          </div>
         {/each}
-      </ul>
+      </div>
     </div>
+  </div>
+  <div class="row">
     <div class="col">
         <Button
           id="save-desks-btn"

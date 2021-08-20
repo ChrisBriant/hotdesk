@@ -134,6 +134,10 @@
   .space {
     height: 1rem;
   }
+
+  .tab-box-header {
+    background-color: #ccc981;
+  }
 </style>
 
 <section>
@@ -145,9 +149,11 @@
       on:yes={deleteFloor}
     />
   {/if}
-  <h3>Manage Buildings</h3>
-  <p>Here you can add new buildings to the organisation and manage them by uploading
-  floor plans.</p>
+  <div class="tab-box-header">
+    <h3>Manage Buildings</h3>
+    <p>Here you can add new buildings to the organisation and manage them by uploading
+    floor plans.</p>
+  </div>
   {#if buildings.length > 0}
     <div class="row">
       <div class="col">
@@ -229,7 +235,13 @@
             {#if !selectedFloorPlan}
               <!-- A building and floor has been selected -->
               {#if selectedFloorId}
-                <a href={null} class="link" on:click|preventDefault={(e) => goToFloor()}>Create Floor Plan</a>
+                <Button
+                  id="create-floor-plan-btn"
+                  type="button"
+                  on:click={(e) => goToFloor()}
+                  size="small"
+                >
+                Create Floor Plan</Button>
               {/if}
             {:else}
               {#await floorPromise}

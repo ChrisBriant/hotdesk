@@ -74,6 +74,13 @@ button:focus {
 	margin: auto;
 }
 
+/********************************Organisation Page ***************/
+
+.tab-box-header {
+	background-color: #ccc981;
+	padding: 12px;
+	margin-bottom: 6px;
+}
 
 
 /********************************My Stylyes********************/
