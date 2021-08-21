@@ -92,7 +92,5 @@
         {/each}
       </div>
     {/if}
-  {:else}
-    <p>You are not logged on.</p>
   {/if}
 </section>

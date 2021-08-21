@@ -36,7 +36,8 @@
 <style>
 	main {
 		text-align: center;
-		padding: 1em;
+    margin: 0;
+    padding:0;
 		max-width: 240px;
 		margin: 0 auto;
 	}
@@ -51,6 +52,9 @@
 	@media (min-width: 640px) {
 		main {
 			max-width: none;
+      margin: 0;
+      padding:0;
+      min-height: 100vh;
 		}
 	}
 
@@ -65,6 +69,14 @@
 
   header.non-hero {
       height:10vh;
+  }
+
+  footer {
+    background-color: #93B5C6;
+    min-height: 10vh;
+    text-align: center;
+    padding:10px;
+    margin-top: 10px;
   }
 
 
@@ -151,3 +163,8 @@
     />
   {/if}
 </main>
+
+<footer>
+  <a href="https://chrisbriant.uk/" target="_blank">My Work</a> |
+
+</footer>

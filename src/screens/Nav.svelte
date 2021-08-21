@@ -27,18 +27,19 @@
     /* Add a black background color to the top navigation */
     .topnav {
     /* background-color: #333; */
-    background-color: #361219;
+    background-color: #00aaff;
     overflow: hidden;
     }
 
     /* Style the links inside the navigation bar */
     .topnav a, span {
         float: left;
-        color: #FF916C;
+        color: #fff;
         text-align: center;
         padding: 14px 16px;
         text-decoration: none;
         font-size: 100%;
+        font-weight: 700;
     }
 
     /* Change the color of links on hover */
@@ -62,14 +63,14 @@
 
 {#if authenticated}
     <nav class="topnav">
-        <span>Quiz Master</span>
+        <span>Hotdesk</span>
         <a class="{active === 'home' ? 'active' : ''}" {href} on:click|preventDefault={() => navigate('home')}>Home</a>
         <a class="{active === 'logout' ? 'active' : ''}" {href} on:click|preventDefault={() => navigate('logout')}>Logout</a>
         <a class="{active === 'about' ? 'active' : ''}" {href} on:click|preventDefault={() => navigate('about')}>About</a>
     </nav>
 {:else}
     <nav class="topnav">
-        <span>Quiz Master</span>
+        <span>Hotdesk</span>
         <a class="{active === 'home' ? 'active' : ''}" {href} on:click|preventDefault={() => navigate('home')} >Home</a>
         <a class="{active === 'login' ? 'active' : ''}" {href} on:click|preventDefault={() => navigate('login')}>Login</a>
         <a class="{active === 'register' ? 'active' : ''}" {href} on:click|preventDefault={() => navigate('register')}>Register</a>
