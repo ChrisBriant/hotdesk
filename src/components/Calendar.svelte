@@ -1,4 +1,5 @@
 <script>
+  import moment from 'moment';
   import { createEventDispatcher,onMount } from 'svelte';
   import { bookingStoreActions } from '../stores/bookingstore';
   import { getMonthName,simpleDateCompare } from '../helpers/helpers';
@@ -57,18 +58,38 @@
     disabled = false;
   }
 
-  const changeMonth = (direction) => {
+  const changeMonth = async (direction) => {
     console.log('Change Direction', direction);
+    //let newSelectedDate;
     if(direction==="fwd") {
-      selectedDate = new Date(year,month,1);
-      month = selectedDate.getMonth() + 1;
-      year = selectedDate.getFullYear();
+      if(month === 12) {
+        month = 1;
+        year = year + 1;
+      } else {
+        month++;
+      }
+      // month = selectedDate.getMonth() + 1;
+      // year = selectedDate.getFullYear();
+      //newSelectedDate = new Date(year,month,1);
+
     } else {
-      selectedDate = new Date(year,month-2,1);
-      month = selectedDate.getMonth() + 1;
-      year = selectedDate.getFullYear();
+      if(month === 1) {
+        month = 12;
+        year--;
+      } else {
+        month--;
+      }
+      // selectedDate = new Date(year,month-2,1);
+      // month = selectedDate.getMonth() + 1;
+      // year = selectedDate.getFullYear();
+      // newSelectedDate = new Date(year,month,1);
     }
-    promise = bookingStoreActions.getBookings({
+    console.log('SELECTED DATE', selectedDate);
+    const dateStr = `${year}-${month}-1`;
+    selectedDate = new Date(dateStr);
+    bookingStoreActions.setDay({date:selectedDate});
+    console.log("DAY", $bookingStoreActions.selectedDay, selectedDate);
+    promise = await bookingStoreActions.getBookings({
       orgId,
       floorId,
       month,

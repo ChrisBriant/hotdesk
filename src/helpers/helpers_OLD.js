@@ -29,7 +29,6 @@ export function isEmpty(obj) {
   return JSON.stringify(obj) === JSON.stringify({});
 }
 
-
 //////////////////// CALENDAR PROCESSING ////////////////////
 
 function splitArray(array,chunkSize ) {
@@ -43,43 +42,7 @@ function splitArray(array,chunkSize ) {
 }
 
 
-function isLeapYear(year) {
-  return year % 4 === 0;
-}
-
-function getLastOfMonth(year,month) {
-  switch(month) {
-    case 1:
-      return 31;
-    case 2:
-      if(isLeapYear(year)) {
-        return 29;
-      } else {
-        return 28;
-      }
-    case 3:
-      return 31;
-    case 4:
-      return 30;
-    case 5:
-      return 31;
-    case 6:
-      return 30;
-    case 7:
-      return 31;
-    case 8:
-      return 31;
-    case 9:
-      return 30;
-    case 10:
-      return 31;
-    case 11:
-      return 30;
-    case 12:
-      return 31;
-  }
-}
-
+//https://stackoverflow.com/questions/23593052/format-javascript-date-as-yyyy-mm-dd
 function formatDate(date) {
     var d = new Date(date),
         month = '' + (d.getMonth() + 1),
@@ -94,63 +57,38 @@ function formatDate(date) {
     return [year, month, day].join('-');
 }
 
-const monthNames = {
-  1: 'January',
-  2: 'February',
-  3: 'March',
-  4: 'April',
-  5: 'May',
-  6: 'June',
-  7: 'July',
-  8: 'August',
-  9: 'September',
-  10: 'October',
-  11: 'November',
-  12: 'December'
-}
-
-export function getMonthName(monthNo) {
-  return monthNames[monthNo];
-}
-
-
 //Transform the month data into an array where it can be output sequentially
 export const transformMonthData = (year,month,slots) => {
   let monthData = []
+  const firstOfMonth = new Date(year,month-1,1);
+  const lastOfMonth = new Date(year,month,0);
 
-  const firstOfMonthStr = `${year}-${month}-1`;
-  const firstOfMonth = new Date(firstOfMonthStr);
-  const lastOfMonthStr = `${year}-${month}-${getLastOfMonth(year,month)}`;
-  const lastOfMonth = new Date(lastOfMonthStr);
+  console.log('Months',firstOfMonth,lastOfMonth);
 
-  //Adjust for calendar so that Sunday is day 7 and Monday day 0
+  let startDay;
+  if(firstOfMonth.getDay() === 0) {
+    startDay = 7;
+  } else {
+    startDay = firstOfMonth.getDay() -1;
+  }
+  //Set the blank days
+  let beforeMonth = new Date(firstOfMonth.getTime());
+  beforeMonth.setDate(beforeMonth.getDate() - startDay);
 
-  if(firstOfMonth.getDay() !== 1) {
-    //Set the blank days
-    let beforeMonthStr = '';
-    if(month === 1) {
-      beforeMonthStr = `${year-1}-12-${getLastOfMonth(year-1,12)}`;
-    } else {
-      beforeMonthStr = `${year}-${month-1}-${getLastOfMonth(year,month-1)}`;
-    }
-    let beforeMonth = new Date(beforeMonthStr);
-
-    //Wind back
-    while(beforeMonth.getDay() !== 1) {
-      beforeMonth.setDate(beforeMonth.getDate() - 1);
-    }
-
-    while(beforeMonth.getMonth() !== firstOfMonth.getMonth()) {
+  for(let i=0;i<startDay;i++) {
+    //Go backwards
+    if(beforeMonth.getDay() >  0) {
       monthData.push({
         active:false,
         gone: true,
         className: 'inactive-day',
         day: beforeMonth.getDate(),
         date: new Date(beforeMonth.getTime()),
+        //dateStr: `${beforeMonth.getFullYear()}-${beforeMonth.getMonth()}-${beforeMonth.getDate()}`
         dateStr: formatDate(beforeMonth)
       });
-      beforeMonth.setDate(beforeMonth.getDate() + 1);
     }
+    beforeMonth = new Date(beforeMonth.setDate(beforeMonth.getDate() + 1));
   }
 
   //Sandwich the actual month
@@ -164,13 +102,13 @@ export const transformMonthData = (year,month,slots) => {
       gone = true;
       className = 'passed-day';
     }
-
     monthData.push({
       active:true,
       gone: gone,
       className: className,
       day: firstOfMonth.getDate(),
       date: new Date(firstOfMonth.getTime()),
+      //available: slots[`${formatDate(firstOfMonth)}`].available,
       dateStr: formatDate(firstOfMonth)
     });
     firstOfMonth.setDate(firstOfMonth.getDate() + 1);
@@ -194,6 +132,25 @@ export const transformMonthData = (year,month,slots) => {
   return(splitArray(monthData,7));
 }
 
+
+const monthNames = {
+  1: 'January',
+  2: 'February',
+  3: 'March',
+  4: 'April',
+  5: 'May',
+  6: 'June',
+  7: 'July',
+  8: 'August',
+  9: 'September',
+  10: 'October',
+  11: 'November',
+  12: 'December'
+}
+
+export function getMonthName(monthNo) {
+  return monthNames[monthNo];
+}
 
 export function simpleDateCompare(date1,date2) {
   return date1.getMonth() === date2.getMonth()

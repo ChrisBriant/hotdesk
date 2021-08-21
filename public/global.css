@@ -83,9 +83,25 @@ button:focus {
 }
 
 
+.tab-box-body {
+	padding: 12px;
+	margin-bottom: 6px;
+}
+
+.table-header div{
+	font-weight: bold;
+}
+
+
+
 /********************************My Stylyes********************/
 .left-align-txt {
 	overflow: auto;
 	text-align: left;
 	overflow-wrap: break-word;
+}
+
+
+.error {
+	color: #ed492f;
 }

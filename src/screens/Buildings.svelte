@@ -135,9 +135,6 @@
     height: 1rem;
   }
 
-  .tab-box-header {
-    background-color: #ccc981;
-  }
 </style>
 
 <section>
@@ -154,6 +151,7 @@
     <p>Here you can add new buildings to the organisation and manage them by uploading
     floor plans.</p>
   </div>
+  <Spacer />
   {#if buildings.length > 0}
     <div class="row">
       <div class="col">

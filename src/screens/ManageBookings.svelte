@@ -49,60 +49,65 @@
       on:yes={() => {deleteBooking()}}
     />
   {/if}
-  <h2>Manage Bookings for {$orgStoreActions.currentOrg.name}</h2>
+  <div class="tab-box-header">
+    <h3>Manage Bookings for {$orgStoreActions.currentOrg.name}</h3>
+    <p>As an administrator, you can remove other peoples bookings on this page.</p>
+  </div>
   {#await promise}
     <p>Loading...</p>
   {:then}
-    {#if $bookingStoreActions.myBookings.length === 0}
-      <p>No bookings exist for this organisation.</p>
-    {:else}
-      <div class="row">
-        <div class="col left-align-txt">
-          Building
-        </div>
-        <div class="col left-align-txt">
-          Floor
-        </div>
-        <div class="col left-align-txt">
-          Desk Name
-        </div>
-        <div class="col left-align-txt">
-          Date Booked
-        </div>
-        <div class="col left-align-txt">
-          User
-        </div>
-        <div class="col left-align-txt">
-          Cancel
-        </div>
-      </div>
-      {#each $bookingStoreActions.myBookings as booking,i (i)}
-        <div class="row">
+    <div class="tab-box-body">
+      {#if $bookingStoreActions.myBookings.length === 0}
+        <p>No bookings exist for this organisation.</p>
+      {:else}
+        <div class="row table-header">
           <div class="col left-align-txt">
-            {booking.desk.desk_building}
+            Building
           </div>
           <div class="col left-align-txt">
-            {booking.desk.desk_floor}
+            Floor
           </div>
           <div class="col left-align-txt">
-            {booking.desk.name}
+            Desk Name
           </div>
           <div class="col left-align-txt">
-            {booking.date_str}
+            Date Booked
           </div>
           <div class="col left-align-txt">
-            {booking.user.email}
+            User
           </div>
           <div class="col left-align-txt">
-            <a href={null}
-               class="link"
-               on:click={() => {cancelBooking(booking.id,booking.desk.name,booking.date_str)}}
-            >
-              Cancel Booking
-            </a>
+            Cancel
           </div>
         </div>
-      {/each}
-    {/if}
+        {#each $bookingStoreActions.myBookings as booking,i (i)}
+          <div class="row">
+            <div class="col left-align-txt">
+              {booking.desk.desk_building}
+            </div>
+            <div class="col left-align-txt">
+              {booking.desk.desk_floor}
+            </div>
+            <div class="col left-align-txt">
+              {booking.desk.name}
+            </div>
+            <div class="col left-align-txt">
+              {booking.date_str}
+            </div>
+            <div class="col left-align-txt">
+              {booking.user.email}
+            </div>
+            <div class="col left-align-txt">
+              <a href={null}
+                 class="link"
+                 on:click={() => {cancelBooking(booking.id,booking.desk.name,booking.date_str)}}
+              >
+                Cancel Booking
+              </a>
+            </div>
+          </div>
+        {/each}
+      {/if}
+    </div>
   {/await}
 </section>

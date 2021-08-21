@@ -11,6 +11,7 @@
   export let desk;
   export let name = "";
   let id;
+  let errorMessage='';
 
   onMount(() => {
     //id = stringGen(16);
@@ -20,9 +21,15 @@
 
   const saveDesk = () => {
     console.log('Desk is callled', name);
-    desk.setName(name);
-    deskStoreActions.replaceDesk(desk);
-    dispatch('cancel');
+    if(name !== '') {
+      errorMessage='';
+      desk.setName(name);
+      deskStoreActions.replaceDesk(desk);
+      dispatch('cancel');
+    } else {
+      errorMessage='Please enter a name for the desk.'
+    }
+
   }
 
   const deleteDesk = () => {
@@ -82,6 +89,7 @@
         >
             cancel
         </Button>
+        <p class="error">{errorMessage}</p>
     </div>
   </Modal>
 </div>

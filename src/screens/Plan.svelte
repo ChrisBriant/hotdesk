@@ -72,12 +72,23 @@
 
 <style>
 
+  .backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.75);
+      z-index: 10;
+   }
+
   .upload-box {
       display:block;
       padding: 1rem;
-      position: fixed;
-      top: 5vh;
+      position: absolute;
+      top: 40vh;
       left: 20%;
+      right: 20%;
       width: 60%;
       background: white;
       z-index: 50;
@@ -90,6 +101,8 @@
 
 <div class="panel">
   {#if !uploadDisabled}
+    <div class="backdrop" on:click="{() => dispatch('cancel')}" ></div>
+
     <div class="upload-box">
       <p>Upload a File</p>
       <input type="file"
@@ -102,6 +115,12 @@
         on:click={uploadDrawing}
         disabled={uploadDisabled}
       >Upload</Button>
+      {#if editMode}
+        <Button
+          id="upload-plan"
+          on:click={() => {uploadDisabled=true;}}
+        >Cancel</Button>
+      {/if}
     </div>
   {:else}
     <Button

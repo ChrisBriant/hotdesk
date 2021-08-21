@@ -45,9 +45,9 @@ const bookingStoreActions = {
           bookingStore.update(st => {
             st.bookings = res.data;
             st.calendar = transformMonthData(data.year,data.month,res.data);
-            success = true
             return st;
           });
+          success = true;
       });
       return success;
     },
@@ -77,8 +77,10 @@ const bookingStoreActions = {
     isBooked: (desk) => {
       let found = false;
       const unsubscribe = bookingStore.subscribe(st => {
+        console.log(st.bookings);
         if(st.bookings) {
           const dateIdx = moment(st.selectedDay.date).format('DD/MM/YYYY');
+          console.log('DATE INDEX', dateIdx);
           const bookings = st.bookings.out_slots[dateIdx];
           for(let i=0;i<bookings.length;i++) {
             if(bookings[i].id===desk.apiId) {

@@ -57,6 +57,10 @@
 </script>
 
 <style>
+  .desk-select {
+    vertical-align: middle;
+  }
+
 </style>
 
 
@@ -70,27 +74,30 @@
   {/if}
   <p>{moment($bookingStoreActions.selectedDay.date).format('LL')}</p>
   {#if $deskStoreActions.desks.length > 0}
-    <select
-      name="desks"
-      id="desks"
-      on:change={(e) => {changeDesk(e)}}
+    <div class="desk-select">
+      <select
+        name="desks"
+        id="desks"
+        on:change={(e) => {changeDesk(e)}}
 
-    >
-        {#each $deskStoreActions.desks as desk, i (i)}
-          {#if !bookingStoreActions.isBooked(desk)}
-            <option
-              value="{desk.id}"
-              selected={$deskStoreActions.selectedDesk.id === desk.id}
-            >{desk.name}</option>
-          {/if}
-        {/each}
-    </select>
-    <Button
-      id="book-btn"
-      type="button"
-      on:click={makeBooking}
-    >
-      Book
-    </Button>
+      >
+          {#each $deskStoreActions.desks as desk, i (i)}
+            {#if !bookingStoreActions.isBooked(desk)}
+              <option
+                value="{desk.id}"
+                selected={$deskStoreActions.selectedDesk.id === desk.id}
+              >{desk.name}</option>
+            {/if}
+          {/each}
+      </select>
+      <Button
+        id="book-btn"
+        type="button"
+        on:click={makeBooking}
+        size="small"
+      >
+        Book
+      </Button>
+    </div>
   {/if}
 </div>

@@ -71,7 +71,9 @@
 					imgObj.src = e.target.result;
 				}
 				reader.onloadend = async (e) => {
-					draw();
+					imgObj.onload = async () => {
+						draw();
+					}
 				}
 				dispatch('resetchange');
 		});
@@ -126,12 +128,8 @@
 </script>
 
 <style>
-	.canvas-drawing {
+	/* .canvas-drawing {
 		cursor:crosshair;
-	}
-
-	/* .canvas-nocursor {
-		cursor:none;
 	} */
 
 </style>
