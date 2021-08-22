@@ -96,6 +96,7 @@ const authStoreActions = {
     },
     forgotPassword: async (forgotData) => {
         let responseObj = {};
+        console.log('PAYLOAD IS ', forgotData);
         await conn.post('/api/account/forgotpassword/', forgotData)
         .then(res => {
             console.log(res);

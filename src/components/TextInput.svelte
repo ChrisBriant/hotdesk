@@ -79,7 +79,7 @@
     <div class="display-inline">
     <label for={id}>{label}</label>
       {#if controlType === 'textarea'}
-        <textarea class:invalid="{!valid && touched}" {rows} {id} bind:value on:blur={() => touched = true} />
+        <textarea class:invalid="{!valid && touched}" {rows} {id} bind:value on:input on:blur={() => touched = true} />
       {:else}
         <input class:invalid="{!valid && touched}" {type} {id} {value} on:input on:blur={() => touched = true} />
       {/if}
@@ -90,7 +90,7 @@
   {:else}
     <label for={id}>{label}</label>
     {#if controlType === 'textarea'}
-      <textarea class:invalid="{!valid && touched}" {rows} {id} bind:value on:blur={() => touched = true} />
+      <textarea class:invalid="{!valid && touched}" {rows} {id} bind:value on:input on:blur={() => touched = true} />
     {:else}
       <input class:invalid="{!valid && touched}" {type} {id} {value} on:input on:blur={() => touched = true} />
     {/if}

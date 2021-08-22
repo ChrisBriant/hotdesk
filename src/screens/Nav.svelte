@@ -66,7 +66,7 @@
         <span>Hotdesk</span>
         <a class="{active === 'home' ? 'active' : ''}" {href} on:click|preventDefault={() => navigate('home')}>Home</a>
         <a class="{active === 'logout' ? 'active' : ''}" {href} on:click|preventDefault={() => navigate('logout')}>Logout</a>
-        <a class="{active === 'about' ? 'active' : ''}" {href} on:click|preventDefault={() => navigate('about')}>About</a>
+        <a class="{active === 'contact' ? 'active' : ''}" {href} on:click|preventDefault={() => navigate('contact')}>Contact</a>
     </nav>
 {:else}
     <nav class="topnav">
@@ -75,6 +75,6 @@
         <a class="{active === 'login' ? 'active' : ''}" {href} on:click|preventDefault={() => navigate('login')}>Login</a>
         <a class="{active === 'register' ? 'active' : ''}" {href} on:click|preventDefault={() => navigate('register')}>Register</a>
         <a class="{active === 'forgot' ? 'active' : ''}" {href} on:click|preventDefault={() => navigate('forgot')}>Forgot</a>
-        <a href="#about">About</a>
+        <a class="{active === 'contact' ? 'active' : ''}" {href} on:click|preventDefault={() => navigate('contact')}>Contact</a>
     </nav>
 {/if}

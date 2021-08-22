@@ -11,7 +11,9 @@
   let promise;
 
   onMount(() => {
-    orgStoreActions.loadOrganisations();
+    if(authStoreActions.isAuthenticated()) {
+      orgStoreActions.loadOrganisations();
+    }
   });
 
   const goToOrg = async (orgId) => {

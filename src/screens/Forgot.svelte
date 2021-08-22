@@ -7,17 +7,17 @@
     import { createEventDispatcher } from "svelte";
 
     let email = '';
-    let promise = {
-        success : true,
-        message : ''
-    };
-
+    let promise = true;
+    let submittedSuccess = false;
     $: emailValid = isValidEmail(email);
+    $: promise;
+
 
     const dispatch = createEventDispatcher();
 
     const submitForm = async () => {
         promise  = await authStoreActions.forgotPassword({email});
+        submittedSuccess = promise.success;
     }
 </script>
 
@@ -27,16 +27,16 @@
 
 <section>
   <Spacer />
-  <div class="dialog">
+  <div class="panel">
       {#await promise}
           <p>Sending...</p>
       {:then result}
-          {#if promise.success}
+          {#if submittedSuccess}
               <h1>Forgot Password</h1>
               <p>{promise.message}</p>
               <p>You will receive an email to the registered email address. Please click on the link contained
                   within that email to rest your password.</p>
-              <a href="{null}" on:click="{() => {dispatch('forgotten','login')}}">Click here to login</a>
+              <a href="{null}" class="link" on:click="{() => {dispatch('forgotten','login')}}">Click here to login</a>
           {:else}
               <h1>Forgot Password</h1>
               <p>Please enter the email address you registered with. We will send you an email with rest instructions.</p>
@@ -52,7 +52,6 @@
                   />
               </form>
               <Button type="button" on:click={submitForm} disabled={!emailValid}>Send</Button>
-              <p class="message">{promise.message}</p>
           {/if}
       {/await}
   </div>

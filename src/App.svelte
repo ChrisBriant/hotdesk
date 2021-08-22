@@ -6,6 +6,7 @@
   import Forgot from './screens/Forgot.svelte';
   import Login from './screens/Login.svelte';
   import Home from './screens/Home.svelte';
+  import Contact from './screens/Contact.svelte';
   import Organisation from './screens/Organisation.svelte';
   import Register from './screens/Register.svelte';
   import RegisterOrg from './screens/RegisterOrg.svelte';
@@ -161,6 +162,8 @@
       {floorId}
       on:nav={(r) => {route = r.detail;}}
     />
+  {:else if route === 'contact'}
+    <Contact />
   {/if}
 </main>
 
