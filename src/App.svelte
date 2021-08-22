@@ -62,7 +62,7 @@
   header.hero {
       background-image: url(/assets/hero.png);
       /* background-image: linear-gradient(rgba(0, 0, 0, 0.7),rgba(0, 0, 0, 0.7)),url(/assets/hero.png);*/
-      height:100vh;
+      min-height:120vh;
       background-size: cover;
       background-position: center;
       background-attachment: fixed;
@@ -163,11 +163,14 @@
       on:nav={(r) => {route = r.detail;}}
     />
   {:else if route === 'contact'}
-    <Contact />
+    <Contact
+      on:nav={(r) => {route = r.detail;}}
+    />
   {/if}
 </main>
 
 <footer>
   <a href="https://chrisbriant.uk/" target="_blank">My Work</a> |
-
+  <a href={null} class="link" on:click={() => {route = 'contact'}}>Contact</a> |
+  <a href="https://github.com/ChrisBriant" target="_blank">Git Hub</a>
 </footer>

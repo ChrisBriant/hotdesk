@@ -2,6 +2,7 @@
     import Spacer from "../components/Spacer.svelte";
     import TextInput from "../components/TextInput.svelte";
     import Button from "../components/Button.svelte";
+    import orgStoreActions from "../stores/orgstore";
     import authStoreActions from "../stores/authstore";
     import { isEmpty, isValidEmail } from "../helpers/validation.js";
     import { createEventDispatcher } from "svelte";
@@ -14,19 +15,18 @@
     $: sendMessageValid = !isEmpty(sendMessage);
     $: formIsValid = sendMessageValid && subjectValid;
 
-    $: console.log('Message is ', sendMessage);
 
     const dispatch = createEventDispatcher();
 
     const submitForm = async () => {
-        promise  = await authStoreActions.login({email,password});
-        console.log(promise);
-        if(promise.success) {
-            orgStoreActions.addOrganisations(promise.org_data);
-            dispatch('loggedIn');
-        }  else {
-             error = "Error logging in";
+        let payload = {
+          subject,
+          message: sendMessage
         }
+        subject = '';
+        sendMessage= '';
+        promise  = await orgStoreActions.contact(authStoreActions.isAuthenticated(),payload);
+        console.log(promise);
     }
 </script>
 
@@ -40,30 +40,39 @@
       {#await promise}
           <p>Sending...</p>
       {:then}
-        <div class="panel">
-          <h1>Contact</h1>
-          <p>Send a message to the author of this website.</p>
-          <form on:submit|preventDefault={submitForm}>
-              <TextInput
-                id="txt-input-subject"
-                label="Subject:"
-                valid={subjectValid}
-                validityMessage="Please enter a subject."
-                value={subject}
-                on:input={event => (subject = event.target.value)}
-              />
-              <TextInput
-                id="txt-input-message"
-                label="Message:"
-                controlType="textarea"
-                valid={sendMessageValid}
-                validityMessage="Please type a message."
-                value={sendMessage}
-                on:input={e => (sendMessage = e.target.value)}
-              />
-          </form>
-          <Button id="contact-btn" type="button" on:click={submitForm} disabled={!formIsValid}>Send</Button>
-        </div>
+        {#if !promise}
+          <div class="panel">
+            <h1>Contact</h1>
+            <p>Send a message to the author of this website.</p>
+            <form on:submit|preventDefault={submitForm}>
+                <TextInput
+                  id="txt-input-subject"
+                  label="Subject:"
+                  valid={subjectValid}
+                  validityMessage="Please enter a subject."
+                  value={subject}
+                  on:input={event => (subject = event.target.value)}
+                />
+                <TextInput
+                  id="txt-input-message"
+                  label="Message:"
+                  controlType="textarea"
+                  valid={sendMessageValid}
+                  validityMessage="Please type a message."
+                  value={sendMessage}
+                  on:input={e => (sendMessage = e.target.value)}
+                />
+            </form>
+            <Button id="contact-btn" type="button" on:click={submitForm} disabled={!formIsValid}>Send</Button>
+          </div>
+        {:else}
+          <p>A contact message has been successfully sent.</p>
+          <p>Click here to go back the
+          <a
+            href={null}
+            class="link"
+            on:click={() => {dispatch('nav','home')}} >home</a> screen.</p>
+        {/if}
       {/await}
   </div>
 </section>

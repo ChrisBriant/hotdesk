@@ -2,6 +2,7 @@ import { writable } from 'svelte/store';
 //import axios from 'axios';
 import decode from 'jwt-decode';
 import {authConn} from '../helpers/connections.js';
+import {conn} from '../helpers/connections.js';
 
 //Whenever this runs it will retrieve the token
 const orgStore = writable({
@@ -191,6 +192,33 @@ const orgStoreActions = {
         console.log('I am error',err);
         success = false;
     });
+    return success;
+  },
+  contact: async (authed,data) => {
+    console.log('AM I AUTHED', authed,data);
+    let success = false;
+    if(authed) {
+      await authConn.post('/api/desks/contact/',data,getConfig())
+      .then(res => {
+          console.log(res.data);
+          success = true;
+      })
+      .catch(err => {
+          console.log('I am error',err);
+          success = false;
+      });
+    } else {
+      await conn.post('/api/desks/contact/',data)
+      .then(res => {
+          console.log(res.data);
+          success = true;
+      })
+      .catch(err => {
+          console.log('I am error',err);
+          success = false;
+      });
+    }
+
     return success;
   }
 

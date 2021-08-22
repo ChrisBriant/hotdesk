@@ -85,7 +85,7 @@
     border-top: 1px solid #000;
     border-left: 1px solid #000;
     border-right: 1px solid #000;
-    background-color: #ccc981;
+    background-color: #FFE3E3;
     width: 802px;
   }
 
