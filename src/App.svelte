@@ -6,6 +6,7 @@
   import Forgot from './screens/Forgot.svelte';
   import Login from './screens/Login.svelte';
   import Home from './screens/Home.svelte';
+  import JoinOrg from './screens/JoinOrg.svelte';
   import Contact from './screens/Contact.svelte';
   import Organisation from './screens/Organisation.svelte';
   import Register from './screens/Register.svelte';
@@ -17,6 +18,7 @@
   let route = 'home';
   let floorId;
   let cookiesAccepted = false;
+  let queryParam = window.location.search;
 
   $: console.log('Logged In',loggedIn);
   $: console.log('ROUTE',route);
@@ -25,6 +27,11 @@
   $: if(authStoreActions.getCookiesAccepted()) {
       cookiesAccepted = true;
       console.log('Cookes');
+  }
+
+  //// TODO: Get the first part of the query param, if equal to 'joinorg', change the route
+  $: if(queryParam.split('=')[0] === '?joinorg') {
+      route = 'joinorgurl';
   }
 
   function logout() {
@@ -164,6 +171,11 @@
     />
   {:else if route === 'contact'}
     <Contact
+      on:nav={(r) => {route = r.detail;}}
+    />
+  {:else if route === 'joinorgurl'}
+    <JoinOrg
+      orgId={queryParam.split('=')[1]}
       on:nav={(r) => {route = r.detail;}}
     />
   {/if}

@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 const baseURL = 'http://127.0.0.1:8000';
+const homeURL = 'http://localhost:5000';
 
 const conn = axios.create({
     baseURL,
@@ -27,10 +28,4 @@ const authConn = axios.create({
     }
 });
 
-//const AUTH_TOKEN = localStorage.getItem("quiz_token");
-
-//Set the authorisation tokens for the connections
-// conn.defaults.headers.common['Authorization'] = AUTH_TOKEN;
-// multipartConn.defaults.headers.common['Authorization'] = AUTH_TOKEN;
-
-export {conn, multipartConn, authConn, baseURL};
+export {conn, multipartConn, authConn, baseURL, homeURL};

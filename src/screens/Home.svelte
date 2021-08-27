@@ -38,9 +38,26 @@
     {#if $orgStoreActions.organisations.length > 0}
       <div class="panel">
       <h2>My Organisations</h2>
+        <div class="row">
+          <div class="col-md-3 left-align-txt">
+            <p><strong>Organisation</strong></p>
+          </div>
+          <div class="col-md-3 left-align-txt">
+            <p><strong>Joining Code</strong></p>
+          </div>
+          <div class="col-md-2 left-align-txt">
+            <p><strong>Role</strong></p>
+          </div>
+          <div class="col-md-2 left-align-txt">
+            <p><strong>Status</strong></p>
+          </div>
+          <div class="col-md-2 left-align-txt">
+            <p><strong>Invite</strong></p>
+          </div>
+        </div>
         {#each $orgStoreActions.organisations as org,i (org.id)}
           <div class="row">
-            <div class="col left-align-txt">
+            <div class="col-md-3 left-align-txt">
               {#if org.status === 'Approved' || org.status === "Admin"}
                 <a class="link" {href} on:click|preventDefault={(e) => goToOrg(org.organisation.id)} >
                   {org.organisation.name}
@@ -49,15 +66,17 @@
                 {org.organisation.name}
               {/if}
             </div>
-            <div class="col left-align-txt">{org.organisation.org_id}</div>
+            <div class="col-md-3 left-align-txt">{org.organisation.org_id}</div>
             {#if org.is_owner}
-                <div class="col left-align-txt">Owner</div>
+                <div class="col-md-2 left-align-txt">Owner</div>
             {:else}
-                <div class="col left-align-txt">Employee</div>
+                <div class="col-md-2 left-align-txt">Employee</div>
             {/if}
-            <div class="col left-align-txt">{org.status}</div>
-            <div class="col left-align-text">
-              <a href={`mailto:?subject=You%20are%20invited%20to%20join%20${org.organisation.name}&body=your%20body`}>Invite People</a>
+            <div class="col-md-2 left-align-txt">{org.status}</div>
+            <div class="col-md-2 left-align-txt">
+              {#if org.is_owner}
+                <a href={`mailto:?subject=You%20are%20invited%20to%20join%20${org.organisation.name}&body=your%20body`}>Invite People</a>
+              {/if}
             </div>
           </div>
         {/each}
