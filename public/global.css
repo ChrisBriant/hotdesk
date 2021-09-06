@@ -88,6 +88,15 @@ button:focus {
 	margin: auto;
 }
 
+.home-panel {
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+	border-radius: 5px;
+	background: rgba(255, 255, 255, 0.75);
+	padding: 2%;
+	width: 90%;
+	margin-left: 2%;
+}
+
 /********************************Organisation Page ***************/
 
 .tab-box-header {

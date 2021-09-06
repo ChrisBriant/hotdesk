@@ -1,4 +1,5 @@
 <script>
+  import { onMount } from 'svelte';
   import CookiesDialog from './dialogs/CookiesDialog.svelte';
   import OrganisationOptions from './components/OrganisationOptions.svelte';
   import Plan from './screens/Plan.svelte';
@@ -12,6 +13,8 @@
   import Register from './screens/Register.svelte';
   import RegisterOrg from './screens/RegisterOrg.svelte';
   import authStoreActions from "./stores/authstore";
+  import orgStoreActions from './stores/orgstore';
+  import Spacer from './components/Spacer.svelte';
 
 
   let loggedIn = authStoreActions.isAuthenticated();
@@ -20,19 +23,21 @@
   let cookiesAccepted = false;
   let queryParam = window.location.search;
 
-  $: console.log('Logged In',loggedIn);
-  $: console.log('ROUTE',route);
-  $: console.log('Floor ID App',floorId);
-  $: console.log('COOKIES', authStoreActions.getCookiesAccepted());
   $: if(authStoreActions.getCookiesAccepted()) {
       cookiesAccepted = true;
-      console.log('Cookes');
   }
 
-  //// TODO: Get the first part of the query param, if equal to 'joinorg', change the route
+
   $: if(queryParam.split('=')[0] === '?joinorg') {
       route = 'joinorgurl';
   }
+
+  //Load the organisations if logged on
+  onMount(() => {
+    if(authStoreActions.isAuthenticated()) {
+      orgStoreActions.loadOrganisations();
+    }
+  });
 
   function logout() {
     console.log('logging out');
@@ -98,6 +103,10 @@
   .space {
     height: 10vh;
   }
+
+  .hero-box {
+    margin: auto;
+  }
 </style>
 
 
@@ -122,14 +131,18 @@
         <div class='space'></div>
 
         {#if loggedIn }
-            <!-- <Home
-              on:nav={(r) => {console.log(r.detail);route = r.detail;}}
-            /> -->
             <OrganisationOptions
+              organisations = {$orgStoreActions.organisations}
               on:nav={(r) => { route = r.detail}}
             />
+            <Spacer />
+        {:else}
+          <div class="row">
+            <div class="cold-md-12 home-panel hero-box">
+              <a href="#homepageafterhero">Click Here to Read More</a>
+            </div>
+          </div>
         {/if}
-
       </div>
     {/if}
   </header>
@@ -138,6 +151,7 @@
 
   {#if route === 'home'}
     <Home
+      organisations = {$orgStoreActions.organisations}
       on:nav={(r) => {console.log(r.detail);route = r.detail;}}
     />
   {:else if route === 'login'}

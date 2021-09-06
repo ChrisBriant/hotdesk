@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseURL = 'http://127.0.0.1:8000';
+const baseURL = 'https://hotdeskapi.chrisbriant.uk';
 const homeURL = 'http://localhost:5000';
 
 const conn = axios.create({
@@ -21,7 +21,7 @@ const multipartConn = axios.create({
 
 
 const authConn = axios.create({
-    baseURL: 'http://127.0.0.1:8000',
+    baseURL: 'https://hotdeskapi.chrisbriant.uk',
     headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${localStorage.getItem("hotdesk_token")}`

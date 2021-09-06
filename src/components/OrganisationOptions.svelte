@@ -5,6 +5,11 @@
   import Spacer from '../components/Spacer.svelte';
 
   const dispatch = createEventDispatcher();
+
+  export let organisations;
+
+
+  console.log('Org Store', organisations);
 </script>
 
 <style>
@@ -18,14 +23,7 @@
     margin-right: 2%;
   }
 
-  .home-panel {
-  	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
-  	border-radius: 5px;
-  	background: rgba(255, 255, 255, 0.75);
-  	padding: 2%;
-  	width: 90%;
-    margin-left: 2%;
-  }
+
 
 
 </style>
@@ -35,6 +33,10 @@
     <div class="row">
       <div class="col home-panel">
         <h2>What would you like to do? </h2>
+        {#if organisations.length > 0 }
+          <br/>
+          <a href='#homepageafterhero'>View my Organisations</a>
+        {/if}
       </div>
     </div>
     <Spacer />

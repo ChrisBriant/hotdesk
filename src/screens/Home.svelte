@@ -2,7 +2,7 @@
   import authStoreActions from '../stores/authstore';
   import Button from '../components/Button.svelte';
   import Spacer from '../components/Spacer.svelte';
-  import { createEventDispatcher, onMount } from 'svelte';
+  import { createEventDispatcher } from 'svelte';
   import orgStoreActions from "../stores/orgstore";
 
   const dispatch = createEventDispatcher();
@@ -10,11 +10,7 @@
   let href=null;
   let promise;
 
-  onMount(() => {
-    if(authStoreActions.isAuthenticated()) {
-      orgStoreActions.loadOrganisations();
-    }
-  });
+  export let organisations;
 
   const goToOrg = async (orgId) => {
 
@@ -25,7 +21,7 @@
     }
   }
 
-  $: console.log('ORGANISATIONS', $orgStoreActions.organisations);
+  $: console.log('ORGANISATIONS', organisations);
 
 </script>
 
@@ -34,8 +30,9 @@
 
 
 <section>
+  <a id="homepageafterhero" />
   {#if authStoreActions.isAuthenticated()}
-    {#if $orgStoreActions.organisations.length > 0}
+    {#if organisations.length > 0}
       <div class="panel">
       <h2>My Organisations</h2>
         <div class="row">
@@ -55,7 +52,7 @@
             <p><strong>Invite</strong></p>
           </div>
         </div>
-        {#each $orgStoreActions.organisations as org,i (org.id)}
+        {#each organisations as org,i (org.id)}
           <div class="row">
             <div class="col-md-3 left-align-txt">
               {#if org.status === 'Approved' || org.status === "Admin"}
@@ -81,6 +78,7 @@
           </div>
         {/each}
       </div>
+      <Spacer />
     {/if}
   {:else}
     <div class="home-page-txt">
