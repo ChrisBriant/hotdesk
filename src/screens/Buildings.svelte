@@ -78,6 +78,8 @@
     });
     if(promise) {
       setBuildings();
+      let buildIdx = buildings.findIndex(b => b.id === buildingId);
+      setExpanded(buildIdx);
       displayAddFloor=false;
     }
   }
