@@ -9,7 +9,6 @@
   import MyBookings from './MyBookings.svelte';
   import ManageBookings from './ManageBookings.svelte';
   import ManageStaff from './ManageStaff.svelte';
-  //export let orgId;
 
   const dispatch = createEventDispatcher();
 
@@ -27,21 +26,13 @@
   } else {
     openTab = "make-booking"
   }
-  //let pendingMembers = [];
-  //let promise;
 
-  $:console.log('CURRENT ORG',$orgStoreActions.currentOrg);
 
   onMount( async () => {
-    console.log('MOUNTING ORGANISATION');
     orgStoreActions.loadOrganisation($orgStoreActions.currentOrg.id);
-    //console.log('pending',getPendingApproval());
-    //pendingMembers = getPendingApproval();
-    //promise = orgStoreActions.loadOrganisation(orgId);
   });
 
   const getPendingApproval = () => {
-    //console.log('Pending Approval', $orgStoreActions.currentOrg.memberships.filter(itm => (!itm.approved)));
     pendingApprovals =  $orgStoreActions.currentOrg.memberships.filter(itm => (!itm.approved));
   }
 
@@ -61,7 +52,6 @@
 
   const performAcceptReject = async () => {
     showDialog = false;
-    console.log("ACTION", selectedEmployee.id,$orgStoreActions.currentOrg.id,approving);
     if(approving) {
       promise = await orgStoreActions.acceptEmployee({
         orgId: $orgStoreActions.currentOrg.id,
@@ -77,10 +67,6 @@
       getPendingApproval();
     }
   }
-
-  const navAddFloorPlan = (detail) => {
-    //dispatch
-  }
 </script>
 
 
@@ -88,7 +74,6 @@
   /* Style the tab */
   .tab-container {
     margin: 6px;
-    /* border: black solid 2px; */
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
     background-color: #E4D8DC;
   }
@@ -114,11 +99,6 @@
   /* Change background color of buttons on hover */
   .tab button:hover {
     background-color: #ddd;
-  }
-
-  /* Create an active/current tablink class */
-  .tab button.active {
-    background-color: #ccc;
   }
 
   /* Style the tab content */

@@ -26,7 +26,6 @@
         subject = '';
         sendMessage= '';
         promise  = await orgStoreActions.contact(authStoreActions.isAuthenticated(),payload);
-        console.log(promise);
     }
 </script>
 

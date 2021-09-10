@@ -27,10 +27,8 @@
   $: formIsValid = orgName.length > 3;
   $: joinFormIsValid = orgId.length == 16;
 
-  $:console.log('Authenticated',regType);
 
   const submitForm = async () => {
-    console.log('Create organisation', orgName);
     promise = await orgStoreActions.createOrganisation({orgName});
     if(promise.success) {
       showMessageDiag=true;
@@ -50,7 +48,6 @@
   }
 
   const submitJoinForm = async () => {
-    console.log('Join Organisation', orgId);
     promise = await orgStoreActions.joinOrganisation({orgId});
     if(promise.success) {
       showMessageDiag=true;
@@ -71,7 +68,6 @@
   }
 
   const navigate = () => {
-    console.log('Navigating');
     showMessageDiag = false;
     dispatch('nav','home');
   }

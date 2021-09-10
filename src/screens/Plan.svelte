@@ -1,13 +1,15 @@
 <script>
 	//Screen to display the options for joining a room and lists other users
-  //let roomName = '';
   import Button from '../components/Button.svelte';
+  import { createEventDispatcher } from 'svelte';
   import {isFileTypeValid} from '../helpers/validation';
   import {URLROOT} from '../helpers/settings';
   import {isEmpty} from '../helpers/helpers';
   import Canvas from '../components/Canvas.svelte';
   import FloorPanel from '../components/FloorPanel.svelte';
   import {deskStoreActions} from "../stores/deskstore";
+
+  const dispatch = createEventDispatcher();
 
   export let floorId;
 
@@ -19,18 +21,10 @@
   //For redrawing the canvas
   let redrawCommand = false;
 
-  $: console.log('Desk Store',$deskStoreActions.plan);
-
   const uploadDrawing = async () => {
     let fileUpload = document.getElementById('plan-upload');
-    console.log(fileUpload.files[0]);
     image = fileUpload.files[0];
-    console.log('IMAGE HERE', image);
-    if(isFileTypeValid(image)) {
-     console.log('File is valid');
-    }
     editMode = false;
-
   }
 
   //Callback function to reset load flag
@@ -40,7 +34,6 @@
   }
 
   $:if(image) {
-    console.log('There is an image');
     imageChanged = true;
   };
 
@@ -48,24 +41,16 @@
     await fetch(url)
       .then(res => res.blob())
       .then(blob => {
-        console.log('this is the image',blob);
         image = blob;
         editMode=true;
-        //return blob;
     });
   }
 
   $:if($deskStoreActions.floorPreLoaded) {
     deskStoreActions.setFloorPreLoaded(false);
-    console.log('LOad the drawing',$deskStoreActions.plan);
     //Add the base URL
     loadImageFromURL(URLROOT+$deskStoreActions.plan.picture);
-    //image = URLROOT+$deskStoreActions.plan.picture;
-    //editMode=true;
-    //image = $deskStoreActions.plan.picture;
   }
-
-  $: console.log('Floor ID', floorId);
 
 
 </script>

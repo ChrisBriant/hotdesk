@@ -32,10 +32,7 @@
 
     const submitForm = async () => {
         promise  = await authStoreActions.register({email,password,passchk,username});
-        console.log(promise);
-        if(promise) {
-            console.log('dispatched')
-        }  else {
+        if(!promise) {
              error = "Error Registering";
         }
     }

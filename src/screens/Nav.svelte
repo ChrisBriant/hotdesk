@@ -24,11 +24,9 @@
 </script>
 
 <style>
-    /* Add a black background color to the top navigation */
     .topnav {
-    /* background-color: #333; */
-    background-color: #00aaff;
-    overflow: hidden;
+      background-color: #00aaff;
+      overflow: hidden;
     }
 
     /* Style the links inside the navigation bar */
@@ -53,12 +51,6 @@
         color: white;
         text-decoration: underline;
     }
-
-    #spacer {
-        height:10px;
-    }
-
-
 </style>
 
 {#if authenticated}

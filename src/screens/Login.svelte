@@ -7,9 +7,6 @@
     import { isEmpty, isValidEmail } from "../helpers/validation.js";
     import { createEventDispatcher } from "svelte";
 
-    //Not sure why
-    export let login;
-
     let password = '';
     let email = '';
     let error = '';
@@ -25,7 +22,6 @@
 
     const submitForm = async () => {
         promise  = await authStoreActions.login({email,password});
-        console.log(promise);
         if(promise.success) {
             orgStoreActions.addOrganisations(promise.org_data);
             dispatch('loggedIn');

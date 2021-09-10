@@ -28,22 +28,14 @@
   let showDialog = false;
   let dialogMessage="Are you sure you want to delete this floor?";
 
-
   $: buildFormIsValid = buildingName.length > 3;
   $: floorFormIsValid = floorName.length > 3;
-
-
-  $: console.log('displayAddBuilding', displayAddBuilding);
-
-  $: console.log('Floor ID', selectedFloorId);
-  $: console.log('Buildings', $orgStoreActions.currentOrg.buildings);
 
   const setBuildings = () => {
     buildings = $orgStoreActions.currentOrg.buildings;
   }
 
   const submitBuilding = async () => {
-    console.log('Submitting Building',$orgStoreActions.currentOrg.id,buildingName);
     promise = await orgStoreActions.addBuilding({
       orgId: $orgStoreActions.currentOrg.id,
       name: buildingName
@@ -56,12 +48,10 @@
 
   const setExpanded = (i) => {
     buildings[i].expanded=true;
-    console.log('Expanding',i, buildings[i].floor);
   }
 
   const setUnexpanded = (i) => {
     buildings[i].expanded=false;
-    console.log('unexpanding',i);
   }
 
   const addFloor = (id) => {
@@ -70,7 +60,6 @@
   }
 
   const submitFloor = async (buildiingId) => {
-    console.log('submitting floor',buildingId,floorName, floorNumber);
     promise = await orgStoreActions.addFloor({
       buildingId,
       name: floorName,
@@ -120,10 +109,6 @@
 
   .indent {
     margin-left:1rem;
-  }
-
-  .sm-link {
-    font-size: 80%;
   }
 
   .floor-plan-img {

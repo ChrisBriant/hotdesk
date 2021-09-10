@@ -16,12 +16,9 @@
 
     promise = await orgStoreActions.loadOrganisation(orgId);
     if(promise) {
-      console.log('Go to the org');
       dispatch('nav','org');
     }
   }
-
-  $: console.log('ORGANISATIONS', organisations);
 
 </script>
 

@@ -26,7 +26,7 @@
     <BinaryChoice
       message={diagMessage}
       on:no={() => {showDialog=false}}
-      on:yes={() => {console.log('HERE')}}
+      on:yes={() => {}}
     />
   {/if}
   <div class="tab-box-header">

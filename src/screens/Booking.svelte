@@ -11,16 +11,11 @@
   import Spacer from '../components/Spacer.svelte';
   import {deskStoreActions} from "../stores/deskstore";
 
-  //import expand from '../assets/expand.svg';
   const dispatch = createEventDispatcher();
 
   let promise;
-  //let displayAddBuilding=false;
   let buildingName = '';
   let buildings = $orgStoreActions.currentOrg.buildings;
-  //let displayAddFloor=false;
-  //let floorName = '';
-  //let floorNumber = 1;
   let buildingId;
   let selectedBuildingId;
   let selectedFloorName= '';
@@ -53,19 +48,6 @@
   .indent {
     margin-left:1rem;
   }
-
-  .sm-link {
-    font-size: 80%;
-  }
-
-  .floor-plan-img {
-    display:block;
-    margin:auto;
-    width: 200px;
-    height: 150px;
-  }
-
-
 </style>
 
 <section>
@@ -171,13 +153,3 @@
   {/if}
 
 </section>
-
-
-<!-- <div class="row">
-  <div class="col">
-    <Calendar
-      orgId={$orgStoreActions.currentOrg.id}
-      floorId={selectedFloorId}
-    />
-  </div>
-</div> -->

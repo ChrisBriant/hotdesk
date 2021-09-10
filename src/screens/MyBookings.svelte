@@ -14,7 +14,6 @@
     let payload = {
       orgId: $orgStoreActions.currentOrg.id
     }
-    console.log("Payload IS",  $orgStoreActions.currentOrg);
     promise = await bookingStoreActions.getMyBookings(payload);
 
   });
@@ -34,8 +33,6 @@
     promise = await bookingStoreActions.cancelBooking(payload);
     showDialog = false;
   }
-
-  $: console.log('BOOKING STORE',$bookingStoreActions);
 </script>
 
 <style>
