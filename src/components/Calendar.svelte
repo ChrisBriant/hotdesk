@@ -1,6 +1,6 @@
 <script>
   import moment from 'moment';
-  import { createEventDispatcher,onMount } from 'svelte';
+  import { createEventDispatcher } from 'svelte';
   import { bookingStoreActions } from '../stores/bookingstore';
   import { getMonthName,simpleDateCompare } from '../helpers/helpers';
   import CalendarButton from '../components/CalendarButton.svelte';
@@ -15,23 +15,9 @@
   let day = date.getDate();
   let year = date.getFullYear();
   let selectedDate = new Date(year,month-1,1);
-  // let selectedDay = {
-  //   'date': new Date(year,month-1,day)
-  // };
   let disabled = false;
   let promise;
   let allowLoad = false;
-
-
-  onMount( () => {
-    //Initialize the selected date
-    //selectedDate.date = date;
-    // bookingStoreActions.setDay({
-    //   date
-    // });
-  });
-
-  $:console.log('MONTH DATA', orgId,floorId,month,day,$bookingStoreActions.selectedDay);
 
   const getBookings = async () => {
     promise = await bookingStoreActions.getBookings({
@@ -59,8 +45,6 @@
   }
 
   const changeMonth = async (direction) => {
-    console.log('Change Direction', direction);
-    //let newSelectedDate;
     if(direction==="fwd") {
       if(month === 12) {
         month = 1;
@@ -68,10 +52,6 @@
       } else {
         month++;
       }
-      // month = selectedDate.getMonth() + 1;
-      // year = selectedDate.getFullYear();
-      //newSelectedDate = new Date(year,month,1);
-
     } else {
       if(month === 1) {
         month = 12;
@@ -79,16 +59,10 @@
       } else {
         month--;
       }
-      // selectedDate = new Date(year,month-2,1);
-      // month = selectedDate.getMonth() + 1;
-      // year = selectedDate.getFullYear();
-      // newSelectedDate = new Date(year,month,1);
     }
-    console.log('SELECTED DATE', selectedDate);
     const dateStr = `${year}-${month}-1`;
     selectedDate = new Date(dateStr);
     bookingStoreActions.setDay({date:selectedDate});
-    console.log("DAY", $bookingStoreActions.selectedDay, selectedDate);
     promise = await bookingStoreActions.getBookings({
       orgId,
       floorId,
@@ -99,15 +73,6 @@
       dispatch('dayChanged');
     }
   }
-
-  const selectDay = (day) => {
-    console.log('Selected day', day);
-  }
-
-  $:console.log('mode',selectedDate < Date.now(),selectedDate);
-  $:console.log('calendar', $bookingStoreActions.calendar);
-
-
 </script>
 
 <style>
@@ -134,8 +99,6 @@
 
   .active-day:hover {
     background-color: #ffc870;
-    /* width:2.1rem;
-    height: 2.1rem; */
   }
 
   .selected-day {
@@ -158,12 +121,7 @@
         #b8b8b8 4px
     );
     border: 1px solid #b8b8b8;
-    /*background-color: #b8b8b8;*/
   }
-
-  /* .cal-container {
-    margin:auto;
-  } */
 </style>
 
 <div>

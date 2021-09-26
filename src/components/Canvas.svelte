@@ -11,7 +11,6 @@
 
   export let width = 800;
   export let height = 600;
-	export let drawMode = false;
   export let image = null;
 	export let imageChanged = false;
 	export let floorId;
@@ -42,28 +41,6 @@
 		redraw();
 	}
 
-
-	$:console.log('image changed canvas', image,editMode);
-
-
-  // $:if(image){
-	// 	if(!imgLoaded) {
-	//     imgObj = new Image();
-	//     let reader = new FileReader();
-	//     reader.readAsDataURL(image);
-	//     reader.onload = (e) => {
-	//       imgObj.src =  e.target.result;
-	// 			imgLoaded = true;
-	// 			let canvasData = ctx.toDataURL("image/png");
-	// 			console.log('LOADED IMAGE', canvasData);
-	// 			//For Firefox it has to be called below as well - don't know why
-	// 			ctx.drawImage(imgObj, 0, 0, width,height);
-	//     };
-	// 	} else {
-	// 		ctx.drawImage(imgObj, 0, 0, width,height);
-	// 	}
-  // };
-
 	$: if(imageChanged) {
 		if(!editMode) {
 	    imgObj = new Image();
@@ -71,9 +48,6 @@
 	    reader.readAsDataURL(image);
 	    reader.onload = (e) => {
 	      imgObj.src =  e.target.result;
-				//let canvasData = ctx.toDataURL("image/png");
-				//For Firefox it has to be called below as well - don't know why
-				//ctx.drawImage(imgObj, 0, 0, width,height);
 	    };
 			reader.onloadend = async (e) => {
 				imgObj.onload = async () => {
@@ -94,15 +68,6 @@
 							redraw();
 					});
 				}
-
-
-				// const fd = new FormData();
-				// const blob = canvas.toDataURL();
-				// console.log('Here is the blob', blob);
-				// const ext = blob.type.split('/')[1];
-				// const file = new File([blob], `filename.${ext}`);
-				// fd.append('picture', file);
-				// console.log('Here is the form data', fd);
 			}
 		} else {
 			imgObj = new Image();
@@ -113,7 +78,6 @@
 				ctx.drawImage(imgObj, 0, 0, width,height);
 			}
 			reader.onloadend = async (e) => {
-				//console.log(reader.result);
 				imgObj.onload = () => {
 					//Loads image and the rectangles
 					redraw();
@@ -150,7 +114,6 @@
 		ctx.drawImage(imgObj, 0, 0, width,height)
     //Draw the saved rects
     for(let i=0;i<$deskStoreActions.desks.length;i++) {
-			console.log("DRAWING", currentRect,$deskStoreActions.desks[i]);
 			if(currentRect) {
 				if(currentRect.id === $deskStoreActions.desks[i].id) {
 					ctx.strokeStyle = SELECTEDSTROKECOLOR;
@@ -230,11 +193,6 @@
 		border-left: 1px solid #000;
 		border-right: 1px solid #000;
 	}
-
-	/* .canvas-nocursor {
-		cursor:none;
-	} */
-
 </style>
 
 <div>

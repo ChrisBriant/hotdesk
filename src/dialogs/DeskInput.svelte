@@ -1,6 +1,5 @@
 <script>
-  import { createEventDispatcher, onMount } from 'svelte';
-  //import { stringGen } from '../helpers/helpers';
+  import { createEventDispatcher } from 'svelte';
   import { deskStoreActions } from '../stores/deskstore';
   import Modal from '../components/Modal.svelte';
   import Button from '../components/Button.svelte';
@@ -13,14 +12,7 @@
   let id;
   let errorMessage='';
 
-  onMount(() => {
-    //id = stringGen(16);
-    //desk.setId(id);
-    //console.log('Random ID', stringGen(16));
-  });
-
   const saveDesk = () => {
-    console.log('Desk is callled', name);
     if(name !== '') {
       errorMessage='';
       desk.setName(name);
@@ -33,21 +25,13 @@
   }
 
   const deleteDesk = () => {
-    console.log('Deleting Desk', desk);
     deskStoreActions.deleteDesk(desk);
     dispatch('cancel');
   }
-
-
 </script>
 
 
 <style>
-  /* .modal-scroll {
-    overflow-y: auto;
-    max-height: 8rem;
-    overflow-x: hidden;
-  } */
 </style>
 
 <div>
@@ -93,5 +77,3 @@
     </div>
   </Modal>
 </div>
-
-<!-- on:input = {e => {name = e.target.value} } -->

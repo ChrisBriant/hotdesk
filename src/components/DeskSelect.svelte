@@ -11,18 +11,12 @@
   let showDialog = false;
   let diagMessage = '';
   let promise;
-  //let deskList = [];
 
   const dispatch = createEventDispatcher();
 
   $:if(planChanged) {
-      console.log('Changed');
 		  deskStoreActions.setDesk($deskStoreActions.desks[0]);
 	}
-
-  // $:if($deskStoreActions.desks.length > 0) {
-  //   deskStoreActions.setDesk($deskStoreActions.desks[0]);
-  // }
 
   const changeDesk = (e) => {
     deskStoreActions.setDesk($deskStoreActions.desks.filter(d => d.id === e.target.value)[0]);
@@ -38,8 +32,6 @@
 
   const sendBooking = async () => {
     showDialog = false;
-    console.log($deskStoreActions.selectedDesk);
-    //let dateStr = `${$bookingStoreActions.selectedDay.date.getDate()}/${$bookingStoreActions.selectedDay.date.getMonth()+1}/${$bookingStoreActions.selectedDay.date.getFullYear()}`;
     let dateStr = moment($bookingStoreActions.selectedDay.date).format('DD/MM/YYYY');
     let payload = {
       deskId: $deskStoreActions.selectedDesk.apiId,
@@ -48,7 +40,6 @@
     promise = await bookingStoreActions.bookDesk(payload,$deskStoreActions.selectedDesk.name);
     if(promise) {
       dispatch('deskChanged');
-      //deskStoreActions.setBooked($deskStoreActions.selectedDesk.id);
     }
 
   }
@@ -79,7 +70,6 @@
         name="desks"
         id="desks"
         on:change={(e) => {changeDesk(e)}}
-
       >
           {#each $deskStoreActions.desks as desk, i (i)}
             {#if !bookingStoreActions.isBooked(desk)}

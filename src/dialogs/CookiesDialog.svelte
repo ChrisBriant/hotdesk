@@ -63,15 +63,6 @@
         border-bottom: 1px solid #ccc;
     }
 
-    modal-title {
-      text-align: center;
-      padding-bottom: 1rem;
-    }
-
-    h3.modal-title {
-      color: red;
-    }
-
     .space {
       min-height: 1rem;
     }

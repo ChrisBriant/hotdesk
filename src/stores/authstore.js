@@ -18,7 +18,6 @@ function isTokenExpired(token) {
         } else return true;
     }
     catch (err) {
-        console.log('erm', err);
         return true;
     }
 }
@@ -32,14 +31,11 @@ const authStoreActions = {
     subscribe: authStore.subscribe,
     login: async (credentials) => {
         let response = {success:false};
-        console.log(credentials);
         await conn.post('/api/account/authenticate/',
             {
                 email: credentials.email, password: credentials.password
             })
         .then(res => {
-            console.log(res);
-            console.log(res.data);
             if(res.data.access) {
                 const decoded = decode(res.data.access);
                 authStore.set({
@@ -51,7 +47,6 @@ const authStoreActions = {
             }
         })
         .catch(err => {
-            console.log('I am error',err);
             response = {success:false};
         });
         return response;
@@ -65,7 +60,6 @@ const authStoreActions = {
     isAuthenticated: () => {
         let authenticated = false;
         const unsubscribe = authStore.subscribe(item => {
-            console.log('Here is the item', item);
             if (item) {
                 if(!isTokenExpired(item.token)) {
                     authenticated = true;
@@ -83,12 +77,9 @@ const authStoreActions = {
         let responseObj = {};
         await conn.post('/api/account/register/', regData)
         .then(res => {
-            console.log(res);
-            console.log(res.data);
             responseObj.success = true;
             responseObj.message = 'Successful!'
         }).catch(err => {
-            console.log('I am error',err.response);
             responseObj.success = false;
             responseObj.message = err.response.data.message
         });
@@ -96,15 +87,11 @@ const authStoreActions = {
     },
     forgotPassword: async (forgotData) => {
         let responseObj = {};
-        console.log('PAYLOAD IS ', forgotData);
         await conn.post('/api/account/forgotpassword/', forgotData)
         .then(res => {
-            console.log(res);
-            console.log(res.data);
             responseObj.success = true;
             responseObj.message = 'Successful!'
         }).catch(err => {
-            console.log('I am error',err.response);
             responseObj.success = false;
             responseObj.message = err.response.data.message
         });

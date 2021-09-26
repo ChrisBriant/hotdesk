@@ -34,26 +34,20 @@ const orgStoreActions = {
     let success = false;
     await authConn.post('/api/desks/myorganisations/',{},getConfig())
     .then(res => {
-        console.log(res);
-        console.log(res.data);
         orgStore.update(orgs => {
           orgs.organisations = res.data;
           return orgs;
         });
     })
     .catch(err => {
-        console.log('I am error',err);
         success = false;
     });
     return success;
   },
   joinOrganisation: async (org) => {
     let response = {success:false,message:''}
-    console.log('AUTHCONN' , authConn, getConfig());
     await authConn.post('/api/desks/joinorganisation/',org,getConfig())
     .then(res => {
-        console.log(res);
-        console.log(res.data);
         response = {success:res.data.success,message:res.data.message}
     })
     .catch(err => {
@@ -65,17 +59,13 @@ const orgStoreActions = {
               message:err.response.data.message
            }
         }
-        console.log('I am error',err.response);
     });
     return response;
   },
   createOrganisation: async (org) => {
     let response = {success:false,message:''}
-    console.log('AUTHCONN' , authConn, getConfig());
     await authConn.post('/api/desks/createorg/',org,getConfig())
     .then(res => {
-        console.log(res);
-        console.log(res.data);
         response = {success:true,message:`Successfully created ${res.data.name}.`}
     })
     .catch(err => {
@@ -87,13 +77,11 @@ const orgStoreActions = {
               message:err.response.data.message
            }
         }
-        console.log('I am error',err.response);
     });
     return response;
   },
   loadOrganisation: async (orgId) => {
     let success = false;
-    console.log('CONFIG',getConfig());
     await authConn.post('/api/desks/getorganisation/',{'orgId':orgId},getConfig())
     .then(res => {
         orgStore.update(st => {
@@ -175,46 +163,36 @@ const orgStoreActions = {
     });
     return success;
   },
-  getStaff: async (data) => {
-    console.log('GET THE STAFF');
-  },
   deleteFloor: async (data) => {
     let success = false;
     await authConn.delete('/api/desks/deletefloor/',{data:data})
     .then(res => {
-        console.log(res.data);
         orgStore.update(st => {
           st.currentOrg = res.data;
           return st;
         });
     })
     .catch(err => {
-        console.log('I am error',err);
         success = false;
     });
     return success;
   },
   contact: async (authed,data) => {
-    console.log('AM I AUTHED', authed,data);
     let success = false;
     if(authed) {
       await authConn.post('/api/desks/contact/',data,getConfig())
       .then(res => {
-          console.log(res.data);
           success = true;
       })
       .catch(err => {
-          console.log('I am error',err);
           success = false;
       });
     } else {
       await conn.post('/api/desks/contact/',data)
       .then(res => {
-          console.log(res.data);
           success = true;
       })
       .catch(err => {
-          console.log('I am error',err);
           success = false;
       });
     }

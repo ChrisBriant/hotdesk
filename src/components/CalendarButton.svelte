@@ -49,7 +49,6 @@
   img {
     width: 1rem;
   }
-
 </style>
 
 {#if href}

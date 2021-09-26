@@ -2,6 +2,7 @@
   import { onMount } from 'svelte';
   import CookiesDialog from './dialogs/CookiesDialog.svelte';
   import OrganisationOptions from './components/OrganisationOptions.svelte';
+  import FindOrganisation from './components/FindOrganisation.svelte';
   import Plan from './screens/Plan.svelte';
   import Nav from './screens/Nav.svelte';
   import Forgot from './screens/Forgot.svelte';
@@ -40,7 +41,6 @@
   });
 
   function logout() {
-    console.log('logging out');
     authStoreActions.logOut();
     loggedIn = false;
   }
@@ -106,6 +106,7 @@
 
   .hero-box {
     margin: auto;
+    margin-bottom: 25px;
   }
 </style>
 
@@ -138,7 +139,8 @@
             <Spacer />
         {:else}
           <div class="row">
-            <div class="cold-md-12 home-panel hero-box">
+            <div class="col-md-12 home-panel hero-box">
+              <FindOrganisation />
               <a href="#homepageafterhero">Click Here to Read More</a>
             </div>
           </div>
@@ -152,7 +154,7 @@
   {#if route === 'home'}
     <Home
       organisations = {$orgStoreActions.organisations}
-      on:nav={(r) => {console.log(r.detail);route = r.detail;}}
+      on:nav={(r) => {route = r.detail;}}
     />
   {:else if route === 'login'}
     <Login login={authStoreActions.login} on:loggedIn={() => {loggedIn = true; route = 'home'}} />

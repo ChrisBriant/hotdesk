@@ -63,8 +63,6 @@ export const transformMonthData = (year,month,slots) => {
   const firstOfMonth = new Date(year,month-1,1);
   const lastOfMonth = new Date(year,month,0);
 
-  console.log('Months',firstOfMonth,lastOfMonth);
-
   let startDay;
   if(firstOfMonth.getDay() === 0) {
     startDay = 7;

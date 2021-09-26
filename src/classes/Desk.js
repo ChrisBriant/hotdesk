@@ -1,12 +1,6 @@
 export class Desk {
-  // let ctx;
-  // let x=0;
-  // let y=0;
-  // let w=0;
-  // let h=0;
 
   constructor(x,y,w,h) {
-    //this.ctx = ctx;
     this.x=x;
     this.y=y;
     this.w=w;
@@ -18,7 +12,6 @@ export class Desk {
   }
 
   contains(x,y) {
-    //console.log('Contains',x,y,this.width,this.height,this.x,this.y);
     return this.x <= x && x <= this.x + this.w &&
        this.y <= y && y <= this.y + this.h;
   }
@@ -28,7 +21,6 @@ export class Desk {
     let y1 = this.y/scale
     let w1 = this.w/scale
     let h1 = this.h/scale
-    console.log('Contains',scale,x,y,w1,h1,x1,y1);
     return x1 <= x && x <= x1 + w1 &&
        y1 <= y && y <= y1 + h1;
   }
@@ -42,7 +34,6 @@ export class Desk {
   //Draw to f - factor for scaling
   drawScale(ctx,f,drawCol) {
     ctx.beginPath();
-    console.log('This is the color it will be', drawCol);
     ctx.strokeStyle = drawCol;
     ctx.rect(this.x/f, this.y/f,this.w/f,this.h/f);
     ctx.stroke();

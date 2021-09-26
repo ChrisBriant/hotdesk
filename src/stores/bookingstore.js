@@ -40,8 +40,6 @@ const bookingStoreActions = {
       let success = false;
       await authConn.post('/api/booking/getbookings/',data,getConfig())
       .then(res => {
-          console.log(res);
-          console.log(res.data);
           bookingStore.update(st => {
             st.bookings = res.data;
             st.calendar = transformMonthData(data.year,data.month,res.data);
@@ -67,7 +65,6 @@ const bookingStoreActions = {
             id: res.data.desk.id
           }];
           st.bookings.out_slots[data.date] = bookingDay;
-          console.log('HERE IS THE STORE',st.bookings.out_slots,bookingDay,data.date);
           success = true;
           return st;
         });
@@ -77,10 +74,8 @@ const bookingStoreActions = {
     isBooked: (desk) => {
       let found = false;
       const unsubscribe = bookingStore.subscribe(st => {
-        console.log(st.bookings);
         if(st.bookings) {
           const dateIdx = moment(st.selectedDay.date).format('DD/MM/YYYY');
-          console.log('DATE INDEX', dateIdx);
           const bookings = st.bookings.out_slots[dateIdx];
           for(let i=0;i<bookings.length;i++) {
             if(bookings[i].id===desk.apiId) {
@@ -96,7 +91,6 @@ const bookingStoreActions = {
       let success = false;
       await authConn.post('/api/booking/mybookings/',data,getConfig())
       .then(res => {
-        console.log(res.data);
         bookingStore.update(st => {
           st.myBookings = res.data;
           return st;
@@ -108,7 +102,6 @@ const bookingStoreActions = {
       let success = false;
       await authConn.post('/api/booking/bookingsfororg/',data,getConfig())
       .then(res => {
-        console.log(res.data);
         bookingStore.update(st => {
           st.myBookings = res.data;
           return st;
@@ -120,7 +113,6 @@ const bookingStoreActions = {
       let success = false;
       await authConn.delete('/api/booking/cancelbooking/',{data})
       .then(res => {
-        console.log(res.data);
         bookingStore.update(st => {
           st.myBookings = res.data;
           return st;

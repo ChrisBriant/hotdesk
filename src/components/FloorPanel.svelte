@@ -16,19 +16,9 @@
   let success;
   let showExitDialog = false;
 
-  $:console.log('desk store', $deskStoreActions.desks);
-  $:console.log('desks valid', validDesks($deskStoreActions.desks));
-
-  $: if($deskStoreActions.desks) {
-    console.log('Desks Updated');
-    //deskStoreActions.resetDeskChange();
-  }
-
   $: desksAreValid = validDesks($deskStoreActions.desks);
 
   const saveDesks = async () => {
-    console.log('save');
-
     success = await deskStoreActions.saveDeskPlan();
     if(success) {
       launchCreatedDialog = true;
@@ -40,7 +30,6 @@
   }
 
   const performExit = () => {
-    console.log('EXITING');
     dispatch('nav','org');
   }
 
@@ -54,10 +43,6 @@
 </script>
 
 <style>
-  li {
-    list-style-type: none;
-  }
-
   .pill-container {
       display: flex;
       flex-direction: row;

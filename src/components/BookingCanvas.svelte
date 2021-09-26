@@ -1,8 +1,6 @@
 <script>
 	import { onMount, createEventDispatcher } from 'svelte';
 	import {URLROOT} from '../helpers/settings';
-	//import { Desk } from '../classes/Desk';
-  //import DeskInput from '../dialogs/DeskInput.svelte';
 	import { deskStoreActions } from '../stores/deskstore';
 	import { bookingStoreActions } from '../stores/bookingstore';
 	import { getMousePos, stringGen } from '../helpers/helpers';
@@ -38,7 +36,6 @@
 
 
 	const draw = () => {
-		console.log('BOOKINGS STATE',$bookingStoreActions.bookings);
 		ctx.imageSmoothingEnabled = true;
 		ctx.fillStyle = '#edeae6';
 		ctx.fillRect(0, 0, width, height);
@@ -113,25 +110,9 @@
     }
 
   }
-
-  const handleUnClick = (e) => {
-    console.log('UNCLICKED');
-  }
-
-  // const closeDialog = () => {
-  //   launchDeskDialog = false;
-	// 	redraw();
-  // }
-
-
-
 </script>
 
 <style>
-	/* .canvas-drawing {
-		cursor:crosshair;
-	} */
-
 </style>
 
 <div>
@@ -141,7 +122,6 @@
 		width={width}
 		height={height}
     on:mousedown={(e) => handleClick(e)}
-    on:mouseup={(e) => handleUnClick(e)}
 	>
 	</canvas>
 

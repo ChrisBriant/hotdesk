@@ -39,16 +39,6 @@
     border: 0;
   }
 
-  .invalid {
-    border-color: red;
-    background: #fde3e3;
-  }
-
-  .error-message {
-    color: red;
-    margin: 0.25rem 0;
-  }
-
 </style>
 
 <div class="form-control input-container">

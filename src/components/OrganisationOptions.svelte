@@ -7,9 +7,6 @@
   const dispatch = createEventDispatcher();
 
   export let organisations;
-
-
-  console.log('Org Store', organisations);
 </script>
 
 <style>
@@ -22,10 +19,6 @@
     margin-left: 2px;
     margin-right: 2%;
   }
-
-
-
-
 </style>
 
 {#if authStoreActions.isAuthenticated()}

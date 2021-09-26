@@ -16,7 +16,6 @@
             modal.scrollTo(0,modal.scrollHeight);
         }
     });
-
 </script>
 
 <style>
@@ -49,16 +48,6 @@
     header {
         border-bottom: 1px solid #ccc;
     }
-
-    modal-title {
-      text-align: center;
-      padding-bottom: 1rem;
-    }
-
-    h3.modal-title {
-      color: red;
-    }
-
 </style>
 
 <div class="backdrop" on:click="{() => dispatch('cancel')}" ></div>
