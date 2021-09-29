@@ -107,6 +107,7 @@
   .hero-box {
     margin: auto;
     margin-bottom: 25px;
+    padding: 20px;
   }
 </style>
 
@@ -140,7 +141,9 @@
         {:else}
           <div class="row">
             <div class="col-md-12 home-panel hero-box">
-              <FindOrganisation />
+              <FindOrganisation
+                on:nav={(r) => { route = r.detail}}
+              />
               <a href="#homepageafterhero">Click Here to Read More</a>
             </div>
           </div>

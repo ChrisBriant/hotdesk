@@ -7,7 +7,8 @@ import {conn} from '../helpers/connections.js';
 //Whenever this runs it will retrieve the token
 const orgStore = writable({
     organisations:[],
-    currentOrg:{}
+    currentOrg:{},
+    orgSearch: []
 });
 
 const getConfig = () => {
@@ -196,9 +197,23 @@ const orgStoreActions = {
           success = false;
       });
     }
-
     return success;
-  }
+  },
+  orgSearch: async (name) => {
+    let success = false;
+    await conn.get(`/api/desks/findorganisations?name=${name}`)
+    .then(res => {
+        orgStore.update(st => {
+          st.orgSearch = res.data;
+          return st;
+        });
+        success = true;
+    })
+    .catch(err => {
+        success = false;
+    });
+    return success;
+  },
 
 };
 

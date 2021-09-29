@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 //const baseURL = 'https://hotdeskapi.chrisbriant.uk';
-const baseURL = 'http://localhost:8000';
-const homeURL = 'http://localhost:5000';
+const baseURL = 'https://hotdeskapi.chrisbriant.uk';
+const homeURL = 'https://hotdesk.chrisbriant.uk';
 
 const conn = axios.create({
     baseURL,
